@@ -164,7 +164,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     schedule_reminders(context.application, CHAT_ID)
 
     await update.message.reply_text(
-        "👋 *Salom! Dars jadvali boti ishga tushdi!*\n\n"
+        "👋 *Salom! 3-kurs Finance (FINP-S-1323U) dars jadvali boti!*\n\n"
         "📌 Dars boshlanishidan *15 daqiqa oldin* avtomatik eslatma olasiz.\n\n"
         "Quyidagi menyudan foydalaning 👇",
         parse_mode="Markdown",
@@ -260,11 +260,13 @@ async def cmd_keyingi(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def cmd_yordam(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "ℹ️ *Yordam*\n\n"
+        "🎓 Bu bot *3-kurs Finance (FINP-S-1323U)* talabalari uchun mo'ljallangan.\n\n"
         "📅 *Bugungi darslar* — bugun bo'ladigan darslar\n"
         "⏰ *Keyingi dars* — keyingi dars qancha vaqtdan so'ng\n"
         "📋 *Haftalik jadval* — kelgusi 7 kun\n"
         "📚 *To'liq jadval* — barcha darslar\n\n"
-        "🔔 Har bir dars boshlanishidan *15 daqiqa oldin* avtomatik eslatma keladi.",
+        "🔔 Har bir dars boshlanishidan *15 daqiqa oldin* avtomatik eslatma keladi.\n\n"
+        "❓ Bot bo'yicha savollar bo'lsa: @parvizkarimov",
         parse_mode="Markdown",
         reply_markup=main_menu_keyboard()
     )
