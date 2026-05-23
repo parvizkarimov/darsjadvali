@@ -86,7 +86,7 @@ def main_menu_keyboard():
         [KeyboardButton("📋 Haftalik jadval"),  KeyboardButton("📚 To'liq jadval")],
         [KeyboardButton("ℹ️ Yordam")],
     ]
-    return ReplyKeyboardMarkup(keyboard, resize_keyboard=True, persistent=True)
+    return ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
 
 
 def back_keyboard():
