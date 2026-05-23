@@ -12,7 +12,8 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # ===== SOZLAMALAR =====
-BOT_TOKEN = "8546375317:AAHFOa94cHuXgjS_VMR7GR8kIsctEXahd5I"
+import os
+BOT_TOKEN = os.environ.get("BOT_TOKEN", "")
 CHAT_ID = None  # /start bosganda avtomatik o'rnatiladi, yoki qo'lda kiriting
 TZ = pytz.timezone("Asia/Tashkent")
 
