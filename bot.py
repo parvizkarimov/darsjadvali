@@ -306,6 +306,9 @@ async def send_reminder(context: ContextTypes.DEFAULT_TYPE):
 def schedule_reminders(app, chat_id):
     now = datetime.now(TZ)
     count = 0
+    logger.info("--- ESLATMALAR TEKSHIRUVI ---")
+    logger.info(f"Hozirgi O'zbekiston vaqti (UTC+5): {now.strftime('%d.%m.%Y %H:%M:%S')}")
+    
     for lesson in SCHEDULE:
         lesson_dt = get_lesson_datetime(lesson[0], lesson[1], lesson[2])
         reminder_dt = lesson_dt - timedelta(minutes=15)
@@ -321,7 +324,9 @@ def schedule_reminders(app, chat_id):
                 name=job_name
             )
             count += 1
-    logger.info(f"{count} ta eslatma rejalashtirildi")
+            logger.info(f"Tasdiqlandi: '{lesson[3]}' darsi uchun eslatma -> {reminder_dt.strftime('%d.%m.%Y %H:%M:%S')} (O'zbekiston vaqti)")
+            
+    logger.info(f"Jami {count} ta eslatma rejalashtirildi")
     return count
 
 # ===== MAIN =====
