@@ -163,9 +163,14 @@ async def handle_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def cmd_bugun(update: Update, context: ContextTypes.DEFAULT_TYPE):
     lessons = get_today_schedule()
-    today = datetime.now(TZ).strftime("%d.%m.%Y")
+    now = datetime.now(TZ)
+    today = now.strftime("%d.%m.%Y")
     if not lessons:
-        msg = f"📭 *{today}* kuni dars yo'q yoki barcha darslar tugagan."
+        start_date = TZ.localize(datetime(2026, 6, 8))
+        if now < start_date:
+            msg = "⏳ *Darslar 8-iyundan boshlanadi!*"
+        else:
+            msg = f"📭 *{today}* kuni dars yo'q yoki barcha darslar tugagan."
         await update.message.reply_text(msg, parse_mode="Markdown", reply_markup=main_menu_keyboard())
         return
     text = f"📋 *Bugungi darslar ({today}):*\n" + format_schedule_by_date(lessons)
