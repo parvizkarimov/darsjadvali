@@ -181,13 +181,16 @@ async def cmd_bugun(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 async def cmd_hafta(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    lessons = get_week_schedule()
-    text = "📋 *Kelgusi 7 kunlik jadval:*\n" + format_schedule_by_date(lessons)
-    await send_long_message(
-        lambda t, **kw: update.message.reply_text(t, **kw),
-        text, parse_mode="Markdown", disable_web_page_preview=True,
-        reply_markup=main_menu_keyboard()
-    )
+    keyboard = [
+        [InlineKeyboardButton("08.06 - Dushanba", callback_data="day_08.06.2026"),
+         InlineKeyboardButton("09.06 - Seshanba", callback_data="day_09.06.2026")],
+        [InlineKeyboardButton("10.06 - Chorshanba", callback_data="day_10.06.2026"),
+         InlineKeyboardButton("11.06 - Payshanba", callback_data="day_11.06.2026")],
+        [InlineKeyboardButton("12.06 - Juma", callback_data="day_12.06.2026"),
+         InlineKeyboardButton("13.06 - Shanba", callback_data="day_13.06.2026")],
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    await update.message.reply_text("📋 *Qaysi kunning jadvalini ko'rmoqchisiz?*", parse_mode="Markdown", reply_markup=reply_markup)
 
 async def cmd_jadval(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = "📋 *To'liq dars jadvali (08.06-13.06):*\n" + format_schedule_by_date(SCHEDULE)
