@@ -1,6 +1,6 @@
 import logging
 import os
-from datetime import datetime, timedelta, time
+from datetime import datetime, timedelta
 
 import pytz
 from telegram import Bot, Update, InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup, KeyboardButton
@@ -17,55 +17,47 @@ BOT_TOKEN = os.environ.get("BOT_TOKEN", "")
 CHAT_ID = None
 TZ = pytz.timezone("Asia/Tashkent")
 
-# ===== OFLAYN DARS JADVALI =====
-# 0: Dushanba, 1: Seshanba, 2: Chorshanba, 3: Payshanba, 4: Juma, 5: Shanba, 6: Yakshanba
-OFFLINE_SCHEDULE = {
-    0: [ # Dushanba
-        (13, 0, "INSURANCE", "ABDULLAYEV XUDOYMUROD", "A-503"),
-        (14, 0, "INSURANCE", "PRIMKULOVA ZILOLA", "A-303"),
-        (15, 0, "ISLAMIC FINANCE", "XAYDARI ZOXIR", "A-502"),
-        (16, 0, "INTERNATIONAL NEGOTIATION", "ISLOMOV SHUHRAT", "A-303"),
-    ],
-    1: [ # Seshanba
-        (13, 0, "FINANCIAL TECHNOLOGIES", "KARIMOVA SHAHRIZODA", "C -102"),
-        (14, 0, "INSURANCE", "PRIMKULOVA ZILOLA", "A-303"),
-        (15, 0, "PUBLIC FINANCE", "KARIMOVA SHAHRIZODA", "C -102"),
-        (16, 0, "ECONOMIC ANALYSIS", "BERDIKULOVA IRODA", "A-303"),
-        (17, 0, "ECONOMIC ANALYSIS", "BERDIKULOVA IRODA", "A-516"),
-    ],
-    2: [ # Chorshanba
-        (13, 0, "PUBLIC FINANCE", "KARIMOVA SHAHRIZODA", "C -102"),
-        (14, 0, "ISLAMIC FINANCE", "XAYDARI ZOXIR", "A-510"),
-        (15, 0, "ECONOMIC ANALYSIS", "BERDIKULOVA IRODA", "A-303"),
-        (16, 0, "ISLAMIC FINANCE", "XAYDARI ZOXIR", "A-503"),
-        (17, 0, "INTERNATIONAL NEGOTIATION", "ISLOMOV SHUHRAT", "A-502"),
-    ],
-    3: [ # Payshanba
-        (13, 0, "ISLAMIC FINANCE", "XAYDARI ZOXIR", "A-503"),
-        (14, 0, "PUBLIC FINANCE", "ABDUVAXOPOV INOMJON", "A-502"),
-        (15, 0, "INSURANCE", "PRIMKULOVA ZILOLA", "A-303"),
-        (16, 0, "FINANCIAL TECHNOLOGIES", "ABDUVAXOPOV INOMJON", "A-502"),
-    ],
-    4: [ # Juma
-        (13, 0, "PUBLIC FINANCE", "KARIMOVA SHAHRIZODA", "C -102"),
-        (14, 0, "FINANCIAL TECHNOLOGIES", "KARIMOVA SHAHRIZODA", "C -102"),
-        (15, 0, "ECONOMIC ANALYSIS", "BERDIKULOVA IRODA", "A-502"),
-        (16, 0, "FINANCIAL TECHNOLOGIES", "ABDUVAXOPOV INOMJON", "A-502"),
-    ],
-    5: [ # Shanba
-        (13, 0, "INTERNATIONAL NEGOTIATION", "ISLOMOV SHUHRAT", "A-303"),
-        (14, 0, "ISLAMIC FINANCE", "XAYDARI ZOXIR", "A-502"),
-        (15, 0, "INTERNATIONAL NEGOTIATION", "ISLOMOV SHUHRAT", "A-510"),
-        (16, 0, "INSURANCE", "ABDULLAYEV XUDOYMUROD", "A-502"),
-        (17, 0, "PUBLIC FINANCE", "ABDUVAXOPOV INOMJON", "A-502"),
-    ],
-    6: [] # Yakshanba
-}
+# ===== OFLAYN DARS JADVALI (08.06.2026 - 13.06.2026) =====
+SCHEDULE = [
+    # 08.06.2026 - Dushanba
+    ("08.06.2026", 13, 0, "INSURANCE", "ABDULLAYEV XUDOYMUROD", "A-503"),
+    ("08.06.2026", 14, 0, "INSURANCE", "PRIMKULOVA ZILOLA", "A-303"),
+    ("08.06.2026", 15, 0, "ISLAMIC FINANCE", "XAYDARI ZOXIR", "A-502"),
+    ("08.06.2026", 16, 0, "INTERNATIONAL NEGOTIATION", "ISLOMOV SHUHRAT", "A-303"),
 
-DAY_NAMES = {
-    0: "Dushanba", 1: "Seshanba", 2: "Chorshanba", 3: "Payshanba",
-    4: "Juma", 5: "Shanba", 6: "Yakshanba"
-}
+    # 09.06.2026 - Seshanba
+    ("09.06.2026", 13, 0, "FINANCIAL TECHNOLOGIES", "KARIMOVA SHAHRIZODA", "C -102"),
+    ("09.06.2026", 14, 0, "INSURANCE", "PRIMKULOVA ZILOLA", "A-303"),
+    ("09.06.2026", 15, 0, "PUBLIC FINANCE", "KARIMOVA SHAHRIZODA", "C -102"),
+    ("09.06.2026", 16, 0, "ECONOMIC ANALYSIS", "BERDIKULOVA IRODA", "A-303"),
+    ("09.06.2026", 17, 0, "ECONOMIC ANALYSIS", "BERDIKULOVA IRODA", "A-516"),
+
+    # 10.06.2026 - Chorshanba
+    ("10.06.2026", 13, 0, "PUBLIC FINANCE", "KARIMOVA SHAHRIZODA", "C -102"),
+    ("10.06.2026", 14, 0, "ISLAMIC FINANCE", "XAYDARI ZOXIR", "A-510"),
+    ("10.06.2026", 15, 0, "ECONOMIC ANALYSIS", "BERDIKULOVA IRODA", "A-303"),
+    ("10.06.2026", 16, 0, "ISLAMIC FINANCE", "XAYDARI ZOXIR", "A-503"),
+    ("10.06.2026", 17, 0, "INTERNATIONAL NEGOTIATION", "ISLOMOV SHUHRAT", "A-502"),
+
+    # 11.06.2026 - Payshanba
+    ("11.06.2026", 13, 0, "ISLAMIC FINANCE", "XAYDARI ZOXIR", "A-503"),
+    ("11.06.2026", 14, 0, "PUBLIC FINANCE", "ABDUVAXOPOV INOMJON", "A-502"),
+    ("11.06.2026", 15, 0, "INSURANCE", "PRIMKULOVA ZILOLA", "A-303"),
+    ("11.06.2026", 16, 0, "FINANCIAL TECHNOLOGIES", "ABDUVAXOPOV INOMJON", "A-502"),
+
+    # 12.06.2026 - Juma
+    ("12.06.2026", 13, 0, "PUBLIC FINANCE", "KARIMOVA SHAHRIZODA", "C -102"),
+    ("12.06.2026", 14, 0, "FINANCIAL TECHNOLOGIES", "KARIMOVA SHAHRIZODA", "C -102"),
+    ("12.06.2026", 15, 0, "ECONOMIC ANALYSIS", "BERDIKULOVA IRODA", "A-502"),
+    ("12.06.2026", 16, 0, "FINANCIAL TECHNOLOGIES", "ABDUVAXOPOV INOMJON", "A-502"),
+
+    # 13.06.2026 - Shanba
+    ("13.06.2026", 13, 0, "INTERNATIONAL NEGOTIATION", "ISLOMOV SHUHRAT", "A-303"),
+    ("13.06.2026", 14, 0, "ISLAMIC FINANCE", "XAYDARI ZOXIR", "A-502"),
+    ("13.06.2026", 15, 0, "INTERNATIONAL NEGOTIATION", "ISLOMOV SHUHRAT", "A-510"),
+    ("13.06.2026", 16, 0, "INSURANCE", "ABDULLAYEV XUDOYMUROD", "A-502"),
+    ("13.06.2026", 17, 0, "PUBLIC FINANCE", "ABDUVAXOPOV INOMJON", "A-502"),
+]
 
 # ===== MENYULAR =====
 
@@ -84,32 +76,39 @@ def back_keyboard():
 
 # ===== YORDAMCHI FUNKSIYALAR =====
 
+def get_lesson_datetime(date_str, hour, minute):
+    dt = datetime.strptime(date_str, "%d.%m.%Y").replace(hour=hour, minute=minute, second=0, microsecond=0)
+    return TZ.localize(dt)
+
 def get_today_schedule():
+    today = datetime.now(TZ).strftime("%d.%m.%Y")
+    return [l for l in SCHEDULE if l[0] == today]
+
+def get_week_schedule():
     now = datetime.now(TZ)
-    weekday = now.weekday()
-    return OFFLINE_SCHEDULE.get(weekday, [])
+    # Jadvalni faqat joriy kundan kelgusi 7 kunga qaytarish
+    week_later = now + timedelta(days=7)
+    return [l for l in SCHEDULE if now <= get_lesson_datetime(l[0], l[1], l[2]) <= week_later]
 
-def format_day_schedule(weekday, lessons, date_str=""):
+def format_schedule_by_date(lessons):
     if not lessons:
-        return ""
-    
-    day_name = DAY_NAMES[weekday]
-    header = f"📅 *{date_str} — {day_name}*" if date_str else f"📅 *{day_name}*"
-    
-    text = f"\n━━━━━━━━━━━━━━━\n{header}\n━━━━━━━━━━━━━━━\n"
-    for lesson in sorted(lessons, key=lambda x: (x[0], x[1])):
-        hour, minute, subject, teacher, room = lesson
-        text += f"\n🕐 *{hour:02d}:{minute:02d}* — {subject}\n"
-        text += f"👩‍🏫 _{teacher}_\n"
-        text += f"🚪 Xona: *{room}*\n"
-    return text
+        return "📭 Dars topilmadi."
 
-def format_full_schedule():
+    grouped = {}
+    for lesson in lessons:
+        grouped.setdefault(lesson[0], []).append(lesson)
+
+    day_names = {0: "Dushanba", 1: "Seshanba", 2: "Chorshanba", 3: "Payshanba",
+                 4: "Juma", 5: "Shanba", 6: "Yakshanba"}
     text = ""
-    for weekday in range(7):
-        lessons = OFFLINE_SCHEDULE.get(weekday, [])
-        if lessons:
-            text += format_day_schedule(weekday, lessons)
+    for date, day_lessons in sorted(grouped.items(), key=lambda x: datetime.strptime(x[0], "%d.%m.%Y")):
+        day_name = day_names[datetime.strptime(date, "%d.%m.%Y").weekday()]
+        text += f"\n━━━━━━━━━━━━━━━\n📅 *{date} — {day_name}*\n━━━━━━━━━━━━━━━\n"
+        for lesson in sorted(day_lessons, key=lambda x: x[1]):
+            _, hour, minute, subject, teacher, room = lesson
+            text += f"\n🕐 *{hour:02d}:{minute:02d}* — {subject}\n"
+            text += f"👩‍🏫 _{teacher}_\n"
+            text += f"🚪 Xona: *{room}*\n"
     return text
 
 async def send_long_message(send_func, text, **kwargs):
@@ -155,23 +154,30 @@ async def handle_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await cmd_bugun(update, context)
     elif text == "⏰ Keyingi dars":
         await cmd_keyingi(update, context)
-    elif text == "📋 Haftalik jadval" or text == "📚 To'liq jadval":
+    elif text == "📋 Haftalik jadval":
+        await cmd_hafta(update, context)
+    elif text == "📚 To'liq jadval":
         await cmd_jadval(update, context)
     elif text == "ℹ️ Yordam":
         await cmd_yordam(update, context)
 
 async def cmd_bugun(update: Update, context: ContextTypes.DEFAULT_TYPE):
     lessons = get_today_schedule()
-    now = datetime.now(TZ)
-    today_str = now.strftime("%d.%m.%Y")
-    weekday = now.weekday()
-    
+    today = datetime.now(TZ).strftime("%d.%m.%Y")
     if not lessons:
-        msg = f"📭 *{today_str}* kuni dars yo'q."
+        msg = f"📭 *{today}* kuni dars yo'q yoki barcha darslar tugagan."
         await update.message.reply_text(msg, parse_mode="Markdown", reply_markup=main_menu_keyboard())
         return
-        
-    text = f"📋 *Bugungi darslar ({today_str}):*\n" + format_day_schedule(weekday, lessons, today_str)
+    text = f"📋 *Bugungi darslar ({today}):*\n" + format_schedule_by_date(lessons)
+    await send_long_message(
+        lambda t, **kw: update.message.reply_text(t, **kw),
+        text, parse_mode="Markdown", disable_web_page_preview=True,
+        reply_markup=main_menu_keyboard()
+    )
+
+async def cmd_hafta(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    lessons = get_week_schedule()
+    text = "📋 *Kelgusi 7 kunlik jadval:*\n" + format_schedule_by_date(lessons)
     await send_long_message(
         lambda t, **kw: update.message.reply_text(t, **kw),
         text, parse_mode="Markdown", disable_web_page_preview=True,
@@ -179,7 +185,7 @@ async def cmd_bugun(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 async def cmd_jadval(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    text = "📋 *To'liq dars jadvali (FINP-S-1323U):*\n" + format_full_schedule()
+    text = "📋 *To'liq dars jadvali (08.06-13.06):*\n" + format_schedule_by_date(SCHEDULE)
     await send_long_message(
         lambda t, **kw: update.message.reply_text(t, **kw),
         text, parse_mode="Markdown", disable_web_page_preview=True,
@@ -188,52 +194,31 @@ async def cmd_jadval(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def cmd_keyingi(update: Update, context: ContextTypes.DEFAULT_TYPE):
     now = datetime.now(TZ)
-    
-    next_dt = None
-    next_lesson = None
-    
-    # Check today
-    weekday = now.weekday()
-    today_lessons = OFFLINE_SCHEDULE.get(weekday, [])
-    for lesson in sorted(today_lessons, key=lambda x: (x[0], x[1])):
-        dt = now.replace(hour=lesson[0], minute=lesson[1], second=0, microsecond=0)
-        if dt > now:
-            next_dt = dt
-            next_lesson = lesson
-            break
-            
-    # Check next 7 days if not found today
-    if not next_dt:
-        for i in range(1, 8):
-            next_day = now + timedelta(days=i)
-            next_weekday = next_day.weekday()
-            next_lessons = OFFLINE_SCHEDULE.get(next_weekday, [])
-            if next_lessons:
-                first_lesson = sorted(next_lessons, key=lambda x: (x[0], x[1]))[0]
-                next_dt = next_day.replace(hour=first_lesson[0], minute=first_lesson[1], second=0, microsecond=0)
-                next_lesson = first_lesson
-                break
-
-    if not next_dt or not next_lesson:
+    upcoming = sorted(
+        [(get_lesson_datetime(l[0], l[1], l[2]), l) for l in SCHEDULE
+         if get_lesson_datetime(l[0], l[1], l[2]) > now],
+        key=lambda x: x[0]
+    )
+    if not upcoming:
         await update.message.reply_text("📭 Kelgusi darslar topilmadi.", reply_markup=main_menu_keyboard())
         return
 
+    next_dt, lesson = upcoming[0]
     delta = next_dt - now
     hours = int(delta.total_seconds() // 3600)
     minutes = int((delta.total_seconds() % 3600) // 60)
     time_left = f"{hours} soat {minutes} daqiqadan so'ng" if hours > 0 else f"{minutes} daqiqadan so'ng"
 
-    hour, minute, subject, teacher, room = next_lesson
+    _, hour, minute, subject, teacher, room = lesson
 
     text = (
         f"⏰ *Keyingi dars:*\n\n"
         f"🕐 *{hour:02d}:{minute:02d}* ({time_left})\n"
-        f"📅 {next_dt.strftime('%d.%m.%Y')} — {DAY_NAMES[next_dt.weekday()]}\n"
+        f"📅 {lesson[0]}\n"
         f"📚 *{subject}*\n"
         f"👩‍🏫 {teacher}\n"
         f"🚪 Xona: *{room}*"
     )
-    
     await update.message.reply_text(
         text, parse_mode="Markdown", disable_web_page_preview=True,
         reply_markup=main_menu_keyboard()
@@ -242,11 +227,11 @@ async def cmd_keyingi(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def cmd_yordam(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "ℹ️ *Yordam*\n\n"
-        "🎓 Bu bot *3-kurs Finance (FINP-S-1323U)* talabalari uchun mo'ljallangan (Oflayn darslar).\n\n"
+        "🎓 Bu bot *3-kurs Finance (FINP-S-1323U)* talabalari uchun mo'ljallangan (8-13 Iyun darslari).\n\n"
         "📅 *Bugungi darslar* — bugun bo'ladigan darslar\n"
         "⏰ *Keyingi dars* — keyingi dars qancha vaqtdan so'ng\n"
-        "📋 *Haftalik jadval* — barcha darslar ro'yxati\n"
-        "📚 *To'liq jadval* — barcha darslar ro'yxati\n\n"
+        "📋 *Haftalik jadval* — kelgusi 7 kun\n"
+        "📚 *To'liq jadval* — barcha darslar\n\n"
         "🔔 Har bir dars boshlanishidan *15 daqiqa oldin* avtomatik eslatma keladi.\n\n"
         "❓ Bot bo'yicha savollar bo'lsa: @parvizkarimov",
         parse_mode="Markdown",
@@ -270,7 +255,7 @@ async def send_reminder(context: ContextTypes.DEFAULT_TYPE):
     job_data = context.job.data
     chat_id = job_data["chat_id"]
     lesson = job_data["lesson"]
-    hour, minute, subject, teacher, room = lesson
+    _, hour, minute, subject, teacher, room = lesson
 
     text = (
         f"🔔 *Dars eslatmasi!*\n\n"
@@ -288,33 +273,24 @@ async def send_reminder(context: ContextTypes.DEFAULT_TYPE):
     )
 
 def schedule_reminders(app, chat_id):
-    # Oldingi barcha eslatmalarni o'chirish
-    for job in app.job_queue.jobs():
-        if job.name and job.name.startswith("reminder_"):
-            job.schedule_removal()
-
+    now = datetime.now(TZ)
     count = 0
-    for weekday, lessons in OFFLINE_SCHEDULE.items():
-        for lesson in lessons:
-            hour, minute, subject, teacher, room = lesson
-            
-            # Eslatma vaqti (15 daqiqa oldin)
-            dummy_dt = datetime(2026, 1, 1, hour, minute)
-            reminder_dt = dummy_dt - timedelta(minutes=15)
-            reminder_time = time(hour=reminder_dt.hour, minute=reminder_dt.minute, tzinfo=TZ)
-            
-            job_name = f"reminder_{weekday}_{hour}_{minute}"
-            
-            app.job_queue.run_daily(
-                send_reminder, 
-                time=reminder_time,
-                days=(weekday,),
+    for lesson in SCHEDULE:
+        lesson_dt = get_lesson_datetime(lesson[0], lesson[1], lesson[2])
+        reminder_dt = lesson_dt - timedelta(minutes=15)
+        if reminder_dt <= now:
+            continue
+        job_name = f"reminder_{lesson[0]}_{lesson[1]}_{lesson[2]}"
+        # Takroriy qo'shmaslik
+        existing = app.job_queue.get_jobs_by_name(job_name)
+        if not existing:
+            app.job_queue.run_once(
+                send_reminder, when=reminder_dt,
                 data={"chat_id": chat_id, "lesson": lesson},
                 name=job_name
             )
             count += 1
-            
-    logger.info(f"Yangi {count} ta haftalik eslatma rejalashtirildi")
+    logger.info(f"{count} ta eslatma rejalashtirildi")
     return count
 
 # ===== MAIN =====
