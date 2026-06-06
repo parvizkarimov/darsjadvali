@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 from datetime import datetime, timedelta
@@ -14,8 +15,10 @@ logger = logging.getLogger(__name__)
 
 # ===== SOZLAMALAR =====
 BOT_TOKEN = os.environ.get("BOT_TOKEN", "")
+ADMIN_ID = os.environ.get("ADMIN_ID", "") # Admin telegram ID si (Environment variable orqali beriladi)
 CHAT_ID = None
 TZ = pytz.timezone("Asia/Tashkent")
+USERS_FILE = "users.json"
 
 # ===== OFLAYN DARS JADVALI (08.06.2026 - 13.06.2026) =====
 SCHEDULE = [
@@ -80,6 +83,26 @@ def get_lesson_datetime(date_str, hour, minute):
     dt = datetime.strptime(date_str, "%d.%m.%Y").replace(hour=hour, minute=minute, second=0, microsecond=0)
     return TZ.localize(dt)
 
+def save_user(user):
+    if not user:
+        return
+    try:
+        with open(USERS_FILE, "r", encoding="utf-8") as f:
+            users = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        users = {}
+    
+    user_id_str = str(user.id)
+    if user_id_str not in users:
+        users[user_id_str] = {
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "username": user.username,
+            "joined_at": datetime.now(TZ).strftime("%d.%m.%Y %H:%M:%S")
+        }
+        with open(USERS_FILE, "w", encoding="utf-8") as f:
+            json.dump(users, f, indent=4, ensure_ascii=False)
+
 def get_today_schedule():
     today = datetime.now(TZ).strftime("%d.%m.%Y")
     return [l for l in SCHEDULE if l[0] == today]
@@ -133,6 +156,10 @@ async def send_long_message(send_func, text, **kwargs):
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     global CHAT_ID
     CHAT_ID = update.effective_chat.id
+    
+    user = update.effective_user
+    save_user(user)
+    
     with open("chat_id.txt", "w") as f:
         f.write(str(CHAT_ID))
 
@@ -148,6 +175,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def handle_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Pastki menyu tugmalarini qayta ishlash"""
+    user = update.effective_user
+    save_user(user)
+    
     text = update.message.text
 
     if text == "📅 Bugungi darslar":
@@ -244,6 +274,38 @@ async def cmd_yordam(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "❓ Bot bo'yicha savollar bo'lsa: @parvizkarimov",
         parse_mode="Markdown",
         reply_markup=main_menu_keyboard()
+    )
+
+async def cmd_users(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = str(update.effective_user.id)
+    
+    # Check if admin
+    if not ADMIN_ID or user_id != ADMIN_ID:
+        await update.message.reply_text("⛔ Bu komanda faqat adminlar uchun.")
+        return
+        
+    try:
+        with open(USERS_FILE, "r", encoding="utf-8") as f:
+            users = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        users = {}
+        
+    if not users:
+        await update.message.reply_text("📭 Hali hech qanday foydalanuvchi ulanmadi.")
+        return
+        
+    text = f"📊 *Bot statistikasi:*\n👥 Jami foydalanuvchilar: {len(users)} ta\n\n*Ro'yxat:*\n"
+    for idx, (uid, info) in enumerate(users.items(), 1):
+        name = info.get("first_name") or ""
+        if info.get("last_name"):
+            name += f" {info.get('last_name')}"
+        username = f" (@{info.get('username')})" if info.get("username") else ""
+        joined = info.get("joined_at", "Noma'lum")
+        text += f"{idx}. {name}{username} (ID: `{uid}`) - _ulandi: {joined}_\n"
+        
+    await send_long_message(
+        lambda t, **kw: update.message.reply_text(t, **kw),
+        text, parse_mode="Markdown"
     )
 
 # ===== CALLBACK (inline tugmalar) =====
@@ -343,6 +405,7 @@ def main():
     app = Application.builder().token(BOT_TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("user", cmd_users))
     app.add_handler(CallbackQueryHandler(callback_handler))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_menu))
 
