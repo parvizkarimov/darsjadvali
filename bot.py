@@ -331,18 +331,21 @@ async def cmd_users(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("📭 Hali hech qanday foydalanuvchi ulanmadi.")
         return
         
-    text = f"📊 *Bot statistikasi:*\n👥 Jami foydalanuvchilar: {len(users)} ta\n\n*Ro'yxat:*\n"
+    text = f"📊 <b>Bot statistikasi:</b>\n👥 Jami foydalanuvchilar: {len(users)} ta\n\n<b>Ro'yxat:</b>\n"
     for idx, row in enumerate(users, 1):
         uid, fname, lname, uname, joined = row
         name = fname or ""
         if lname:
             name += f" {lname}"
+        
+        name = name.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+        
         username = f" (@{uname})" if uname else ""
-        text += f"{idx}. {name}{username} (ID: `{uid}`) - _ulandi: {joined}_\n"
+        text += f"{idx}. {name}{username} (ID: <code>{uid}</code>) - <i>ulandi: {joined}</i>\n"
         
     await send_long_message(
         lambda t, **kw: update.message.reply_text(t, **kw),
-        text, parse_mode="Markdown"
+        text, parse_mode="HTML"
     )
 
 async def cmd_send(update: Update, context: ContextTypes.DEFAULT_TYPE):
