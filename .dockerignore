@@ -1,0 +1,6 @@
+.git
+__pycache__
+*.pyc
+data/
+bot_database.db
+chat_id.txt
