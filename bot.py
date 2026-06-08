@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import sqlite3
 from datetime import datetime, timedelta
 
 import pytz
@@ -18,7 +19,29 @@ BOT_TOKEN = os.environ.get("BOT_TOKEN", "")
 ADMIN_ID = os.environ.get("ADMIN_ID", "882178675") # Admin telegram ID si
 CHAT_ID = None
 TZ = pytz.timezone("Asia/Tashkent")
-USERS_FILE = "users.json"
+DB_PATH = os.environ.get("DB_PATH", "data/bot_database.db")
+
+# ===== BAZANI ISHGA TUSHIRISH =====
+def init_db():
+    os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS users (
+                user_id TEXT PRIMARY KEY,
+                first_name TEXT,
+                last_name TEXT,
+                username TEXT,
+                joined_at TEXT
+            )
+        ''')
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS settings (
+                key TEXT PRIMARY KEY,
+                value TEXT
+            )
+        ''')
+        conn.commit()
 
 # ===== OFLAYN DARS JADVALI (08.06.2026 - 13.06.2026) =====
 SCHEDULE = [
@@ -86,22 +109,36 @@ def get_lesson_datetime(date_str, hour, minute):
 def save_user(user):
     if not user:
         return
-    try:
-        with open(USERS_FILE, "r", encoding="utf-8") as f:
-            users = json.load(f)
-    except (FileNotFoundError, json.JSONDecodeError):
-        users = {}
-    
     user_id_str = str(user.id)
-    if user_id_str not in users:
-        users[user_id_str] = {
-            "first_name": user.first_name,
-            "last_name": user.last_name,
-            "username": user.username,
-            "joined_at": datetime.now(TZ).strftime("%d.%m.%Y %H:%M:%S")
-        }
-        with open(USERS_FILE, "w", encoding="utf-8") as f:
-            json.dump(users, f, indent=4, ensure_ascii=False)
+    first_name = user.first_name or ""
+    last_name = user.last_name or ""
+    username = user.username or ""
+    joined_at = datetime.now(TZ).strftime("%d.%m.%Y %H:%M:%S")
+    
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT user_id FROM users WHERE user_id = ?", (user_id_str,))
+        if not cursor.fetchone():
+            cursor.execute("""
+                INSERT INTO users (user_id, first_name, last_name, username, joined_at)
+                VALUES (?, ?, ?, ?, ?)
+            """, (user_id_str, first_name, last_name, username, joined_at))
+            conn.commit()
+
+def save_chat_id(chat_id):
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute("REPLACE INTO settings (key, value) VALUES ('CHAT_ID', ?)", (str(chat_id),))
+        conn.commit()
+
+def load_chat_id():
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT value FROM settings WHERE key = 'CHAT_ID'")
+        row = cursor.fetchone()
+        if row:
+            return int(row[0])
+    return None
 
 def get_today_schedule():
     today = datetime.now(TZ).strftime("%d.%m.%Y")
@@ -159,9 +196,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     user = update.effective_user
     save_user(user)
-    
-    with open("chat_id.txt", "w") as f:
-        f.write(str(CHAT_ID))
+    save_chat_id(CHAT_ID)
 
     schedule_reminders(context.application, CHAT_ID)
 
@@ -285,22 +320,24 @@ async def cmd_users(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
         
     try:
-        with open(USERS_FILE, "r", encoding="utf-8") as f:
-            users = json.load(f)
-    except (FileNotFoundError, json.JSONDecodeError):
-        users = {}
+        with sqlite3.connect(DB_PATH) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT user_id, first_name, last_name, username, joined_at FROM users")
+            users = cursor.fetchall()
+    except Exception as e:
+        users = []
         
     if not users:
         await update.message.reply_text("📭 Hali hech qanday foydalanuvchi ulanmadi.")
         return
         
     text = f"📊 *Bot statistikasi:*\n👥 Jami foydalanuvchilar: {len(users)} ta\n\n*Ro'yxat:*\n"
-    for idx, (uid, info) in enumerate(users.items(), 1):
-        name = info.get("first_name") or ""
-        if info.get("last_name"):
-            name += f" {info.get('last_name')}"
-        username = f" (@{info.get('username')})" if info.get("username") else ""
-        joined = info.get("joined_at", "Noma'lum")
+    for idx, row in enumerate(users, 1):
+        uid, fname, lname, uname, joined = row
+        name = fname or ""
+        if lname:
+            name += f" {lname}"
+        username = f" (@{uname})" if uname else ""
         text += f"{idx}. {name}{username} (ID: `{uid}`) - _ulandi: {joined}_\n"
         
     await send_long_message(
@@ -395,12 +432,14 @@ def schedule_reminders(app, chat_id):
 
 def main():
     global CHAT_ID
-    try:
-        with open("chat_id.txt", "r") as f:
-            CHAT_ID = int(f.read().strip())
-            logger.info(f"Chat ID yuklandi: {CHAT_ID}")
-    except FileNotFoundError:
-        logger.info("chat_id.txt topilmadi. /start bosing.")
+    
+    init_db()
+    
+    CHAT_ID = load_chat_id()
+    if CHAT_ID:
+        logger.info(f"Chat ID bazadan yuklandi: {CHAT_ID}")
+    else:
+        logger.info("Chat ID hali o'rnatilmagan. /start bosing.")
 
     app = Application.builder().token(BOT_TOKEN).build()
 
