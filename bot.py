@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 # ===== SOZLAMALAR =====
 BOT_TOKEN = os.environ.get("BOT_TOKEN", "")
-ADMIN_ID = os.environ.get("ADMIN_ID", "") # Admin telegram ID si (Environment variable orqali beriladi)
+ADMIN_ID = os.environ.get("ADMIN_ID", "882178675") # Admin telegram ID si
 CHAT_ID = None
 TZ = pytz.timezone("Asia/Tashkent")
 USERS_FILE = "users.json"
@@ -412,6 +412,18 @@ def main():
     async def post_init(application):
         if CHAT_ID:
             schedule_reminders(application, CHAT_ID)
+            
+        # Adminga deploy xabarini jo'natish
+        try:
+            if ADMIN_ID:
+                await application.bot.send_message(
+                    chat_id=ADMIN_ID, 
+                    text="✅ *Bot muvaffaqiyatli Railway'ga deploy bo'ldi va ishga tushdi!*",
+                    parse_mode="Markdown"
+                )
+                logger.info("Adminga deploy xabari yuborildi.")
+        except Exception as e:
+            logger.error(f"Adminga deploy xabarini yuborishda xatolik: {e}")
 
     app.post_init = post_init
 
