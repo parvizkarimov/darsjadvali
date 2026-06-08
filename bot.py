@@ -345,6 +345,52 @@ async def cmd_users(update: Update, context: ContextTypes.DEFAULT_TYPE):
         text, parse_mode="Markdown"
     )
 
+async def cmd_send(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = str(update.effective_user.id)
+    if not ADMIN_ID or user_id != ADMIN_ID:
+        await update.message.reply_text("⛔ Bu komanda faqat adminlar uchun.")
+        return
+        
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT user_id FROM users")
+            users = cursor.fetchall()
+    except Exception as e:
+        users = []
+        
+    if not users:
+        await update.message.reply_text("📭 Hali hech qanday foydalanuvchi ulanmadi.")
+        return
+        
+    text_to_send = (
+        "👋 *Assalomu alaykum!*\n\n"
+        "🤖 Dars jadvali botimiz eng so'nggi va ishonchli versiyaga yangilandi! "
+        "Bot sizda doimiy, xatosiz ishlashi va dars eslatmalari o'z vaqtida kelishi uchun "
+        "iltimos, quyidagi yozuvning ustiga bir marta bosing:\n\n"
+        "👉 /start 👈\n\n"
+        "✅ Shundan so'ng botdan bemalol foydalanishda davom etishingiz mumkin. "
+        "Tushunganingiz uchun rahmat! 😊"
+    )
+    
+    success = 0
+    failed = 0
+    await update.message.reply_text(f"⏳ Xabar {len(users)} ta foydalanuvchiga yuborish boshlandi...")
+    
+    for (uid,) in users:
+        try:
+            await context.bot.send_message(chat_id=uid, text=text_to_send, parse_mode="Markdown")
+            success += 1
+        except Exception:
+            failed += 1
+            
+    await update.message.reply_text(
+        f"✅ *Xabar yuborish yakunlandi!*\n\n"
+        f"🟢 Muvaffaqiyatli bordi: {success} ta\n"
+        f"🔴 Yuborilmadi (botni o'chirib yuborganlar): {failed} ta", 
+        parse_mode="Markdown"
+    )
+
 # ===== CALLBACK (inline tugmalar) =====
 
 async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -445,6 +491,7 @@ def main():
 
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("user", cmd_users))
+    app.add_handler(CommandHandler("send", cmd_send))
     app.add_handler(CallbackQueryHandler(callback_handler))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_menu))
 
