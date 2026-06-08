@@ -363,12 +363,14 @@ async def cmd_send(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("📭 Hali hech qanday foydalanuvchi ulanmadi.")
         return
         
+    bot_username = context.bot.username
     text_to_send = (
         "👋 *Assalomu alaykum!*\n\n"
         "🤖 Dars jadvali botimiz eng so'nggi va ishonchli versiyaga yangilandi! "
         "Bot sizda doimiy, xatosiz ishlashi va dars eslatmalari o'z vaqtida kelishi uchun "
-        "iltimos, quyidagi yozuvning ustiga bir marta bosing:\n\n"
-        "👉 /start 👈\n\n"
+        "iltimos, quyidagi havolaga (ssilkaga) bosib, botni qayta ishga tushiring:\n\n"
+        f"👉 https://t.me/{bot_username}?start=1 👈\n\n"
+        "_(yoki bot ichida to'g'ridan-to'g'ri /start ustiga bosing)_\n\n"
         "✅ Shundan so'ng botdan bemalol foydalanishda davom etishingiz mumkin. "
         "Tushunganingiz uchun rahmat! 😊"
     )
