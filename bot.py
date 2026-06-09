@@ -306,8 +306,9 @@ async def cmd_yordam(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "📋 *Haftalik jadval* — kelgusi 7 kun\n"
         "📚 *To'liq jadval* — barcha darslar\n\n"
         "🔔 *Eslatmalar tizimi:*\n"
-        "1️⃣ Dars boshlanganda\n"
-        "2️⃣ Dars tugaganda avtomatik xabar keladi.\n\n"
+        "1️⃣ Dars boshlanishiga 15 daqiqa qolganda\n"
+        "2️⃣ Dars boshlanganda\n"
+        "3️⃣ Dars tugaganda avtomatik xabar keladi.\n\n"
         "❓ Bot bo'yicha savollar bo'lsa: @parvizkarimov",
         parse_mode="Markdown",
         reply_markup=main_menu_keyboard()
@@ -434,6 +435,22 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 # ===== ESLATMALAR =====
 
+async def send_pre_reminder(context: ContextTypes.DEFAULT_TYPE):
+    job_data = context.job.data
+    chat_id = job_data["chat_id"]
+    lesson = job_data["lesson"]
+    _, hour, minute, subject, teacher, room = lesson
+
+    text = (
+        f"🔔 *Eslatma!*\n\n"
+        f"⏰ *Dars boshlanishiga 15 daqiqa qoldi*\n\n"
+        f"🕐 {hour:02d}:{minute:02d}\n"
+        f"📚 *{subject}*\n"
+        f"👩‍🏫 {teacher}\n"
+        f"🚪 Xona: *{room}*"
+    )
+    await context.bot.send_message(chat_id=chat_id, text=text, parse_mode="Markdown", disable_web_page_preview=True)
+
 async def send_start_reminder(context: ContextTypes.DEFAULT_TYPE):
     job_data = context.job.data
     chat_id = job_data["chat_id"]
@@ -479,10 +496,18 @@ def schedule_reminders(app, chat_id):
     for lesson in SCHEDULE:
         lesson_dt = get_lesson_datetime(lesson[0], lesson[1], lesson[2])
         
+        pre_dt = lesson_dt - timedelta(minutes=15)
         start_dt = lesson_dt
         end_dt = lesson_dt + timedelta(minutes=50)
 
-        # 1. Dars boshlandi
+        # 1. 15 minut oldin eslatma
+        if pre_dt > now:
+            job_name = f"pre_{lesson[0]}_{lesson[1]}_{lesson[2]}"
+            if not app.job_queue.get_jobs_by_name(job_name):
+                app.job_queue.run_once(send_pre_reminder, when=pre_dt, data={"chat_id": chat_id, "lesson": lesson}, name=job_name)
+                count += 1
+
+        # 2. Dars boshlandi
         if start_dt > now:
             job_name = f"start_{lesson[0]}_{lesson[1]}_{lesson[2]}"
             if not app.job_queue.get_jobs_by_name(job_name):
