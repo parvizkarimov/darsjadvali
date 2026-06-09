@@ -369,17 +369,14 @@ async def cmd_send(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("📭 Hali hech qanday foydalanuvchi ulanmadi.")
         return
         
-    bot_username = context.bot.username
-    text_to_send = (
-        "👋 <b>Assalomu alaykum!</b>\n\n"
-        "🤖 Dars jadvali botimiz eng so'nggi va ishonchli versiyaga yangilandi! "
-        "Bot sizda doimiy, xatosiz ishlashi va dars eslatmalari o'z vaqtida kelishi uchun "
-        "iltimos, quyidagi havolaga (ssilkaga) bosib, botni qayta ishga tushiring:\n\n"
-        f"👉 https://t.me/{bot_username}?start=1 👈\n\n"
-        "<i>(yoki bot ichida to'g'ridan-to'g'ri /start ustiga bosing)</i>\n\n"
-        "✅ Shundan so'ng botdan bemalol foydalanishda davom etishingiz mumkin. "
-        "Tushunganingiz uchun rahmat! 😊"
-    )
+    custom_message = update.message.text.replace("/send", "", 1).strip()
+    
+    if not custom_message:
+        await update.message.reply_text(
+            "Iltimos, yubormoqchi bo'lgan xabaringizni yozing.\n\nMasalan: `/send Ertaga 1-para dars bo'lmaydi`", 
+            parse_mode="Markdown"
+        )
+        return
     
     success = 0
     failed = 0
@@ -387,7 +384,8 @@ async def cmd_send(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     for (uid,) in users:
         try:
-            await context.bot.send_message(chat_id=uid, text=text_to_send, parse_mode="HTML")
+            # parse_mode yozilmaganligi sababli barcha maxsus belgilar xatosiz oddiy matndek ketadi
+            await context.bot.send_message(chat_id=uid, text=custom_message)
             success += 1
         except Exception as e:
             logger.error(f"Xabar yuborishda xatolik (ID: {uid}): {e}")
