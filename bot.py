@@ -439,12 +439,16 @@ async def send_start_reminder(context: ContextTypes.DEFAULT_TYPE):
     chat_id = job_data["chat_id"]
     lesson = job_data["lesson"]
     _, hour, minute, subject, teacher, room = lesson
+    
+    # Tugash vaqtini hisoblaymiz (50 daqiqa davom etadi)
+    end_dt = datetime.strptime(f"{hour:02d}:{minute:02d}", "%H:%M") + timedelta(minutes=50)
 
     text = (
         f"🟢 *Dars boshlandi!*\n\n"
         f"📚 *{subject}*\n"
-        f"👩‍🏫 {teacher}\n"
-        f"🚪 Xona: *{room}*"
+        f"👩‍🏫 O'qituvchi: {teacher}\n"
+        f"🚪 Xona: *{room}*\n"
+        f"🕐 Vaqt: {hour:02d}:{minute:02d} dan {end_dt.strftime('%H:%M')} gacha"
     )
     await context.bot.send_message(chat_id=chat_id, text=text, parse_mode="Markdown", disable_web_page_preview=True)
 
