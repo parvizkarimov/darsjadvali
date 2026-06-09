@@ -371,12 +371,12 @@ async def cmd_send(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
     bot_username = context.bot.username
     text_to_send = (
-        "👋 *Assalomu alaykum!*\n\n"
+        "👋 <b>Assalomu alaykum!</b>\n\n"
         "🤖 Dars jadvali botimiz eng so'nggi va ishonchli versiyaga yangilandi! "
         "Bot sizda doimiy, xatosiz ishlashi va dars eslatmalari o'z vaqtida kelishi uchun "
         "iltimos, quyidagi havolaga (ssilkaga) bosib, botni qayta ishga tushiring:\n\n"
         f"👉 https://t.me/{bot_username}?start=1 👈\n\n"
-        "_(yoki bot ichida to'g'ridan-to'g'ri /start ustiga bosing)_\n\n"
+        "<i>(yoki bot ichida to'g'ridan-to'g'ri /start ustiga bosing)</i>\n\n"
         "✅ Shundan so'ng botdan bemalol foydalanishda davom etishingiz mumkin. "
         "Tushunganingiz uchun rahmat! 😊"
     )
@@ -387,16 +387,17 @@ async def cmd_send(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     for (uid,) in users:
         try:
-            await context.bot.send_message(chat_id=uid, text=text_to_send, parse_mode="Markdown")
+            await context.bot.send_message(chat_id=uid, text=text_to_send, parse_mode="HTML")
             success += 1
-        except Exception:
+        except Exception as e:
+            logger.error(f"Xabar yuborishda xatolik (ID: {uid}): {e}")
             failed += 1
             
     await update.message.reply_text(
-        f"✅ *Xabar yuborish yakunlandi!*\n\n"
+        f"✅ <b>Xabar yuborish yakunlandi!</b>\n\n"
         f"🟢 Muvaffaqiyatli bordi: {success} ta\n"
         f"🔴 Yuborilmadi (botni o'chirib yuborganlar): {failed} ta", 
-        parse_mode="Markdown"
+        parse_mode="HTML"
     )
 
 # ===== CALLBACK (inline tugmalar) =====
