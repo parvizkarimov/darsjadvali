@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 import pytz
 from telegram import Bot, Update, InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup, KeyboardButton
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, MessageHandler, filters, ContextTypes
+import google.generativeai as genai
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -20,6 +21,10 @@ ADMIN_ID = os.environ.get("ADMIN_ID", "882178675") # Admin telegram ID si
 CHAT_ID = None
 TZ = pytz.timezone("Asia/Tashkent")
 DB_PATH = os.environ.get("DB_PATH", "data/bot_database.db")
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
+
+if GEMINI_API_KEY:
+    genai.configure(api_key=GEMINI_API_KEY)
 
 # ===== BAZANI ISHGA TUSHIRISH =====
 def init_db():
@@ -227,6 +232,38 @@ async def handle_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await cmd_jadval(update, context)
     elif text == "ℹ️ Yordam":
         await cmd_yordam(update, context)
+    else:
+        await handle_ai_chat(update, context)
+
+async def handle_ai_chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    text = update.message.text
+    if not GEMINI_API_KEY:
+        await update.message.reply_text("Kechirasiz, sun'iy intellekt hozircha ulanmagan.", reply_markup=main_menu_keyboard())
+        return
+
+    await context.bot.send_chat_action(chat_id=update.effective_chat.id, action='typing')
+    
+    system_prompt = (
+        "Siz 3-kurs Finance (FINP-S-1323U) talabalari uchun yaratilgan aqlli dars jadvali va yordamchi botsiz. "
+        "Talabalar savollariga do'stona, qisqa va aniq o'zbek tilida javob berasiz. "
+        "Talabalar sizdan jadvaldan tashqari darslarga oid yoki umumiy savollar ham so'rashi mumkin."
+    )
+    
+    try:
+        model = genai.GenerativeModel(
+            model_name="gemini-1.5-flash",
+            system_instruction=system_prompt
+        )
+        response = await model.generate_content_async(text)
+        await send_long_message(
+            lambda t, **kw: update.message.reply_text(t, **kw),
+            response.text, parse_mode="Markdown"
+        )
+    except Exception as e:
+        logger.error(f"Gemini API xatoligi: {e}")
+        await update.message.reply_text(
+            "Kechirasiz, so'rovingizni qayta ishlashda xatolik yuz berdi. Iltimos keyinroq urinib ko'ring."
+        )
 
 async def cmd_hozirgi(update: Update, context: ContextTypes.DEFAULT_TYPE):
     now = datetime.now(TZ)
