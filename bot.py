@@ -257,13 +257,16 @@ async def handle_ai_chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
         response = await model.generate_content_async(text)
         await send_long_message(
             lambda t, **kw: update.message.reply_text(t, **kw),
-            response.text, parse_mode="Markdown"
+            response.text
         )
     except Exception as e:
         logger.error(f"Gemini API xatoligi: {e}")
-        await update.message.reply_text(
-            "Kechirasiz, so'rovingizni qayta ishlashda xatolik yuz berdi. Iltimos keyinroq urinib ko'ring."
-        )
+        error_msg = str(e)
+        if "API_KEY" in error_msg.upper() or "UNAUTHORIZED" in error_msg.upper():
+            err_text = "API kalit noto'g'ri yoki yaroqsiz bo'lishi mumkin. Iltimos tekshiring."
+        else:
+            err_text = f"Xatolik yuz berdi: {error_msg}"
+        await update.message.reply_text(err_text)
 
 async def cmd_hozirgi(update: Update, context: ContextTypes.DEFAULT_TYPE):
     now = datetime.now(TZ)
