@@ -32,6 +32,9 @@ groq_client = Groq(api_key=GROQ_API_KEY) if GROQ_API_KEY else None
 # Rate limiter: {user_id: [timestamp1, timestamp2, ...]}
 user_rate_limits = {}
 
+# Suhbat xotirasi: {user_id: [{"role": "user", "content": "..."}, {"role": "assistant", "content": "..."}]}
+chat_history = {}
+
 # ===== BAZANI ISHGA TUSHIRISH =====
 def init_db():
     os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
@@ -339,16 +342,27 @@ async def handle_ai_chat(update: Update, context: ContextTypes.DEFAULT_TYPE, log
         "QOIDALAR: Javobda yulduzcha (*, **), tire (-), raqamlangan ro'yxat ishlatma. Faqat oddiy matn yoz."
     )
     try:
+        # Suhbat tarixini olish
+        if user_id not in chat_history:
+            chat_history[user_id] = []
+        
+        messages = [{"role": "system", "content": system_prompt}]
+        # Oxirgi 50 ta xabarni kontekstga qo'shish (token tejash uchun)
+        messages.extend(chat_history[user_id][-50:])
+        messages.append({"role": "user", "content": text})
+        
         response = groq_client.chat.completions.create(
             model="llama-3.3-70b-versatile",
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": text}
-            ],
+            messages=messages,
             temperature=0.7,
             max_tokens=1024
         )
         ai_text = response.choices[0].message.content
+        
+        # Xotirada saqlash
+        chat_history[user_id].append({"role": "user", "content": text})
+        chat_history[user_id].append({"role": "assistant", "content": ai_text})
+        
         update_log_ai(log_id, ai_text)
         await send_long_message(
             lambda t, **kw: update.message.reply_text(t, **kw),
