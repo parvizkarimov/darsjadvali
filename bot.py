@@ -57,17 +57,30 @@ def init_db():
                 username TEXT,
                 action_type TEXT,
                 content TEXT,
+                ai_response TEXT,
                 timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
             )
         ''')
+        try:
+            cursor.execute("ALTER TABLE logs ADD COLUMN ai_response TEXT")
+        except:
+            pass
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS broadcasts (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 message TEXT,
                 status TEXT DEFAULT 'pending',
+                success_count INTEGER DEFAULT 0,
+                failed_count INTEGER DEFAULT 0,
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP
             )
         ''')
+        try:
+            cursor.execute("ALTER TABLE broadcasts ADD COLUMN success_count INTEGER DEFAULT 0")
+            cursor.execute("ALTER TABLE broadcasts ADD COLUMN failed_count INTEGER DEFAULT 0")
+        except:
+            pass
+            
         conn.commit()
 
 # ===== OFLAYN DARS JADVALI (08.06.2026 - 13.06.2026) =====
@@ -157,13 +170,26 @@ def log_action(user, action_type, content):
         username = user.first_name or "UNKNOWN"
         if user.last_name:
             username += f" {user.last_name}"
+        timestamp = datetime.now(TZ).strftime("%d.%m.%Y %H:%M:%S")
         with sqlite3.connect(DB_PATH) as conn:
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO logs (user_id, username, action_type, content) VALUES (?, ?, ?, ?)",
-                           (user_id, username, action_type, content))
+            cursor.execute("INSERT INTO logs (user_id, username, action_type, content, timestamp) VALUES (?, ?, ?, ?, ?)",
+                           (user_id, username, action_type, content, timestamp))
             conn.commit()
+            return cursor.lastrowid
     except Exception as e:
         logger.error(f"Failed to log action: {e}")
+        return None
+
+def update_log_ai(log_id, ai_response):
+    if not log_id: return
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            cursor = conn.cursor()
+            cursor.execute("UPDATE logs SET ai_response = ? WHERE id = ?", (ai_response, log_id))
+            conn.commit()
+    except Exception as e:
+        logger.error(f"Failed to update log AI: {e}")
 
 def save_chat_id(chat_id):
     with sqlite3.connect(DB_PATH) as conn:
@@ -257,7 +283,7 @@ async def handle_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     menu_buttons = ["🟢 Hozirgi dars", "📅 Bugungi darslar", "⏩ Ertangi darslar", "⏰ Keyingi dars", "📋 Haftalik jadval", "📚 To'liq jadval", "ℹ️ Yordam"]
     action_type = "TUGMA" if text in menu_buttons else "MATN"
-    log_action(user, action_type, text)
+    log_id = log_action(user, action_type, text)
 
     if text == "🟢 Hozirgi dars":
         await cmd_hozirgi(update, context)
@@ -274,9 +300,9 @@ async def handle_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif text == "ℹ️ Yordam":
         await cmd_yordam(update, context)
     else:
-        await handle_ai_chat(update, context)
+        await handle_ai_chat(update, context, log_id)
 
-async def handle_ai_chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def handle_ai_chat(update: Update, context: ContextTypes.DEFAULT_TYPE, log_id: int = None):
     text = update.message.text
     if not GEMINI_API_KEY:
         await update.message.reply_text("Kechirasiz, sun'iy intellekt hozircha ulanmagan.", reply_markup=main_menu_keyboard())
@@ -302,6 +328,7 @@ async def handle_ai_chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
             system_instruction=system_prompt
         )
         response = await model.generate_content_async(text)
+        update_log_ai(log_id, response.text)
         await send_long_message(
             lambda t, **kw: update.message.reply_text(t, **kw),
             response.text
@@ -720,6 +747,14 @@ HTML_TEMPLATE = """
         textarea { width: 100%; height: 150px; padding: 1rem; border-radius: 8px; border: 1px solid var(--border); background: rgba(0,0,0,0.2); color: white; margin-bottom: 1rem; font-size: 1.1rem; outline: none; transition: border-color 0.3s; font-family: inherit; resize: vertical; }
         textarea:focus { border-color: var(--primary); }
         
+        .tabs { display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; flex-wrap: wrap; justify-content: center; }
+        .tab { color: var(--text-muted); text-decoration: none; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 600; transition: all 0.3s; }
+        .tab:hover { background: rgba(255,255,255,0.05); color: white; }
+        .tab.active { background: var(--primary); color: white; }
+        .badge-success { background: rgba(16, 185, 129, 0.2); color: #10b981; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+        .badge-danger { background: rgba(239, 68, 68, 0.2); color: #ef4444; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+        .badge-pending { background: rgba(245, 158, 11, 0.2); color: #f59e0b; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+        
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .animate { animation: fadeIn 0.5s ease-out forwards; }
     </style>
@@ -739,82 +774,134 @@ HTML_TEMPLATE = """
                 </form>
             </div>
         {% else %}
-            {% if msg_success %}
-            <div class="success-alert">✅ Xabar barcha foydalanuvchilarga jo'natilish uchun navbatga qo'yildi! U bir necha soniya ichida yetkazib beriladi.</div>
-            {% endif %}
-            
-            <div class="glass" style="padding: 2rem; margin-bottom: 3rem;">
-                <h2 style="margin-bottom: 1rem; font-weight: 600;">📣 Barchaga xabar yuborish</h2>
-                <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 0.9rem;">Matnni istalgancha yozishingiz mumkin. Qator tashlasangiz xuddi shunday boradi. Qalin qilish uchun <code>*matn*</code>, og'ish uchun <code>_matn_</code> dan foydalaning.</p>
-                <form method="POST" action="/broadcast">
-                    <textarea name="message" placeholder="Xabaringizni shu yerga yozing..." required></textarea>
-                    <button type="submit" style="background: #10b981;">🚀 Hammaga Jo'natish</button>
-                </form>
-            </div>
-
             <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; align-items: center;">
-                <span style="color: var(--text-muted);">Jami yozuvlar: <b style="color: white;">{{ logs|length }}</b> ta (So'nggi 500 ta)</span>
                 <form method="POST" action="/logout"><button type="submit" style="width: auto; padding: 0.5rem 1rem; background: rgba(255,255,255,0.1);">Chiqish</button></form>
             </div>
-            <div class="glass table-wrapper">
-                {% if logs %}
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Foydalanuvchi</th>
-                            <th>Harakat</th>
-                            <th>Xabar / Tugma</th>
-                            <th>Vaqti</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for log in logs %}
-                        <tr>
-                            <td style="color: var(--text-muted);">{{ log[1] }}</td>
-                            <td style="font-weight: 600;">{{ log[2] }}</td>
-                            <td class="{% if log[3] == 'MATN' %}action-matn{% else %}action-tugma{% endif %}">{{ log[3] }}</td>
-                            <td>{{ log[4] }}</td>
-                            <td style="color: var(--text-muted); font-size: 0.9rem;">{{ log[5] }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                {% else %}
-                <div class="empty">Hozircha ma'lumot yo'q</div>
-                {% endif %}
-            </div>
             
-            <h2 style="margin-top: 3rem; margin-bottom: 1.5rem; font-weight: 600; text-align: center;">👥 Bot Foydalanuvchilari (Jami: <b style="color: white;">{{ users|length }}</b> ta)</h2>
-            <div class="glass table-wrapper" style="margin-bottom: 5rem;">
-                {% if users %}
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Ism</th>
-                            <th>Familiya</th>
-                            <th>Username</th>
-                            <th>Qo'shilgan vaqti</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for u in users %}
-                        <tr>
-                            <td style="color: var(--text-muted);">{{ u[0] }}</td>
-                            <td style="font-weight: 600;">{{ u[1] }}</td>
-                            <td>{{ u[2] or '-' }}</td>
-                            <td style="color: #3b82f6;">{% if u[3] %}@{{ u[3] }}{% else %}-{% endif %}</td>
-                            <td style="color: var(--text-muted); font-size: 0.9rem;">{{ u[4] }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                {% else %}
-                <div class="empty">Hozircha foydalanuvchilar yo'q</div>
-                {% endif %}
+            <div class="tabs">
+                <a href="?tab=broadcast" class="tab {% if tab == 'broadcast' %}active{% endif %}">📣 Xabarnoma</a>
+                <a href="?tab=users" class="tab {% if tab == 'users' %}active{% endif %}">👥 Foydalanuvchilar</a>
+                <a href="?tab=logs" class="tab {% if tab == 'logs' %}active{% endif %}">📊 Harakatlar Tarixi</a>
             </div>
-        {% endif %}
+
+            {% if tab == 'broadcast' %}
+                {% if msg_success %}
+                <div class="success-alert">✅ Xabar barcha foydalanuvchilarga jo'natilish uchun navbatga qo'yildi! U bir necha soniya ichida yetkazib beriladi.</div>
+                {% endif %}
+                
+                <div class="glass" style="padding: 2rem; margin-bottom: 3rem;">
+                    <h2 style="margin-bottom: 1rem; font-weight: 600;">📣 Barchaga xabar yuborish</h2>
+                    <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 0.9rem;">Matnni istalgancha yozishingiz mumkin. Qator tashlasangiz xuddi shunday boradi. Qalin qilish uchun <code>*matn*</code>, og'ish uchun <code>_matn_</code> dan foydalaning.</p>
+                    <form method="POST" action="/broadcast">
+                        <textarea name="message" placeholder="Xabaringizni shu yerga yozing..." required></textarea>
+                        <button type="submit" style="background: #10b981;">🚀 Hammaga Jo'natish</button>
+                    </form>
+                </div>
+                
+                <h2 style="margin-bottom: 1.5rem; font-weight: 600; text-align: center;">Oldingi xabarlar statistikasi</h2>
+                <div class="glass table-wrapper" style="margin-bottom: 5rem;">
+                    {% if broadcasts %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Xabar Matni</th>
+                                <th>Holati</th>
+                                <th>Yetib bordi</th>
+                                <th>Bloklaganlar</th>
+                                <th>Vaqti</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for b in broadcasts %}
+                            <tr>
+                                <td style="color: var(--text-muted);">{{ b[0] }}</td>
+                                <td style="max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ b[1] }}</td>
+                                <td>
+                                    {% if b[2] == 'completed' %}<span class="badge-success">Yakunlangan</span>
+                                    {% else %}<span class="badge-pending">Kutilmoqda...</span>{% endif %}
+                                </td>
+                                <td><span class="badge-success">🟢 {{ b[3] }} ta</span></td>
+                                <td><span class="badge-danger">🔴 {{ b[4] }} ta</span></td>
+                                <td style="color: var(--text-muted); font-size: 0.9rem;">{{ b[5] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <div class="empty">Hozircha xabar yuborilmagan</div>
+                    {% endif %}
+                </div>
+
+            {% elif tab == 'users' %}
+                <h2 style="margin-bottom: 1.5rem; font-weight: 600; text-align: center;">👥 Bot Foydalanuvchilari (Jami: <b style="color: white;">{{ users|length }}</b> ta)</h2>
+                <div class="glass table-wrapper" style="margin-bottom: 5rem;">
+                    {% if users %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Ism</th>
+                                <th>Familiya</th>
+                                <th>Username</th>
+                                <th>Qo'shilgan vaqti</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for u in users %}
+                            <tr>
+                                <td style="color: var(--text-muted);">{{ u[0] }}</td>
+                                <td style="font-weight: 600;">{{ u[1] }}</td>
+                                <td>{{ u[2] or '-' }}</td>
+                                <td style="color: #3b82f6;">{% if u[3] %}@{{ u[3] }}{% else %}-{% endif %}</td>
+                                <td style="color: var(--text-muted); font-size: 0.9rem;">{{ u[4] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <div class="empty">Hozircha foydalanuvchilar yo'q</div>
+                    {% endif %}
+                </div>
+
+            {% elif tab == 'logs' %}
+                <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; align-items: center;">
+                    <span style="color: var(--text-muted);">Jami yozuvlar: <b style="color: white;">{{ logs|length }}</b> ta (So'nggi 500 ta)</span>
+                </div>
+                <div class="glass table-wrapper">
+                    {% if logs %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Foydalanuvchi</th>
+                                <th>Harakat</th>
+                                <th>Xabar / Tugma</th>
+                                <th>Vaqti</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for log in logs %}
+                            <tr>
+                                <td style="color: var(--text-muted);">{{ log[1] }}</td>
+                                <td style="font-weight: 600;">{{ log[2] }}</td>
+                                <td class="{% if log[3] == 'MATN' %}action-matn{% else %}action-tugma{% endif %}">{{ log[3] }}</td>
+                                <td style="max-width: 400px; line-height: 1.5;">
+                                    <div style="font-weight:600; margin-bottom:0.5rem; word-wrap: break-word;">{{ log[4] }}</div>
+                                    {% if log[6] %}
+                                    <div style="color: #10b981; font-size: 0.9rem; border-left: 2px solid #10b981; padding-left: 0.5rem; word-wrap: break-word;"><b>AI:</b> {{ log[6][:150] }}{% if log[6]|length > 150 %}...{% endif %}</div>
+                                    {% endif %}
+                                </td>
+                                <td style="color: var(--text-muted); font-size: 0.9rem;">{{ log[5] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <div class="empty">Hozircha ma'lumot yo'q</div>
+                    {% endif %}
+                </div>
+            {% endif %}
     </div>
 </body>
 </html>
@@ -835,21 +922,27 @@ def dashboard():
     if not session.get('logged_in'):
         return render_template_string(HTML_TEMPLATE, require_login=True, error=error)
         
+    tab = request.args.get('tab', 'broadcast')
     logs = []
     users = []
+    broadcasts = []
     try:
         with sqlite3.connect(DB_PATH) as conn:
             cursor = conn.cursor()
-            cursor.execute("SELECT id, user_id, username, action_type, content, timestamp FROM logs ORDER BY id DESC LIMIT 500")
-            logs = cursor.fetchall()
-            
-            cursor.execute("SELECT user_id, first_name, last_name, username, joined_at FROM users ORDER BY joined_at DESC")
-            users = cursor.fetchall()
+            if tab == 'logs':
+                cursor.execute("SELECT id, user_id, username, action_type, content, timestamp, ai_response FROM logs ORDER BY id DESC LIMIT 500")
+                logs = cursor.fetchall()
+            elif tab == 'users':
+                cursor.execute("SELECT user_id, first_name, last_name, username, joined_at FROM users ORDER BY joined_at DESC")
+                users = cursor.fetchall()
+            elif tab == 'broadcast':
+                cursor.execute("SELECT id, message, status, success_count, failed_count, created_at FROM broadcasts ORDER BY id DESC LIMIT 50")
+                broadcasts = cursor.fetchall()
     except Exception as e:
         logger.error(f"Web DB error: {e}")
         
     msg_success = session.pop('msg_success', False)
-    return render_template_string(HTML_TEMPLATE, require_login=False, logs=logs, users=users, msg_success=msg_success)
+    return render_template_string(HTML_TEMPLATE, require_login=False, tab=tab, logs=logs, users=users, broadcasts=broadcasts, msg_success=msg_success)
 
 @app_web.route('/broadcast', methods=['POST'])
 def broadcast():
@@ -860,7 +953,8 @@ def broadcast():
         try:
             with sqlite3.connect(DB_PATH) as conn:
                 cursor = conn.cursor()
-                cursor.execute("INSERT INTO broadcasts (message) VALUES (?)", (message,))
+                created_at = datetime.now(TZ).strftime("%d.%m.%Y %H:%M:%S")
+                cursor.execute("INSERT INTO broadcasts (message, created_at) VALUES (?, ?)", (message, created_at))
                 conn.commit()
         except Exception as e:
             logger.error(f"Broadcast DB error: {e}")
@@ -889,14 +983,16 @@ async def check_broadcasts(context: ContextTypes.DEFAULT_TYPE):
                 
                 for b_id, message in pending:
                     success_count = 0
+                    failed_count = 0
                     for (u_id,) in users:
                         try:
                             await context.bot.send_message(chat_id=u_id, text=message, parse_mode="Markdown")
                             success_count += 1
                         except Exception as e:
+                            failed_count += 1
                             logger.error(f"Broadcast yuborishda xatolik (ID: {u_id}): {e}")
                             
-                    cursor.execute("UPDATE broadcasts SET status = 'completed' WHERE id = ?", (b_id,))
+                    cursor.execute("UPDATE broadcasts SET status = 'completed', success_count = ?, failed_count = ? WHERE id = ?", (success_count, failed_count, b_id))
                     conn.commit()
                     logger.info(f"Broadcast #{b_id} {success_count} kishiga yuborildi.")
     except Exception as e:
