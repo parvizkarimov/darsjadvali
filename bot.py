@@ -2,6 +2,8 @@ import json
 import logging
 import os
 import sqlite3
+import csv
+import io
 from datetime import datetime, timedelta
 
 import pytz
@@ -44,6 +46,16 @@ def init_db():
             CREATE TABLE IF NOT EXISTS settings (
                 key TEXT PRIMARY KEY,
                 value TEXT
+            )
+        ''')
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS logs (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id TEXT,
+                username TEXT,
+                action_type TEXT,
+                content TEXT,
+                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
             )
         ''')
         conn.commit()
@@ -115,21 +127,33 @@ def get_lesson_datetime(date_str, hour, minute):
 def save_user(user):
     if not user:
         return
-    user_id_str = str(user.id)
-    first_name = user.first_name or ""
-    last_name = user.last_name or ""
-    username = user.username or ""
-    joined_at = datetime.now(TZ).strftime("%d.%m.%Y %H:%M:%S")
-    
-    with sqlite3.connect(DB_PATH) as conn:
-        cursor = conn.cursor()
-        cursor.execute("SELECT user_id FROM users WHERE user_id = ?", (user_id_str,))
-        if not cursor.fetchone():
-            cursor.execute("""
-                INSERT INTO users (user_id, first_name, last_name, username, joined_at)
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            cursor = conn.cursor()
+            joined_at = datetime.now(TZ).strftime("%d.%m.%Y %H:%M:%S")
+            cursor.execute('''
+                INSERT OR IGNORE INTO users (user_id, first_name, last_name, username, joined_at)
                 VALUES (?, ?, ?, ?, ?)
-            """, (user_id_str, first_name, last_name, username, joined_at))
+            ''', (str(user.id), user.first_name, user.last_name, user.username, joined_at))
             conn.commit()
+    except Exception as e:
+        logger.error(f"Failed to save user: {e}")
+
+def log_action(user, action_type, content):
+    if not user:
+        return
+    try:
+        user_id = str(user.id)
+        username = user.first_name or "UNKNOWN"
+        if user.last_name:
+            username += f" {user.last_name}"
+        with sqlite3.connect(DB_PATH) as conn:
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO logs (user_id, username, action_type, content) VALUES (?, ?, ?, ?)",
+                           (user_id, username, action_type, content))
+            conn.commit()
+    except Exception as e:
+        logger.error(f"Failed to log action: {e}")
 
 def save_chat_id(chat_id):
     with sqlite3.connect(DB_PATH) as conn:
@@ -220,6 +244,10 @@ async def handle_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     save_user(user)
     
     text = update.message.text
+    
+    menu_buttons = ["🟢 Hozirgi dars", "📅 Bugungi darslar", "⏩ Ertangi darslar", "⏰ Keyingi dars", "📋 Haftalik jadval", "📚 To'liq jadval", "ℹ️ Yordam"]
+    action_type = "TUGMA" if text in menu_buttons else "MATN"
+    log_action(user, action_type, text)
 
     if text == "🟢 Hozirgi dars":
         await cmd_hozirgi(update, context)
@@ -630,6 +658,40 @@ def schedule_reminders(app, chat_id):
     logger.info(f"Jami {count} ta eslatma hodisalari rejalashtirildi")
     return count
 
+async def cmd_logs(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = str(update.effective_user.id)
+    if user_id != ADMIN_ID:
+        await update.message.reply_text("⛔ Bu komanda faqat admin uchun.")
+        return
+        
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT user_id, username, action_type, content, timestamp FROM logs ORDER BY id DESC LIMIT 5000")
+            rows = cursor.fetchall()
+            
+        if not rows:
+            await update.message.reply_text("📭 Hozircha hech qanday tarix yo'q.")
+            return
+            
+        output = io.StringIO()
+        writer = csv.writer(output)
+        writer.writerow(['Foydalanuvchi ID', 'Ismi', 'Harakat Turi', 'Xabar / Tugma', 'Vaqti'])
+        for row in rows:
+            writer.writerow(row)
+            
+        output.seek(0)
+        
+        bio = io.BytesIO(output.getvalue().encode('utf-8-sig'))
+        bio.name = f"bot_logs_{datetime.now(TZ).strftime('%d_%m_%Y')}.csv"
+        
+        caption = f"📊 Barcha foydalanuvchilarning xabarlari va tugmalari tarixi\nJami: {len(rows)} ta qator"
+        await update.message.reply_document(document=bio, caption=caption)
+        
+    except Exception as e:
+        logger.error(f"Logs error: {e}")
+        await update.message.reply_text(f"Xatolik: {e}")
+
 # ===== MAIN =====
 
 def main():
@@ -648,6 +710,7 @@ def main():
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("user", cmd_users))
     app.add_handler(CommandHandler("send", cmd_send))
+    app.add_handler(CommandHandler("logs", cmd_logs))
     app.add_handler(CallbackQueryHandler(callback_handler))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_menu))
 
