@@ -902,6 +902,7 @@ HTML_TEMPLATE = """
                     {% endif %}
                 </div>
             {% endif %}
+        {% endif %}
     </div>
 </body>
 </html>
