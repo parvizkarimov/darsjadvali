@@ -96,8 +96,9 @@ def main_menu_keyboard():
     """Asosiy pastki menyu (ReplyKeyboard)"""
     keyboard = [
         [KeyboardButton("🟢 Hozirgi dars"), KeyboardButton("📅 Bugungi darslar")],
-        [KeyboardButton("⏰ Keyingi dars"), KeyboardButton("📋 Haftalik jadval")],
-        [KeyboardButton("📚 To'liq jadval"), KeyboardButton("ℹ️ Yordam")],
+        [KeyboardButton("⏩ Ertangi darslar"), KeyboardButton("⏰ Keyingi dars")],
+        [KeyboardButton("📋 Haftalik jadval"), KeyboardButton("📚 To'liq jadval")],
+        [KeyboardButton("ℹ️ Yordam")],
     ]
     return ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
 
@@ -224,6 +225,8 @@ async def handle_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await cmd_hozirgi(update, context)
     elif text == "📅 Bugungi darslar":
         await cmd_bugun(update, context)
+    elif text == "⏩ Ertangi darslar":
+        await cmd_ertaga(update, context)
     elif text == "⏰ Keyingi dars":
         await cmd_keyingi(update, context)
     elif text == "📋 Haftalik jadval":
@@ -243,12 +246,18 @@ async def handle_ai_chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await context.bot.send_chat_action(chat_id=update.effective_chat.id, action='typing')
     
+    now_str = datetime.now(TZ).strftime("%d.%m.%Y %H:%M")
+    schedule_text = format_schedule_by_date(SCHEDULE)
+    
     system_prompt = (
         "Siz 3-kurs Finance (FINP-S-1323U) talabalari uchun yaratilgan aqlli dars jadvali va yordamchi botsiz. "
         "Talabalar savollariga do'stona, qisqa va aniq o'zbek tilida javob berasiz. "
-        "Talabalar sizdan jadvaldan tashqari darslarga oid yoki umumiy savollar ham so'rashi mumkin."
+        f"Hozirgi vaqt: {now_str}. "
+        "Guruhning to'liq dars jadvali quyidagicha:\n"
+        f"{schedule_text}\n"
+        "AGAR talaba jadval haqida so'rasa, FAQAT yuqoridagi jadvaldan qarab to'g'ri javob bering, umuman to'qib chiqarmang! "
+        "MUHIM: Javobingizni oddiy matnda yozing. Matnda hech qanday yulduzchalar (** yoki *) va qalin qilib yozish kabi formatlardan foydalanmang."
     )
-    
     try:
         model = genai.GenerativeModel(
             model_name="gemini-2.5-flash",
@@ -267,6 +276,24 @@ async def handle_ai_chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
         else:
             err_text = f"Xatolik yuz berdi: {error_msg}"
         await update.message.reply_text(err_text)
+
+async def cmd_ertaga(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    now = datetime.now(TZ)
+    tomorrow = now + timedelta(days=1)
+    tomorrow_str = tomorrow.strftime("%d.%m.%Y")
+    
+    lessons = [l for l in SCHEDULE if l[0] == tomorrow_str]
+    
+    if not lessons:
+        await update.message.reply_text(f"📭 *{tomorrow_str}* kuni dars yo'q.", parse_mode="Markdown", reply_markup=main_menu_keyboard())
+        return
+        
+    text = f"📋 *Ertangi darslar ({tomorrow_str}):*\n" + format_schedule_by_date(lessons)
+    await send_long_message(
+        lambda t, **kw: update.message.reply_text(t, **kw),
+        text, parse_mode="Markdown", disable_web_page_preview=True,
+        reply_markup=main_menu_keyboard()
+    )
 
 async def cmd_hozirgi(update: Update, context: ContextTypes.DEFAULT_TYPE):
     now = datetime.now(TZ)
