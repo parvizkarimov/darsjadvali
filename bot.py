@@ -4,7 +4,9 @@ import os
 import sqlite3
 import csv
 import io
+import threading
 from datetime import datetime, timedelta
+from flask import Flask, request, session, redirect, url_for, render_template_string
 
 import pytz
 from telegram import Bot, Update, InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup, KeyboardButton
@@ -692,12 +694,154 @@ async def cmd_logs(update: Update, context: ContextTypes.DEFAULT_TYPE):
         logger.error(f"Logs error: {e}")
         await update.message.reply_text(f"Xatolik: {e}")
 
+# ===== WEB DASHBOARD (FLASK) =====
+
+app_web = Flask(__name__)
+app_web.secret_key = os.environ.get("BOT_TOKEN", "super_secret_key_123")
+
+HTML_TEMPLATE = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dars Jadvali Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f172a;
+            --surface: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 2rem; }
+        .glass { background: var(--surface); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); }
+        .container { max-width: 1000px; width: 100%; margin-top: 2rem; }
+        h1 { font-weight: 800; font-size: 2.5rem; margin-bottom: 0.5rem; text-align: center; background: -webkit-linear-gradient(45deg, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        p.subtitle { text-align: center; color: var(--text-muted); margin-bottom: 2rem; }
+        
+        .login-card { max-width: 400px; margin: 5rem auto; padding: 3rem 2rem; text-align: center; }
+        input[type="password"] { width: 100%; padding: 1rem; border-radius: 8px; border: 1px solid var(--border); background: rgba(0,0,0,0.2); color: white; margin-bottom: 1rem; font-size: 1.1rem; text-align: center; outline: none; transition: border-color 0.3s; }
+        input[type="password"]:focus { border-color: var(--primary); }
+        button { width: 100%; padding: 1rem; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 600; font-size: 1.1rem; cursor: pointer; transition: background 0.3s, transform 0.1s; }
+        button:hover { background: var(--primary-hover); transform: translateY(-2px); }
+        button:active { transform: translateY(0); }
+        .error { color: #ef4444; margin-bottom: 1rem; font-size: 0.9rem; }
+        
+        .table-wrapper { width: 100%; overflow-x: auto; padding: 1rem; border-radius: 16px; }
+        table { width: 100%; border-collapse: collapse; min-width: 800px; }
+        th, td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { font-weight: 600; color: var(--text-muted); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.05em; }
+        tr:hover { background: rgba(255, 255, 255, 0.02); }
+        td.action-matn { color: #a78bfa; font-weight: 600; }
+        td.action-tugma { color: #34d399; font-weight: 600; }
+        .empty { text-align: center; padding: 3rem; color: var(--text-muted); }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate { animation: fadeIn 0.5s ease-out forwards; }
+    </style>
+</head>
+<body>
+    <div class="container animate">
+        <h1>Bot Dashboard</h1>
+        <p class="subtitle">Foydalanuvchilar harakatlari tarixi</p>
+        
+        {% if require_login %}
+            <div class="glass login-card">
+                <h2 style="margin-bottom: 1.5rem; font-weight: 600;">Tizimga kiring</h2>
+                {% if error %}<div class="error">{{ error }}</div>{% endif %}
+                <form method="POST">
+                    <input type="password" name="pin" placeholder="PIN kodni kiriting" required autofocus>
+                    <button type="submit">Kirish</button>
+                </form>
+            </div>
+        {% else %}
+            <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; align-items: center;">
+                <span style="color: var(--text-muted);">Jami yozuvlar: <b style="color: white;">{{ logs|length }}</b> ta (So'nggi 500 ta)</span>
+                <form method="POST" action="/logout"><button type="submit" style="width: auto; padding: 0.5rem 1rem; background: rgba(255,255,255,0.1);">Chiqish</button></form>
+            </div>
+            <div class="glass table-wrapper">
+                {% if logs %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Foydalanuvchi</th>
+                            <th>Harakat</th>
+                            <th>Xabar / Tugma</th>
+                            <th>Vaqti</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in logs %}
+                        <tr>
+                            <td style="color: var(--text-muted);">{{ log[1] }}</td>
+                            <td style="font-weight: 600;">{{ log[2] }}</td>
+                            <td class="{% if log[3] == 'MATN' %}action-matn{% else %}action-tugma{% endif %}">{{ log[3] }}</td>
+                            <td>{{ log[4] }}</td>
+                            <td style="color: var(--text-muted); font-size: 0.9rem;">{{ log[5] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="empty">Hozircha ma'lumot yo'q</div>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
+"""
+
+@app_web.route('/', methods=['GET', 'POST'])
+@app_web.route('/logs', methods=['GET', 'POST'])
+def dashboard():
+    error = None
+    if request.method == 'POST':
+        pin = request.form.get('pin')
+        if pin == '701':
+            session['logged_in'] = True
+            return redirect(url_for('dashboard'))
+        else:
+            error = "Xato PIN kod kiritildi!"
+
+    if not session.get('logged_in'):
+        return render_template_string(HTML_TEMPLATE, require_login=True, error=error)
+        
+    logs = []
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT id, user_id, username, action_type, content, timestamp FROM logs ORDER BY id DESC LIMIT 500")
+            logs = cursor.fetchall()
+    except Exception as e:
+        logger.error(f"Web DB error: {e}")
+        
+    return render_template_string(HTML_TEMPLATE, require_login=False, logs=logs)
+
+@app_web.route('/logout', methods=['POST'])
+def logout():
+    session.pop('logged_in', None)
+    return redirect(url_for('dashboard'))
+
+def run_flask():
+    port = int(os.environ.get("PORT", 8080))
+    app_web.run(host="0.0.0.0", port=port, use_reloader=False)
+
 # ===== MAIN =====
 
 def main():
     global CHAT_ID
     
     init_db()
+    
+    threading.Thread(target=run_flask, daemon=True).start()
+    logger.info("Web Dashboard serveri ishga tushirildi.")
     
     CHAT_ID = load_chat_id()
     if CHAT_ID:
