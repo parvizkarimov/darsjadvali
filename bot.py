@@ -90,9 +90,9 @@ SCHEDULE = [
 def main_menu_keyboard():
     """Asosiy pastki menyu (ReplyKeyboard)"""
     keyboard = [
-        [KeyboardButton("📅 Bugungi darslar"), KeyboardButton("⏰ Keyingi dars")],
-        [KeyboardButton("📋 Haftalik jadval"),  KeyboardButton("📚 To'liq jadval")],
-        [KeyboardButton("ℹ️ Yordam")],
+        [KeyboardButton("🟢 Hozirgi dars"), KeyboardButton("📅 Bugungi darslar")],
+        [KeyboardButton("⏰ Keyingi dars"), KeyboardButton("📋 Haftalik jadval")],
+        [KeyboardButton("📚 To'liq jadval"), KeyboardButton("ℹ️ Yordam")],
     ]
     return ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
 
@@ -215,7 +215,9 @@ async def handle_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     text = update.message.text
 
-    if text == "📅 Bugungi darslar":
+    if text == "🟢 Hozirgi dars":
+        await cmd_hozirgi(update, context)
+    elif text == "📅 Bugungi darslar":
         await cmd_bugun(update, context)
     elif text == "⏰ Keyingi dars":
         await cmd_keyingi(update, context)
@@ -225,6 +227,44 @@ async def handle_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await cmd_jadval(update, context)
     elif text == "ℹ️ Yordam":
         await cmd_yordam(update, context)
+
+async def cmd_hozirgi(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    now = datetime.now(TZ)
+    lessons = get_today_schedule()
+    
+    if not lessons:
+        await update.message.reply_text("📭 Bugun dars yo'q.", reply_markup=main_menu_keyboard())
+        return
+
+    current_lesson = None
+    for lesson in lessons:
+        lesson_dt = get_lesson_datetime(lesson[0], lesson[1], lesson[2])
+        end_dt = lesson_dt + timedelta(minutes=50)
+        if lesson_dt <= now <= end_dt:
+            current_lesson = lesson
+            break
+
+    if current_lesson:
+        _, hour, minute, subject, teacher, room = current_lesson
+        end_dt = get_lesson_datetime(current_lesson[0], current_lesson[1], current_lesson[2]) + timedelta(minutes=50)
+        text = (
+            f"🟢 *Hozirgi dars:*\n\n"
+            f"📚 *{subject}*\n"
+            f"👩‍🏫 O'qituvchi: {teacher}\n"
+            f"🚪 Xona: *{room}*\n"
+            f"🕐 Vaqt: {hour:02d}:{minute:02d} dan {end_dt.strftime('%H:%M')} gacha"
+        )
+        await update.message.reply_text(text, parse_mode="Markdown", reply_markup=main_menu_keyboard())
+    else:
+        first_lesson_dt = get_lesson_datetime(lessons[0][0], lessons[0][1], lessons[0][2])
+        last_lesson_end = get_lesson_datetime(lessons[-1][0], lessons[-1][1], lessons[-1][2]) + timedelta(minutes=50)
+        
+        if now < first_lesson_dt:
+            await update.message.reply_text("⏳ Hali dars boshlanmadi.", reply_markup=main_menu_keyboard())
+        elif now > last_lesson_end:
+            await update.message.reply_text("🏁 Bugun uchun barcha darslar tugadi.", reply_markup=main_menu_keyboard())
+        else:
+            await update.message.reply_text("☕ Hozir tanaffus. Hali dars boshlanmadi.", reply_markup=main_menu_keyboard())
 
 async def cmd_bugun(update: Update, context: ContextTypes.DEFAULT_TYPE):
     lessons = get_today_schedule()
