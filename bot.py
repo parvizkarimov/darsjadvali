@@ -60,6 +60,14 @@ def init_db():
                 timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
             )
         ''')
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS broadcasts (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                message TEXT,
+                status TEXT DEFAULT 'pending',
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            )
+        ''')
         conn.commit()
 
 # ===== OFLAYN DARS JADVALI (08.06.2026 - 13.06.2026) =====
@@ -660,39 +668,6 @@ def schedule_reminders(app, chat_id):
     logger.info(f"Jami {count} ta eslatma hodisalari rejalashtirildi")
     return count
 
-async def cmd_logs(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_id = str(update.effective_user.id)
-    if user_id != ADMIN_ID:
-        await update.message.reply_text("⛔ Bu komanda faqat admin uchun.")
-        return
-        
-    try:
-        with sqlite3.connect(DB_PATH) as conn:
-            cursor = conn.cursor()
-            cursor.execute("SELECT user_id, username, action_type, content, timestamp FROM logs ORDER BY id DESC LIMIT 5000")
-            rows = cursor.fetchall()
-            
-        if not rows:
-            await update.message.reply_text("📭 Hozircha hech qanday tarix yo'q.")
-            return
-            
-        output = io.StringIO()
-        writer = csv.writer(output)
-        writer.writerow(['Foydalanuvchi ID', 'Ismi', 'Harakat Turi', 'Xabar / Tugma', 'Vaqti'])
-        for row in rows:
-            writer.writerow(row)
-            
-        output.seek(0)
-        
-        bio = io.BytesIO(output.getvalue().encode('utf-8-sig'))
-        bio.name = f"bot_logs_{datetime.now(TZ).strftime('%d_%m_%Y')}.csv"
-        
-        caption = f"📊 Barcha foydalanuvchilarning xabarlari va tugmalari tarixi\nJami: {len(rows)} ta qator"
-        await update.message.reply_document(document=bio, caption=caption)
-        
-    except Exception as e:
-        logger.error(f"Logs error: {e}")
-        await update.message.reply_text(f"Xatolik: {e}")
 
 # ===== WEB DASHBOARD (FLASK) =====
 
@@ -741,6 +716,10 @@ HTML_TEMPLATE = """
         td.action-tugma { color: #34d399; font-weight: 600; }
         .empty { text-align: center; padding: 3rem; color: var(--text-muted); }
         
+        .success-alert { background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid #10b981; padding: 1rem; border-radius: 8px; margin-bottom: 2rem; font-weight: 600; text-align: center; }
+        textarea { width: 100%; height: 150px; padding: 1rem; border-radius: 8px; border: 1px solid var(--border); background: rgba(0,0,0,0.2); color: white; margin-bottom: 1rem; font-size: 1.1rem; outline: none; transition: border-color 0.3s; font-family: inherit; resize: vertical; }
+        textarea:focus { border-color: var(--primary); }
+        
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .animate { animation: fadeIn 0.5s ease-out forwards; }
     </style>
@@ -760,6 +739,19 @@ HTML_TEMPLATE = """
                 </form>
             </div>
         {% else %}
+            {% if msg_success %}
+            <div class="success-alert">✅ Xabar barcha foydalanuvchilarga jo'natilish uchun navbatga qo'yildi! U bir necha soniya ichida yetkazib beriladi.</div>
+            {% endif %}
+            
+            <div class="glass" style="padding: 2rem; margin-bottom: 3rem;">
+                <h2 style="margin-bottom: 1rem; font-weight: 600;">📣 Barchaga xabar yuborish</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 0.9rem;">Matnni istalgancha yozishingiz mumkin. Qator tashlasangiz xuddi shunday boradi. Qalin qilish uchun <code>*matn*</code>, og'ish uchun <code>_matn_</code> dan foydalaning.</p>
+                <form method="POST" action="/broadcast">
+                    <textarea name="message" placeholder="Xabaringizni shu yerga yozing..." required></textarea>
+                    <button type="submit" style="background: #10b981;">🚀 Hammaga Jo'natish</button>
+                </form>
+            </div>
+
             <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; align-items: center;">
                 <span style="color: var(--text-muted);">Jami yozuvlar: <b style="color: white;">{{ logs|length }}</b> ta (So'nggi 500 ta)</span>
                 <form method="POST" action="/logout"><button type="submit" style="width: auto; padding: 0.5rem 1rem; background: rgba(255,255,255,0.1);">Chiqish</button></form>
@@ -792,6 +784,36 @@ HTML_TEMPLATE = """
                 <div class="empty">Hozircha ma'lumot yo'q</div>
                 {% endif %}
             </div>
+            
+            <h2 style="margin-top: 3rem; margin-bottom: 1.5rem; font-weight: 600; text-align: center;">👥 Bot Foydalanuvchilari (Jami: <b style="color: white;">{{ users|length }}</b> ta)</h2>
+            <div class="glass table-wrapper" style="margin-bottom: 5rem;">
+                {% if users %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Ism</th>
+                            <th>Familiya</th>
+                            <th>Username</th>
+                            <th>Qo'shilgan vaqti</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for u in users %}
+                        <tr>
+                            <td style="color: var(--text-muted);">{{ u[0] }}</td>
+                            <td style="font-weight: 600;">{{ u[1] }}</td>
+                            <td>{{ u[2] or '-' }}</td>
+                            <td style="color: #3b82f6;">{% if u[3] %}@{{ u[3] }}{% else %}-{% endif %}</td>
+                            <td style="color: var(--text-muted); font-size: 0.9rem;">{{ u[4] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="empty">Hozircha foydalanuvchilar yo'q</div>
+                {% endif %}
+            </div>
         {% endif %}
     </div>
 </body>
@@ -814,15 +836,36 @@ def dashboard():
         return render_template_string(HTML_TEMPLATE, require_login=True, error=error)
         
     logs = []
+    users = []
     try:
         with sqlite3.connect(DB_PATH) as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT id, user_id, username, action_type, content, timestamp FROM logs ORDER BY id DESC LIMIT 500")
             logs = cursor.fetchall()
+            
+            cursor.execute("SELECT user_id, first_name, last_name, username, joined_at FROM users ORDER BY joined_at DESC")
+            users = cursor.fetchall()
     except Exception as e:
         logger.error(f"Web DB error: {e}")
         
-    return render_template_string(HTML_TEMPLATE, require_login=False, logs=logs)
+    msg_success = session.pop('msg_success', False)
+    return render_template_string(HTML_TEMPLATE, require_login=False, logs=logs, users=users, msg_success=msg_success)
+
+@app_web.route('/broadcast', methods=['POST'])
+def broadcast():
+    if not session.get('logged_in'):
+        return redirect(url_for('dashboard'))
+    message = request.form.get('message')
+    if message:
+        try:
+            with sqlite3.connect(DB_PATH) as conn:
+                cursor = conn.cursor()
+                cursor.execute("INSERT INTO broadcasts (message) VALUES (?)", (message,))
+                conn.commit()
+        except Exception as e:
+            logger.error(f"Broadcast DB error: {e}")
+    session['msg_success'] = True
+    return redirect(url_for('dashboard'))
 
 @app_web.route('/logout', methods=['POST'])
 def logout():
@@ -832,6 +875,32 @@ def logout():
 def run_flask():
     port = int(os.environ.get("PORT", 8080))
     app_web.run(host="0.0.0.0", port=port, use_reloader=False)
+
+async def check_broadcasts(context: ContextTypes.DEFAULT_TYPE):
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT id, message FROM broadcasts WHERE status = 'pending'")
+            pending = cursor.fetchall()
+            
+            if pending:
+                cursor.execute("SELECT user_id FROM users")
+                users = cursor.fetchall()
+                
+                for b_id, message in pending:
+                    success_count = 0
+                    for (u_id,) in users:
+                        try:
+                            await context.bot.send_message(chat_id=u_id, text=message, parse_mode="Markdown")
+                            success_count += 1
+                        except Exception as e:
+                            logger.error(f"Broadcast yuborishda xatolik (ID: {u_id}): {e}")
+                            
+                    cursor.execute("UPDATE broadcasts SET status = 'completed' WHERE id = ?", (b_id,))
+                    conn.commit()
+                    logger.info(f"Broadcast #{b_id} {success_count} kishiga yuborildi.")
+    except Exception as e:
+        logger.error(f"Broadcast check xatoligi: {e}")
 
 # ===== MAIN =====
 
@@ -854,13 +923,14 @@ def main():
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("user", cmd_users))
     app.add_handler(CommandHandler("send", cmd_send))
-    app.add_handler(CommandHandler("logs", cmd_logs))
     app.add_handler(CallbackQueryHandler(callback_handler))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_menu))
 
     async def post_init(application):
         if CHAT_ID:
             schedule_reminders(application, CHAT_ID)
+            
+        application.job_queue.run_repeating(check_broadcasts, interval=10)
             
         # Adminga deploy xabarini jo'natish
         try:
