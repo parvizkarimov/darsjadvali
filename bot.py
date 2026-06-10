@@ -11,7 +11,7 @@ from flask import Flask, request, session, redirect, url_for, render_template_st
 import pytz
 from telegram import Bot, Update, InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup, KeyboardButton
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, MessageHandler, filters, ContextTypes
-import google.generativeai as genai
+from groq import Groq
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -25,10 +25,12 @@ ADMIN_ID = os.environ.get("ADMIN_ID", "882178675") # Admin telegram ID si
 CHAT_ID = None
 TZ = pytz.timezone("Asia/Tashkent")
 DB_PATH = os.environ.get("DB_PATH", "data/bot_database.db")
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
 
-if GEMINI_API_KEY:
-    genai.configure(api_key=GEMINI_API_KEY)
+groq_client = Groq(api_key=GROQ_API_KEY) if GROQ_API_KEY else None
+
+# Rate limiter: {user_id: [timestamp1, timestamp2, ...]}
+user_rate_limits = {}
 
 # ===== BAZANI ISHGA TUSHIRISH =====
 def init_db():
@@ -304,13 +306,25 @@ async def handle_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def handle_ai_chat(update: Update, context: ContextTypes.DEFAULT_TYPE, log_id: int = None):
     text = update.message.text
-    if not GEMINI_API_KEY:
+    user_id = str(update.effective_user.id)
+    
+    if not groq_client:
         await update.message.reply_text("Kechirasiz, sun'iy intellekt hozircha ulanmagan.", reply_markup=main_menu_keyboard())
         return
 
+    # Rate limit: har foydalanuvchiga daqiqada 5 ta so'rov
+    now = datetime.now(TZ)
+    if user_id not in user_rate_limits:
+        user_rate_limits[user_id] = []
+    user_rate_limits[user_id] = [t for t in user_rate_limits[user_id] if (now - t).total_seconds() < 60]
+    if len(user_rate_limits[user_id]) >= 5:
+        await update.message.reply_text("⏳ Juda tez-tez yozyapsiz. Iltimos, 1 daqiqa kutib turing.", reply_markup=main_menu_keyboard())
+        return
+    user_rate_limits[user_id].append(now)
+
     await context.bot.send_chat_action(chat_id=update.effective_chat.id, action='typing')
     
-    now_str = datetime.now(TZ).strftime("%d.%m.%Y %H:%M")
+    now_str = now.strftime("%d.%m.%Y %H:%M")
     schedule_text = format_schedule_by_date(SCHEDULE)
     
     system_prompt = (
@@ -323,24 +337,31 @@ async def handle_ai_chat(update: Update, context: ContextTypes.DEFAULT_TYPE, log
         "MUHIM: Javobingizni oddiy matnda yozing. Matnda hech qanday yulduzchalar (** yoki *) va qalin qilib yozish kabi formatlardan foydalanmang."
     )
     try:
-        model = genai.GenerativeModel(
-            model_name="gemini-2.5-flash",
-            system_instruction=system_prompt
+        response = groq_client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": text}
+            ],
+            temperature=0.7,
+            max_tokens=1024
         )
-        response = await model.generate_content_async(text)
-        update_log_ai(log_id, response.text)
+        ai_text = response.choices[0].message.content
+        update_log_ai(log_id, ai_text)
         await send_long_message(
             lambda t, **kw: update.message.reply_text(t, **kw),
-            response.text
+            ai_text
         )
     except Exception as e:
-        logger.error(f"Gemini API xatoligi: {e}")
+        logger.error(f"Groq API xatoligi: {e}")
         error_msg = str(e)
-        if "API_KEY" in error_msg.upper() or "UNAUTHORIZED" in error_msg.upper():
-            err_text = "API kalit noto'g'ri yoki yaroqsiz bo'lishi mumkin. Iltimos tekshiring."
+        if "rate_limit" in error_msg.lower() or "429" in error_msg:
+            err_text = "⏳ AI hozir juda band. Iltimos, bir oz kutib qayta urinib ko'ring."
+        elif "api_key" in error_msg.lower() or "auth" in error_msg.lower():
+            err_text = "API kalit noto'g'ri yoki yaroqsiz bo'lishi mumkin."
         else:
-            err_text = f"Xatolik yuz berdi: {error_msg}"
-        await update.message.reply_text(err_text)
+            err_text = "Kechirasiz, xatolik yuz berdi. Keyinroq urinib ko'ring."
+        await update.message.reply_text(err_text, reply_markup=main_menu_keyboard())
 
 async def cmd_ertaga(update: Update, context: ContextTypes.DEFAULT_TYPE):
     now = datetime.now(TZ)
