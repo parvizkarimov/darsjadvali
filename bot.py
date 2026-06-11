@@ -37,7 +37,9 @@ chat_history = {}
 
 # ===== BAZANI ISHGA TUSHIRISH =====
 def init_db():
-    os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
+    db_dir = os.path.dirname(DB_PATH)
+    if db_dir:
+        os.makedirs(db_dir, exist_ok=True)
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
         cursor.execute('''
@@ -725,7 +727,6 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def send_pre_reminder(context: ContextTypes.DEFAULT_TYPE):
     job_data = context.job.data
-    chat_id = job_data["chat_id"]
     lesson = job_data["lesson"]
     _, hour, minute, subject, teacher, room = lesson
 
@@ -737,15 +738,13 @@ async def send_pre_reminder(context: ContextTypes.DEFAULT_TYPE):
         f"👩‍🏫 {teacher}\n"
         f"🚪 Xona: *{room}*"
     )
-    await context.bot.send_message(chat_id=chat_id, text=text, parse_mode="Markdown", disable_web_page_preview=True)
+    await send_to_all_users(context.bot, text)
 
 async def send_start_reminder(context: ContextTypes.DEFAULT_TYPE):
     job_data = context.job.data
-    chat_id = job_data["chat_id"]
     lesson = job_data["lesson"]
     _, hour, minute, subject, teacher, room = lesson
     
-    # Tugash vaqtini hisoblaymiz (50 daqiqa davom etadi)
     end_dt = datetime.strptime(f"{hour:02d}:{minute:02d}", "%H:%M") + timedelta(minutes=50)
 
     text = (
@@ -755,15 +754,13 @@ async def send_start_reminder(context: ContextTypes.DEFAULT_TYPE):
         f"🚪 Xona: *{room}*\n"
         f"🕐 Vaqt: {hour:02d}:{minute:02d} dan {end_dt.strftime('%H:%M')} gacha"
     )
-    await context.bot.send_message(chat_id=chat_id, text=text, parse_mode="Markdown", disable_web_page_preview=True)
+    await send_to_all_users(context.bot, text)
 
 async def send_end_reminder(context: ContextTypes.DEFAULT_TYPE):
     job_data = context.job.data
-    chat_id = job_data["chat_id"]
     lesson = job_data["lesson"]
     _, hour, minute, subject, teacher, room = lesson
     
-    # 50 daqiqa qo'shib tugash vaqtini hisoblaymiz
     end_dt = datetime.strptime(f"{hour:02d}:{minute:02d}", "%H:%M") + timedelta(minutes=50)
 
     text = (
@@ -773,13 +770,39 @@ async def send_end_reminder(context: ContextTypes.DEFAULT_TYPE):
         f"🚪 Xona: *{room}*\n"
         f"🕐 Vaqt: {hour:02d}:{minute:02d} dan {end_dt.strftime('%H:%M')} gacha"
     )
-    await context.bot.send_message(chat_id=chat_id, text=text, parse_mode="Markdown", disable_web_page_preview=True)
+    await send_to_all_users(context.bot, text)
 
-def schedule_reminders(app, chat_id):
+async def send_to_all_users(bot, text):
+    """Barcha ro'yxatdan o'tgan foydalanuvchilarga xabar yuborish"""
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT user_id FROM users")
+            users = cursor.fetchall()
+        
+        # Hamma user_id larni to'plamga yig'amiz
+        recipient_ids = set(str(user_id) for (user_id,) in users)
+        
+        # Settings dagi CHAT_ID ni ham qo'shamiz (bu guruh yoki asosiy chat bo'lishi mumkin)
+        group_chat_id = load_chat_id()
+        if group_chat_id:
+            recipient_ids.add(str(group_chat_id))
+        
+        for chat_id in recipient_ids:
+            try:
+                await bot.send_message(chat_id=chat_id, text=text, parse_mode="Markdown")
+            except Exception as e:
+                logger.error(f"Eslatma yuborishda xatolik (ID: {chat_id}): {e}")
+    except Exception as e:
+        logger.error(f"send_to_all_users xatoligi: {e}")
+
+def schedule_reminders(app, chat_id=None):
     now = datetime.now(TZ)
     count = 0
     logger.info("--- ESLATMALAR TEKSHIRUVI ---")
     logger.info(f"Hozirgi O'zbekiston vaqti (UTC+5): {now.strftime('%d.%m.%Y %H:%M:%S')}")
+    logger.info(f"Chat ID: {chat_id}")
+    logger.info(f"Jadvaldagi darslar soni: {len(SCHEDULE)}")
     
     for lesson in SCHEDULE:
         lesson_dt = get_lesson_datetime(lesson[0], lesson[1], lesson[2])
@@ -791,22 +814,31 @@ def schedule_reminders(app, chat_id):
         # 1. 5 minut oldin eslatma
         if pre_dt > now:
             job_name = f"pre_{lesson[0]}_{lesson[1]}_{lesson[2]}"
-            if not app.job_queue.get_jobs_by_name(job_name):
-                app.job_queue.run_once(send_pre_reminder, when=pre_dt, data={"chat_id": chat_id, "lesson": lesson}, name=job_name)
+            existing = app.job_queue.get_jobs_by_name(job_name)
+            if not existing:
+                delay = (pre_dt - now).total_seconds()
+                app.job_queue.run_once(send_pre_reminder, when=delay, data={"chat_id": chat_id, "lesson": lesson}, name=job_name)
+                logger.info(f"  ✅ ESLATMA rejalashtirildi: {lesson[3]} — {pre_dt.strftime('%d.%m.%Y %H:%M')} ({int(delay)}s keyin)")
                 count += 1
+            else:
+                logger.info(f"  ⏩ Allaqachon mavjud: {job_name}")
+        else:
+            logger.info(f"  ⏩ O'tib ketgan: {lesson[3]} — {pre_dt.strftime('%d.%m.%Y %H:%M')}")
 
         # 2. Dars boshlandi
         if start_dt > now:
             job_name = f"start_{lesson[0]}_{lesson[1]}_{lesson[2]}"
             if not app.job_queue.get_jobs_by_name(job_name):
-                app.job_queue.run_once(send_start_reminder, when=start_dt, data={"chat_id": chat_id, "lesson": lesson}, name=job_name)
+                delay = (start_dt - now).total_seconds()
+                app.job_queue.run_once(send_start_reminder, when=delay, data={"chat_id": chat_id, "lesson": lesson}, name=job_name)
                 count += 1
                 
         # 3. Dars tugadi
         if end_dt > now:
             job_name = f"end_{lesson[0]}_{lesson[1]}_{lesson[2]}"
             if not app.job_queue.get_jobs_by_name(job_name):
-                app.job_queue.run_once(send_end_reminder, when=end_dt, data={"chat_id": chat_id, "lesson": lesson}, name=job_name)
+                delay = (end_dt - now).total_seconds()
+                app.job_queue.run_once(send_end_reminder, when=delay, data={"chat_id": chat_id, "lesson": lesson}, name=job_name)
                 count += 1
             
     logger.info(f"Jami {count} ta eslatma hodisalari rejalashtirildi")
@@ -1144,8 +1176,7 @@ def main():
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_menu))
 
     async def post_init(application):
-        if CHAT_ID:
-            schedule_reminders(application, CHAT_ID)
+        schedule_reminders(application)
             
         application.job_queue.run_repeating(check_broadcasts, interval=10)
             
