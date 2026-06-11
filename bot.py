@@ -318,7 +318,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await update.message.reply_text(
         "👋 *Salom! 3-kurs Finance (FINP-S-1323U) oflayn dars jadvali boti!*\n\n"
-        "📌 Dars boshlanishidan *15 daqiqa oldin* avtomatik eslatma olasiz.\n\n"
+        "📌 Dars boshlanishidan *5 daqiqa oldin* avtomatik eslatma olasiz.\n\n"
         "Quyidagi menyudan foydalaning 👇",
         parse_mode="Markdown",
         reply_markup=main_menu_keyboard()
