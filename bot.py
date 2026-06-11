@@ -46,6 +46,7 @@ def init_db():
                 first_name TEXT,
                 last_name TEXT,
                 username TEXT,
+                phone_number TEXT,
                 joined_at TEXT
             )
         ''')
@@ -68,6 +69,10 @@ def init_db():
         ''')
         try:
             cursor.execute("ALTER TABLE logs ADD COLUMN ai_response TEXT")
+        except:
+            pass
+        try:
+            cursor.execute("ALTER TABLE users ADD COLUMN phone_number TEXT")
         except:
             pass
         cursor.execute('''
@@ -163,9 +168,39 @@ def save_user(user):
                 INSERT OR IGNORE INTO users (user_id, first_name, last_name, username, joined_at)
                 VALUES (?, ?, ?, ?, ?)
             ''', (str(user.id), user.first_name, user.last_name, user.username, joined_at))
+            # Mavjud foydalanuvchining ismini yangilash
+            cursor.execute('''
+                UPDATE users SET first_name = ?, last_name = ?, username = ? WHERE user_id = ?
+            ''', (user.first_name, user.last_name, user.username, str(user.id)))
             conn.commit()
     except Exception as e:
         logger.error(f"Failed to save user: {e}")
+
+def has_phone(user_id):
+    """Foydalanuvchi telefon raqamini berganmi tekshirish"""
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT phone_number FROM users WHERE user_id = ?", (str(user_id),))
+            row = cursor.fetchone()
+            return row and row[0]
+    except:
+        return False
+
+def save_phone(user_id, phone_number):
+    """Telefon raqamini bazaga saqlash"""
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            cursor = conn.cursor()
+            cursor.execute("UPDATE users SET phone_number = ? WHERE user_id = ?", (phone_number, str(user_id)))
+            conn.commit()
+    except Exception as e:
+        logger.error(f"Failed to save phone: {e}")
+
+def phone_request_keyboard():
+    """Telefon raqamni ulashish tugmasi"""
+    keyboard = [[KeyboardButton("📱 Telefon raqamni ulashish", request_contact=True)]]
+    return ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=True)
 
 def log_action(user, action_type, content):
     if not user:
@@ -271,6 +306,16 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     schedule_reminders(context.application, CHAT_ID)
 
+    if not has_phone(user.id):
+        await update.message.reply_text(
+            "👋 *Salom! 3-kurs Finance (FINP-S-1323U) oflayn dars jadvali boti!*\n\n"
+            "🔐 Botdan foydalanish uchun avval telefon raqamingizni ulashing.\n"
+            "Quyidagi tugmani bosing 👇",
+            parse_mode="Markdown",
+            reply_markup=phone_request_keyboard()
+        )
+        return
+
     await update.message.reply_text(
         "👋 *Salom! 3-kurs Finance (FINP-S-1323U) oflayn dars jadvali boti!*\n\n"
         "📌 Dars boshlanishidan *15 daqiqa oldin* avtomatik eslatma olasiz.\n\n"
@@ -279,10 +324,39 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup=main_menu_keyboard()
     )
 
+async def handle_contact(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Telefon raqamni qabul qilish"""
+    contact = update.message.contact
+    user = update.effective_user
+    
+    if contact.user_id != user.id:
+        await update.message.reply_text("⚠️ Iltimos, faqat o'z raqamingizni yuboring.", reply_markup=phone_request_keyboard())
+        return
+    
+    save_user(user)
+    save_phone(user.id, contact.phone_number)
+    log_action(user, "TELEFON", contact.phone_number)
+    
+    await update.message.reply_text(
+        "✅ *Rahmat! Telefon raqamingiz saqlandi.*\n\n"
+        "Endi botdan bemalol foydalanishingiz mumkin! 👇",
+        parse_mode="Markdown",
+        reply_markup=main_menu_keyboard()
+    )
+
 async def handle_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Pastki menyu tugmalarini qayta ishlash"""
     user = update.effective_user
     save_user(user)
+    
+    # Telefon raqam tekshirish
+    if not has_phone(user.id):
+        await update.message.reply_text(
+            "🔐 Botdan foydalanish uchun avval telefon raqamingizni ulashing.\n"
+            "Quyidagi tugmani bosing 👇",
+            reply_markup=phone_request_keyboard()
+        )
+        return
     
     text = update.message.text
     
@@ -331,7 +405,7 @@ async def handle_ai_chat(update: Update, context: ContextTypes.DEFAULT_TYPE, log
     schedule_text = format_schedule_by_date(SCHEDULE)
     
     system_prompt = (
-        "Sen talabalarning eng yaxshi do'sti va aqlli yordamchisisan. Sening ismng 'Dars Jadvali Bot'. "
+        "Sen talabalarning eng yaxshi do'sti va aqlli yordamchisisan. Sening isming 'Dars Jadvali Bot'. "
         "Sen har qanday mavzuda bemalol suhbatlashasan — darslar, hayot, hazillar, maslahatlar, fan, texnologiya, har narsa. "
         "Hech qachon 'men faqat jadval haqida javob beraman' dema. Sen HAMMA narsaga javob bera olasan. "
         "O'zbek tilida samimiy, qisqa va do'stona gapir. Javobni 2-3 jumla bilan ber, kerakdan ortiq cho'zma.\n\n"
@@ -339,6 +413,12 @@ async def handle_ai_chat(update: Update, context: ContextTypes.DEFAULT_TYPE, log
         "Qo'shimcha bilim: Sen 3-kurs Finance (FINP-S-1323U) guruhining botisan. "
         "Agar talaba dars, jadval, o'qituvchi yoki xona haqida so'rasa, quyidagi jadvaldan to'g'ri javob ber:\n"
         f"{schedule_text}\n\n"
+        "SEN QILA OLMAYDIGAN NARSALAR (bularni va'da qilma, halol ayt):\n"
+        "- Sen eslatma (reminder) qo'ya OLMAYSAN. Kelajakda xabar yubora OLMAYSAN.\n"
+        "- Sen fayl, rasm, audio yubora OLMAYSAN.\n"
+        "- Sen internetga kira OLMAYSAN, qidiruv qila OLMAYSAN.\n"
+        "- Sen boshqa odamlarga xabar yubora OLMAYSAN.\n"
+        "Agar talaba shu narsalarni so'rasa, HALOL javob ber: 'Kechirasiz, men buni qila olmayman' de va sababini tushuntir.\n\n"
         "QOIDALAR: Javobda yulduzcha (*, **), tire (-), raqamlangan ro'yxat ishlatma. Faqat oddiy matn yoz."
     )
     try:
@@ -881,6 +961,7 @@ HTML_TEMPLATE = """
                                 <th>Ism</th>
                                 <th>Familiya</th>
                                 <th>Username</th>
+                                <th>Telefon</th>
                                 <th>Qo'shilgan vaqti</th>
                             </tr>
                         </thead>
@@ -891,7 +972,8 @@ HTML_TEMPLATE = """
                                 <td style="font-weight: 600;">{{ u[1] }}</td>
                                 <td>{{ u[2] or '-' }}</td>
                                 <td style="color: #3b82f6;">{% if u[3] %}@{{ u[3] }}{% else %}-{% endif %}</td>
-                                <td style="color: var(--text-muted); font-size: 0.9rem;">{{ u[4] }}</td>
+                                <td style="color: #10b981; font-weight: 600;">{{ u[4] or '-' }}</td>
+                                <td style="color: var(--text-muted); font-size: 0.9rem;">{{ u[5] }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -971,7 +1053,7 @@ def dashboard():
                 cursor.execute("SELECT id, user_id, username, action_type, content, timestamp, ai_response FROM logs ORDER BY id DESC LIMIT 500")
                 logs = cursor.fetchall()
             elif tab == 'users':
-                cursor.execute("SELECT user_id, first_name, last_name, username, joined_at FROM users ORDER BY joined_at DESC")
+                cursor.execute("SELECT user_id, first_name, last_name, username, phone_number, joined_at FROM users ORDER BY joined_at DESC")
                 users = cursor.fetchall()
             elif tab == 'broadcast':
                 cursor.execute("SELECT id, message, status, success_count, failed_count, created_at FROM broadcasts ORDER BY id DESC LIMIT 50")
@@ -1057,6 +1139,7 @@ def main():
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("user", cmd_users))
     app.add_handler(CommandHandler("send", cmd_send))
+    app.add_handler(MessageHandler(filters.CONTACT, handle_contact))
     app.add_handler(CallbackQueryHandler(callback_handler))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_menu))
 
