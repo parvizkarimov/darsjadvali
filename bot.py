@@ -522,9 +522,9 @@ async def cmd_bugun(update: Update, context: ContextTypes.DEFAULT_TYPE):
     now = datetime.now(TZ)
     today = now.strftime("%d.%m.%Y")
     if not lessons:
-        start_date = TZ.localize(datetime(2026, 6, 8))
+        start_date = TZ.localize(datetime(2026, 6, 15))
         if now < start_date:
-            msg = "⏳ *Darslar 8-iyundan boshlanadi!*"
+            msg = "⏳ *Darslar 15-iyundan boshlanadi!*"
         else:
             msg = f"📭 *{today}* kuni dars yo'q yoki barcha darslar tugagan."
         await update.message.reply_text(msg, parse_mode="Markdown", reply_markup=main_menu_keyboard())
@@ -538,18 +538,18 @@ async def cmd_bugun(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def cmd_hafta(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [
-        [InlineKeyboardButton("08.06 - Dushanba", callback_data="day_08.06.2026"),
-         InlineKeyboardButton("09.06 - Seshanba", callback_data="day_09.06.2026")],
-        [InlineKeyboardButton("10.06 - Chorshanba", callback_data="day_10.06.2026"),
-         InlineKeyboardButton("11.06 - Payshanba", callback_data="day_11.06.2026")],
-        [InlineKeyboardButton("12.06 - Juma", callback_data="day_12.06.2026"),
-         InlineKeyboardButton("13.06 - Shanba", callback_data="day_13.06.2026")],
+        [InlineKeyboardButton("15.06 - Dushanba", callback_data="day_15.06.2026"),
+         InlineKeyboardButton("16.06 - Seshanba", callback_data="day_16.06.2026")],
+        [InlineKeyboardButton("17.06 - Chorshanba", callback_data="day_17.06.2026"),
+         InlineKeyboardButton("18.06 - Payshanba", callback_data="day_18.06.2026")],
+        [InlineKeyboardButton("19.06 - Juma", callback_data="day_19.06.2026"),
+         InlineKeyboardButton("20.06 - Shanba", callback_data="day_20.06.2026")],
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
     await update.message.reply_text("📋 *Qaysi kunning jadvalini ko'rmoqchisiz?*", parse_mode="Markdown", reply_markup=reply_markup)
 
 async def cmd_jadval(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    text = "📋 *To'liq dars jadvali (08.06-13.06):*\n" + format_schedule_by_date(SCHEDULE)
+    text = "📋 *To'liq dars jadvali (15.06-20.06):*\n" + format_schedule_by_date(SCHEDULE)
     await send_long_message(
         lambda t, **kw: update.message.reply_text(t, **kw),
         text, parse_mode="Markdown", disable_web_page_preview=True,
@@ -591,7 +591,7 @@ async def cmd_keyingi(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def cmd_yordam(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "ℹ️ *Yordam*\n\n"
-        "🎓 Bu bot *3-kurs Finance (FINP-S-1323U)* talabalari uchun mo'ljallangan (8-13 Iyun darslari).\n\n"
+        "🎓 Bu bot *3-kurs Finance (FINP-S-1323U)* talabalari uchun mo'ljallangan (15-20 Iyun darslari).\n\n"
         "📅 *Bugungi darslar* — bugun bo'ladigan darslar\n"
         "⏰ *Keyingi dars* — keyingi dars qancha vaqtdan so'ng\n"
         "📋 *Haftalik jadval* — kelgusi 7 kun\n"
@@ -713,12 +713,12 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         
     elif query.data == "back_to_week":
         keyboard = [
-            [InlineKeyboardButton("08.06 - Dushanba", callback_data="day_08.06.2026"),
-             InlineKeyboardButton("09.06 - Seshanba", callback_data="day_09.06.2026")],
-            [InlineKeyboardButton("10.06 - Chorshanba", callback_data="day_10.06.2026"),
-             InlineKeyboardButton("11.06 - Payshanba", callback_data="day_11.06.2026")],
-            [InlineKeyboardButton("12.06 - Juma", callback_data="day_12.06.2026"),
-             InlineKeyboardButton("13.06 - Shanba", callback_data="day_13.06.2026")],
+            [InlineKeyboardButton("15.06 - Dushanba", callback_data="day_15.06.2026"),
+             InlineKeyboardButton("16.06 - Seshanba", callback_data="day_16.06.2026")],
+            [InlineKeyboardButton("17.06 - Chorshanba", callback_data="day_17.06.2026"),
+             InlineKeyboardButton("18.06 - Payshanba", callback_data="day_18.06.2026")],
+            [InlineKeyboardButton("19.06 - Juma", callback_data="day_19.06.2026"),
+             InlineKeyboardButton("20.06 - Shanba", callback_data="day_20.06.2026")],
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
         await query.edit_message_text("📋 *Qaysi kunning jadvalini ko'rmoqchisiz?*", parse_mode="Markdown", reply_markup=reply_markup)
