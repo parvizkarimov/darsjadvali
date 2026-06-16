@@ -6,7 +6,8 @@ import csv
 import io
 import threading
 from datetime import datetime, timedelta
-from flask import Flask, request, session, redirect, url_for, render_template_string
+from flask import Flask, request, session, redirect, url_for, render_template_string, Response
+import urllib.request
 
 import pytz
 from telegram import Bot, Update, InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup, KeyboardButton
@@ -1242,7 +1243,7 @@ HTML_TEMPLATE = """
                                 <td>{{ p[5] }}</td>
                                 <td>
                                     {% if p[6] %}
-                                    <a href="https://api.telegram.org/bot{{ bot_token }}/getFile?file_id={{ p[6] }}" target="_blank" style="color: #10b981; text-decoration: none; font-weight: 600;">📥 Yuklab olish</a>
+                                    <a href="/download/{{ p[0] }}" target="_blank" style="color: #10b981; text-decoration: none; font-weight: 600;">📥 Yuklab olish</a>
                                     {% else %}
                                     <span style="color: var(--text-muted);">—</span>
                                     {% endif %}
@@ -1373,7 +1374,7 @@ def dashboard():
         logger.error(f"Web DB error: {e}")
         
     msg_success = session.pop('msg_success', False)
-    return render_template_string(HTML_TEMPLATE, require_login=False, tab=tab, logs=logs, users=users, broadcasts=broadcasts, presentations=presentations, msg_success=msg_success, bot_token=BOT_TOKEN)
+    return render_template_string(HTML_TEMPLATE, require_login=False, tab=tab, logs=logs, users=users, broadcasts=broadcasts, presentations=presentations, msg_success=msg_success)
 
 @app_web.route('/broadcast', methods=['POST'])
 def broadcast():
@@ -1396,6 +1397,40 @@ def broadcast():
 def logout():
     session.pop('logged_in', None)
     return redirect(url_for('dashboard'))
+
+@app_web.route('/download/<int:pres_id>')
+def download_presentation(pres_id):
+    if not session.get('logged_in'):
+        return redirect(url_for('dashboard'))
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT file_id, topic FROM presentations WHERE id = ?", (pres_id,))
+            row = cursor.fetchone()
+        if not row or not row[0]:
+            return "Fayl topilmadi", 404
+        file_id = row[0]
+        topic = row[1] or "prezentatsiya"
+        # Get file path from Telegram
+        get_file_url = f"https://api.telegram.org/bot{BOT_TOKEN}/getFile?file_id={file_id}"
+        with urllib.request.urlopen(get_file_url) as resp:
+            file_info = json.loads(resp.read().decode())
+        if not file_info.get("ok"):
+            return "Telegram API xatosi", 500
+        file_path = file_info["result"]["file_path"]
+        # Download file from Telegram
+        download_url = f"https://api.telegram.org/file/bot{BOT_TOKEN}/{file_path}"
+        with urllib.request.urlopen(download_url) as resp:
+            file_data = resp.read()
+        filename = f"{topic[:30].replace(' ', '_')}_taqdimot.pdf"
+        return Response(
+            file_data,
+            mimetype='application/pdf',
+            headers={'Content-Disposition': f'attachment; filename="{filename}"'}
+        )
+    except Exception as e:
+        logger.error(f"Download error: {e}")
+        return "Yuklab olishda xatolik", 500
 
 def run_flask():
     port = int(os.environ.get("PORT", 8080))
