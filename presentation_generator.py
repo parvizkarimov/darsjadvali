@@ -218,7 +218,7 @@ def generate_presentation_content(topic, api_key):
         f"Mavzu: '{topic}'.\n"
         "Ushbu mavzu bo'yicha slaydlar matnini o'zbek tilida juda batafsil va chuqur tahliliy ma'lumotlar bilan tayyorlab ber. "
         "Taqdimot aniq 10 ta slayddan iborat bo'lishi shart (muqova sahifasidan tashqari 9 ta kontent slayd). "
-        "Javobni faqat va faqat JSON formatda qaytar. Boshqa hech qanday izoh yoki kirish so'zlarini yozma. "
+        "Javobni faqat va vaqt JSON formatda qaytar. Boshqa hech qanday izoh yoki kirish so'zlarini yozma. "
         "JSON formati quyidagi ko'rinishda bo'lishi shart:\n"
         "{\n"
         "  \"title\": \"Taqdimotning bosh sarlavhasi (Mavzuni to'liq yorituvchi va batafsil)\",\n"
@@ -232,7 +232,7 @@ def generate_presentation_content(topic, api_key):
         "      \"points\": [\n"
         "        {\n"
         "          \"text\": \"Mavzuga oid chuqur tahliliy fakt yoki g'oya (2-3 ta gapdan iborat batafsil tushuntirish, 200-280 ta belgi)\",\n"
-          "icon_type\": \"Ushbu nuqtaga mos ikonka turi: 'trend', 'shield', 'database', 'user', 'globe', 'idea', 'gear', 'lock', 'chat', 'star'\"\n"
+        "          \"icon_type\": \"Ushbu nuqtaga mos ikonka turi: 'trend', 'shield', 'database', 'user', 'globe', 'idea', 'gear', 'lock', 'chat', 'star'\"\n"
         "        },\n"
         "        ...\n"
         "      ]\n"
@@ -270,10 +270,10 @@ def generate_presentation_content(topic, api_key):
 
 # ===== VECTOR GRAPHICS & ICONS GENERATION =====
 
-def get_custom_vector_icon(icon_type, primary, accent, size=30):
-    """Mavzuga oid moslashtirilgan vektor ikonkalarini chizish"""
+def get_custom_vector_icon(icon_type, primary, accent, size=36):
+    """Mavzuga oid moslashtirilgan vektor ikonkalarini chiroyli olti burchakli (hexagon) panel ichida chizish"""
     d = Drawing(size, size)
-    scale = size / 30.0
+    scale = size / 36.0
     
     def s_x(val): return val * scale
     def s_y(val): return val * scale
@@ -282,90 +282,105 @@ def get_custom_vector_icon(icon_type, primary, accent, size=30):
     a_color = HexColor(accent)
     w_color = HexColor("#FFFFFF")
     
-    d.add(Circle(s_x(15), s_y(15), s_x(14), fillColor=HexColor(accent + "1A"), strokeColor=a_color, strokeWidth=1))
+    # 1. Tashqi porlovchi oltiburchak ramka (Hexagon boundary)
+    poly_outer = Polygon([
+        s_x(18), s_y(35), 
+        s_x(33), s_y(27), 
+        s_x(33), s_y(9), 
+        s_x(18), s_y(1), 
+        s_x(3), s_y(9), 
+        s_x(3), s_y(27)
+    ], fillColor=HexColor(accent + "1A"), strokeColor=a_color, strokeWidth=1.5)
+    d.add(poly_outer)
     
+    # 2. Ichki to'q rangli oltiburchak plastinka
+    poly_inner = Polygon([
+        s_x(18), s_y(31), 
+        s_x(29), s_y(25), 
+        s_x(29), s_y(11), 
+        s_x(18), s_y(5), 
+        s_x(7), s_y(11), 
+        s_x(7), s_y(25)
+    ], fillColor=p_color, strokeColor=None)
+    d.add(poly_inner)
+    
+    # 3. Ichki ramz (Ikonka turi) chizish
     if icon_type == "trend":
-        d.add(Rect(s_x(6), s_y(6), s_x(4), s_y(8), fillColor=p_color, strokeColor=None))
-        d.add(Rect(s_x(13), s_y(6), s_x(4), s_y(14), fillColor=a_color, strokeColor=None))
-        d.add(Rect(s_x(20), s_y(6), s_x(4), s_y(18), fillColor=p_color, strokeColor=None))
-        d.add(Line(s_x(5), s_y(8), s_x(25), s_y(24), strokeColor=w_color, strokeWidth=1.5))
-        d.add(Line(s_x(20), s_y(24), s_x(25), s_y(24), strokeColor=w_color, strokeWidth=1.5))
-        d.add(Line(s_x(25), s_y(19), s_x(25), s_y(24), strokeColor=w_color, strokeWidth=1.5))
+        d.add(Rect(s_x(10), s_y(10), s_x(4), s_y(8), fillColor=a_color, strokeColor=None))
+        d.add(Rect(s_x(16), s_y(10), s_x(4), s_y(13), fillColor=w_color, strokeColor=None))
+        d.add(Rect(s_x(22), s_y(10), s_x(4), s_y(17), fillColor=a_color, strokeColor=None))
+        d.add(Line(s_x(8), s_y(11), s_x(26), s_y(24), strokeColor=w_color, strokeWidth=1.5))
+        d.add(Line(s_x(21), s_y(24), s_x(26), s_y(24), strokeColor=w_color, strokeWidth=1.5))
+        d.add(Line(s_x(26), s_y(19), s_x(26), s_y(24), strokeColor=w_color, strokeWidth=1.5))
         
     elif icon_type == "shield":
-        poly = Polygon([s_x(15), s_y(4), s_x(25), s_y(9), s_x(25), s_y(19), s_x(15), s_y(26), s_x(5), s_y(19), s_x(5), s_y(9)], fillColor=a_color, strokeColor=None)
-        d.add(poly)
-        inner = Polygon([s_x(15), s_y(7), s_x(22), s_y(11), s_x(22), s_y(18), s_x(15), s_y(23), s_x(8), s_y(18), s_x(8), s_y(11)], fillColor=p_color, strokeColor=None)
-        d.add(inner)
-        d.add(Circle(s_x(15), s_y(15), s_x(3), fillColor=w_color, strokeColor=None))
+        d.add(Polygon([s_x(18), s_y(8), s_x(26), s_y(14), s_x(26), s_y(21), s_x(18), s_y(28), s_x(10), s_y(21), s_x(10), s_y(14)], fillColor=w_color, strokeColor=None))
+        d.add(Polygon([s_x(18), s_y(11), s_x(23), s_y(15), s_x(23), s_y(19), s_x(18), s_y(24), s_x(13), s_y(19), s_x(13), s_y(15)], fillColor=a_color, strokeColor=None))
         
     elif icon_type == "database":
-        d.add(Rect(s_x(7), s_y(18), s_x(16), s_y(6), rx=s_x(2), ry=s_y(2), fillColor=a_color, strokeColor=None))
-        d.add(Rect(s_x(7), s_y(11), s_x(16), s_y(6), rx=s_x(2), ry=s_y(2), fillColor=p_color, strokeColor=None))
-        d.add(Rect(s_x(7), s_y(4), s_x(16), s_y(6), rx=s_x(2), ry=s_y(2), fillColor=a_color, strokeColor=None))
-        d.add(Line(s_x(10), s_y(21), s_x(20), s_y(21), strokeColor=w_color, strokeWidth=1))
-        d.add(Line(s_x(10), s_y(14), s_x(20), s_y(14), strokeColor=w_color, strokeWidth=1))
-        d.add(Line(s_x(10), s_y(7), s_x(20), s_y(7), strokeColor=w_color, strokeWidth=1))
+        d.add(Rect(s_x(10), s_y(22), s_x(16), s_y(5), rx=s_x(1.5), ry=s_y(1.5), fillColor=w_color, strokeColor=None))
+        d.add(Rect(s_x(10), s_y(15), s_x(16), s_y(5), rx=s_x(1.5), ry=s_y(1.5), fillColor=a_color, strokeColor=None))
+        d.add(Rect(s_x(10), s_y(8), s_x(16), s_y(5), rx=s_x(1.5), ry=s_y(1.5), fillColor=w_color, strokeColor=None))
+        d.add(Circle(s_x(13), s_y(24.5), s_x(1), fillColor=p_color, strokeColor=None))
+        d.add(Circle(s_x(13), s_y(17.5), s_x(1), fillColor=w_color, strokeColor=None))
+        d.add(Circle(s_x(13), s_y(10.5), s_x(1), fillColor=p_color, strokeColor=None))
         
     elif icon_type == "user":
-        d.add(Circle(s_x(15), s_y(21), s_x(5), fillColor=p_color, strokeColor=None))
-        d.add(Polygon([s_x(6), s_y(6), s_x(24), s_y(6), s_x(21), s_y(14), s_x(9), s_y(14)], fillColor=a_color, strokeColor=None))
-        d.add(Circle(s_x(15), s_y(10), s_x(2), fillColor=w_color, strokeColor=None))
+        d.add(Circle(s_x(18), s_y(23), s_x(4.5), fillColor=w_color, strokeColor=None))
+        d.add(Polygon([s_x(10), s_y(9), s_x(26), s_y(9), s_x(23), s_y(16), s_x(13), s_y(16)], fillColor=a_color, strokeColor=None))
         
     elif icon_type == "globe":
-        d.add(Circle(s_x(15), s_y(15), s_x(10), fillColor=p_color, strokeColor=a_color, strokeWidth=1))
-        d.add(Line(s_x(5), s_y(15), s_x(25), s_y(15), strokeColor=w_color, strokeWidth=1))
-        d.add(Line(s_x(15), s_y(5), s_x(15), s_y(25), strokeColor=w_color, strokeWidth=1))
-        d.add(Circle(s_x(15), s_y(15), s_x(6), fillColor=None, strokeColor=w_color, strokeWidth=0.8))
+        d.add(Circle(s_x(18), s_y(18), s_x(9), fillColor=None, strokeColor=w_color, strokeWidth=1.2))
+        d.add(Line(s_x(9), s_y(18), s_x(27), s_y(18), strokeColor=a_color, strokeWidth=1))
+        d.add(Line(s_x(18), s_y(9), s_x(18), s_y(27), strokeColor=a_color, strokeWidth=1))
+        d.add(Circle(s_x(18), s_y(18), s_x(5.5), fillColor=None, strokeColor=w_color, strokeWidth=0.8))
         
     elif icon_type == "idea":
-        d.add(Circle(s_x(15), s_y(18), s_x(7), fillColor=a_color, strokeColor=None))
-        d.add(Rect(s_x(12), s_y(7), s_x(6), s_y(6), fillColor=p_color, strokeColor=None))
-        d.add(Line(s_x(10), s_y(5), s_x(20), s_y(5), strokeColor=w_color, strokeWidth=1.5))
-        d.add(Line(s_x(12), s_y(9), s_x(18), s_y(9), strokeColor=w_color, strokeWidth=1))
+        d.add(Circle(s_x(18), s_y(22), s_x(5.5), fillColor=w_color, strokeColor=None))
+        d.add(Rect(s_x(15), s_y(11), s_x(6), s_y(5), fillColor=a_color, strokeColor=None))
+        d.add(Line(s_x(13), s_y(9), s_x(23), s_y(9), strokeColor=w_color, strokeWidth=1.5))
+        d.add(Circle(s_x(18), s_y(22), s_x(2.5), fillColor=a_color, strokeColor=None))
         
     elif icon_type == "gear":
-        d.add(Circle(s_x(15), s_y(15), s_x(8), fillColor=p_color, strokeColor=None))
-        d.add(Circle(s_x(15), s_y(15), s_x(4), fillColor=w_color, strokeColor=None))
-        d.add(Line(s_x(15), s_y(4), s_x(15), s_y(26), strokeColor=a_color, strokeWidth=2))
-        d.add(Line(s_x(4), s_y(15), s_x(26), s_y(15), strokeColor=a_color, strokeWidth=2))
-        d.add(Line(s_x(7), s_y(7), s_x(23), s_y(23), strokeColor=a_color, strokeWidth=2))
-        d.add(Line(s_x(7), s_y(23), s_x(23), s_y(7), strokeColor=a_color, strokeWidth=2))
-        d.add(Circle(s_x(15), s_y(15), s_x(4), fillColor=w_color, strokeColor=None))
+        d.add(Circle(s_x(18), s_y(18), s_x(7.5), fillColor=a_color, strokeColor=None))
+        d.add(Line(s_x(18), s_y(6), s_x(18), s_y(30), strokeColor=w_color, strokeWidth=2))
+        d.add(Line(s_x(6), s_y(18), s_x(30), s_y(18), strokeColor=w_color, strokeWidth=2))
+        d.add(Line(s_x(9), s_y(9), s_x(27), s_y(27), strokeColor=w_color, strokeWidth=2))
+        d.add(Line(s_x(9), s_y(27), s_x(27), s_y(9), strokeColor=w_color, strokeWidth=2))
+        d.add(Circle(s_x(18), s_y(18), s_x(6), fillColor=p_color, strokeColor=None))
+        d.add(Circle(s_x(18), s_y(18), s_x(2.5), fillColor=w_color, strokeColor=None))
         
     elif icon_type == "lock":
-        d.add(Circle(s_x(15), s_y(18), s_x(5), fillColor=None, strokeColor=p_color, strokeWidth=2))
-        d.add(Rect(s_x(8), s_y(6), s_x(14), s_y(10), rx=s_x(1.5), ry=s_y(1.5), fillColor=a_color, strokeColor=None))
-        d.add(Circle(s_x(15), s_y(11), s_x(1.8), fillColor=w_color, strokeColor=None))
-        d.add(Line(s_x(15), s_y(11), s_x(15), s_y(8), strokeColor=w_color, strokeWidth=1.2))
+        d.add(Circle(s_x(18), s_y(22), s_x(4.5), fillColor=None, strokeColor=w_color, strokeWidth=1.8))
+        d.add(Rect(s_x(11), s_y(9), s_x(14), s_y(10), rx=s_x(1.5), ry=s_y(1.5), fillColor=a_color, strokeColor=None))
+        d.add(Circle(s_x(18), s_y(14), s_x(1.8), fillColor=w_color, strokeColor=None))
         
     elif icon_type == "chat":
-        d.add(Rect(s_x(5), s_y(10), s_x(20), s_y(14), rx=s_x(2.5), ry=s_y(2.5), fillColor=p_color, strokeColor=None))
-        d.add(Polygon([s_x(8), s_y(10), s_x(8), s_y(5), s_x(14), s_y(10)], fillColor=p_color, strokeColor=None))
-        d.add(Circle(s_x(10), s_y(17), s_x(1.5), fillColor=w_color, strokeColor=None))
-        d.add(Circle(s_x(15), s_y(17), s_x(1.5), fillColor=w_color, strokeColor=None))
-        d.add(Circle(s_x(20), s_y(17), s_x(1.5), fillColor=w_color, strokeColor=None))
+        d.add(Rect(s_x(9), s_y(13), s_x(18), s_y(12), rx=s_x(2), ry=s_y(2), fillColor=w_color, strokeColor=None))
+        d.add(Polygon([s_x(11), s_y(13), s_x(11), s_y(9), s_x(16), s_y(13)], fillColor=w_color, strokeColor=None))
+        d.add(Circle(s_x(14), s_y(19), s_x(1.2), fillColor=p_color, strokeColor=None))
+        d.add(Circle(s_x(18), s_y(19), s_x(1.2), fillColor=a_color, strokeColor=None))
+        d.add(Circle(s_x(22), s_y(19), s_x(1.2), fillColor=p_color, strokeColor=None))
         
     elif icon_type == "star":
         points = [
-            s_x(15), s_y(27),
-            s_x(18.5), s_y(18),
-            s_x(27), s_y(18),
-            s_x(20.5), s_y(13),
-            s_x(23), s_y(4),
-            s_x(15), s_y(10),
-            s_x(7), s_y(4),
-            s_x(9.5), s_y(13),
-            s_x(3), s_y(18),
-            s_x(11.5), s_y(18)
+            s_x(18), s_y(29),
+            s_x(21.5), s_y(20),
+            s_x(30), s_y(20),
+            s_x(23), s_y(15),
+            s_x(25.5), s_y(6),
+            s_x(18), s_y(11),
+            s_x(10.5), s_y(6),
+            s_x(13), s_y(15),
+            s_x(6), s_y(20),
+            s_x(14.5), s_y(20)
         ]
-        d.add(Polygon(points, fillColor=a_color, strokeColor=None))
+        d.add(Polygon(points, fillColor=w_color, strokeColor=None))
         
     else:
-        poly = Polygon([s_x(15), s_y(3), s_x(27), s_y(15), s_x(15), s_y(27), s_x(3), s_y(15)], fillColor=a_color, strokeColor=None)
-        d.add(poly)
-        d.add(Circle(s_x(15), s_y(15), s_x(5), fillColor=p_color, strokeColor=None))
-        d.add(Circle(s_x(15), s_y(15), s_x(2), fillColor=w_color, strokeColor=None))
+        # Default high-tech geometric diamond inside inner plate
+        d.add(Polygon([s_x(18), s_y(9), s_x(27), s_y(18), s_x(18), s_y(27), s_x(9), s_y(18)], fillColor=w_color, strokeColor=None))
+        d.add(Circle(s_x(18), s_y(18), s_x(3.5), fillColor=a_color, strokeColor=None))
         
     return d
 
@@ -374,41 +389,89 @@ def get_slide_icon(primary, accent, style_name):
 
 def draw_tech_illustration(canvas_obj, x, y, primary, accent, style_name):
     """Muqova varag'ida sun'iy intellekt va blockchain mavzusiga oid katta neyro-tarmoq chizmasini chizish"""
-    canvas_obj.setFillColor(HexColor(accent))
-    canvas_obj.circle(x, y, 90, fill=True, stroke=False)
+    canvas_obj.saveState()
     
-    canvas_obj.setFillColor(HexColor(primary))
-    canvas_obj.circle(x, y, 75, fill=True, stroke=False)
+    # 1. Orqa yarim-shaffof orbital aylanalar
+    canvas_obj.setFillColor(HexColor(accent + "1C"))
+    canvas_obj.circle(x, y, 95, fill=True, stroke=False)
     
-    line_color = "#FFFFFF" if style_name in ["sleek_dark", "cyberpunk", "retro_neon", "midnight_gold", "corporate_blue", "eco_green", "ocean_breeze", "coffee_cream"] else primary
-    canvas_obj.setStrokeColor(HexColor(line_color))
+    # 2. Neyro-tarmoq mesh liniyalari (aloqalar)
+    canvas_obj.setStrokeColor(HexColor(accent + "44"))
+    canvas_obj.setLineWidth(0.8)
+    
+    # Mesh tugunlari koordinatalari (markaz atrofida)
+    nodes = [
+        (x - 50, y + 50), (x + 50, y + 50),
+        (x + 70, y - 20), (x - 70, y - 20),
+        (x - 20, y - 70), (x + 20, y - 70),
+        (x - 80, y + 20), (x + 80, y + 20),
+        (x, y) # Center
+    ]
+    
+    # Tugunlararo chiziqlar chizish (interconnected mesh)
+    for i in range(len(nodes)):
+        for j in range(i + 1, len(nodes)):
+            # Faqat ba'zilarini ulaymizki, tartibsiz kiber-mesh hosil bo'lsin
+            if (i + j) % 2 == 0 or (i * j) % 3 == 0:
+                canvas_obj.line(nodes[i][0], nodes[i][1], nodes[j][0], nodes[j][1])
+                
+    # 3. Concentric porlovchi halqalar
+    canvas_obj.setStrokeColor(HexColor("#FFFFFF" if style_name in ["sleek_dark", "cyberpunk", "retro_neon", "midnight_gold"] else primary))
+    canvas_obj.setLineWidth(1.5)
+    canvas_obj.circle(x, y, 50, fill=False, stroke=True)
+    
+    # Katta orbital aylana (dashed line)
     canvas_obj.setLineWidth(1.2)
+    canvas_obj.setDash(4, 4)
+    canvas_obj.circle(x, y, 80, fill=False, stroke=True)
+    canvas_obj.setDash(1, 8)
+    canvas_obj.circle(x, y, 92, fill=False, stroke=True)
+    canvas_obj.setDash() # reset dash
     
-    canvas_obj.circle(x, y, 45, fill=False, stroke=True)
-    canvas_obj.circle(x, y, 20, fill=False, stroke=True)
-    
-    canvas_obj.line(x - 65, y, x + 65, y)
-    canvas_obj.line(x, y - 65, x, y + 65)
-    canvas_obj.line(x - 45, y - 45, x + 45, y + 45)
-    canvas_obj.line(x - 45, y + 45, x + 45, y - 45)
-    
+    # 4. Tugun nuqtalarini (neyronlarni) chizish
     node_color = "#FFFFFF" if style_name in ["sleek_dark", "cyberpunk", "retro_neon", "midnight_gold"] else accent
     canvas_obj.setFillColor(HexColor(node_color))
-    canvas_obj.circle(x - 45, y, 5, fill=True, stroke=False)
-    canvas_obj.circle(x + 45, y, 5, fill=True, stroke=False)
-    canvas_obj.circle(x, y - 45, 5, fill=True, stroke=False)
-    canvas_obj.circle(x, y + 45, 5, fill=True, stroke=False)
-    canvas_obj.circle(x - 32, y + 32, 5, fill=True, stroke=False)
-    canvas_obj.circle(x + 32, y - 32, 5, fill=True, stroke=False)
-    canvas_obj.circle(x - 32, y - 32, 5, fill=True, stroke=False)
-    canvas_obj.circle(x + 32, y + 32, 5, fill=True, stroke=False)
-    
+    for nx, ny in nodes:
+        canvas_obj.circle(nx, ny, 4.5, fill=True, stroke=False)
+        
+    # Markaziy yadro
     canvas_obj.setFillColor(HexColor(accent))
     canvas_obj.circle(x, y, 12, fill=True, stroke=False)
     canvas_obj.setFillColor(HexColor("#FFFFFF"))
     canvas_obj.circle(x, y, 5, fill=True, stroke=False)
+    
+    canvas_obj.restoreState()
 
 # ===== DRAWING HANDLERS FOR REPORTLAB =====
+
+def draw_hud_decorations(canvas_obj, doc, style):
+    """Barcha sahifalarga kiber-HUD to'r liniyalari va burchak krestiklarini chizish"""
+    width, height = doc.pagesize
+    
+    # 1. HUD To'r liniyalari (subtle grid network)
+    canvas_obj.setStrokeColor(HexColor(style["accent"] + "05")) # 2% xiralikda juda mayin liniyalar
+    canvas_obj.setLineWidth(0.6)
+    
+    # Vertikal grid
+    for x in range(80, int(width), 80):
+        canvas_obj.line(x, 0, x, height)
+    # Gorizontal grid
+    for y in range(80, int(height), 80):
+        canvas_obj.line(0, y, width, y)
+        
+    # 2. Burchaklardagi HUD krestiklari (HUD corner crosshairs "+")
+    canvas_obj.setStrokeColor(HexColor(style["accent"] + "26")) # 15% xiralik
+    canvas_obj.setLineWidth(1)
+    
+    corners = [
+        (35, height - 35),           # Top-left
+        (width - 35, height - 35),   # Top-right
+        (35, 35),                    # Bottom-left
+        (width - 35, 35)             # Bottom-right
+    ]
+    for cx, cy in corners:
+        canvas_obj.line(cx, cy - 6, cx, cy + 6)
+        canvas_obj.line(cx - 6, cy, cx + 6, cy)
 
 def draw_cover_background(canvas_obj, doc):
     canvas_obj.saveState()
@@ -418,66 +481,29 @@ def draw_cover_background(canvas_obj, doc):
     canvas_obj.setFillColor(HexColor(style["cover_bg"]))
     canvas_obj.rect(0, 0, doc.pagesize[0], doc.pagesize[1], fill=True, stroke=False)
     
-    # Draw modern style-specific decorative elements
+    # Draw HUD grid & crosshairs
+    draw_hud_decorations(canvas_obj, doc, style)
+    
+    # 3. Kiber dizayndagi porlovchi sarlavha blok-trapeziyasi (Angled polygon card)
+    # Bu element orqali sarlavha HUD ramka ichiga chiroyli joylashadi
+    canvas_obj.setFillColor(HexColor(style["primary"] + "12")) # 7% shaffoflikda to'q yadro foni
+    canvas_obj.setStrokeColor(HexColor(style["accent"]))
+    canvas_obj.setLineWidth(1.8)
+    
+    p_card = canvas_obj.beginPath()
+    p_card.moveTo(60, 80)
+    p_card.lineTo(490, 80)
+    p_card.lineTo(550, doc.pagesize[1] - 90)
+    p_card.lineTo(60, doc.pagesize[1] - 90)
+    p_card.close()
+    canvas_obj.drawPath(p_card, fill=True, stroke=True)
+    
+    # Trapeziya chetiga dekorativ kiber nuqta/chiziqchalar qo'shish
     canvas_obj.setFillColor(HexColor(style["accent"]))
+    canvas_obj.rect(60, doc.pagesize[1] - 88, 30, 3, fill=True, stroke=False)
+    canvas_obj.rect(460, 78, 30, 3, fill=True, stroke=False)
     
-    if doc.style_name in ["corporate_blue", "eco_green", "ocean_breeze", "coffee_cream"]:
-        p = canvas_obj.beginPath()
-        p.moveTo(0, 0)
-        p.lineTo(doc.pagesize[0] * 0.28, 0)
-        p.lineTo(doc.pagesize[0] * 0.18, doc.pagesize[1])
-        p.lineTo(0, doc.pagesize[1])
-        p.close()
-        canvas_obj.drawPath(p, fill=True, stroke=False)
-        
-        canvas_obj.setFillColor(HexColor(style["accent"]))
-        canvas_obj.circle(doc.pagesize[0] * 0.9, doc.pagesize[1] * 0.85, 130, fill=True, stroke=False)
-        canvas_obj.setFillColor(HexColor(style["cover_bg"]))
-        canvas_obj.circle(doc.pagesize[0] * 0.9, doc.pagesize[1] * 0.85, 115, fill=True, stroke=False)
-
-    elif doc.style_name in ["sleek_dark", "midnight_gold", "retro_neon", "cyberpunk"]:
-        p = canvas_obj.beginPath()
-        p.moveTo(doc.pagesize[0], 0)
-        p.lineTo(doc.pagesize[0] * 0.65, 0)
-        p.lineTo(doc.pagesize[0], doc.pagesize[1] * 0.5)
-        p.close()
-        canvas_obj.drawPath(p, fill=True, stroke=False)
-        
-        canvas_obj.setFillColor(HexColor(style["primary"]))
-        p2 = canvas_obj.beginPath()
-        p2.moveTo(0, doc.pagesize[1])
-        p2.lineTo(doc.pagesize[0] * 0.15, doc.pagesize[1])
-        p2.lineTo(0, doc.pagesize[1] * 0.7)
-        p2.close()
-        canvas_obj.drawPath(p2, fill=True, stroke=False)
-
-    else:
-        canvas_obj.setStrokeColor(HexColor(style["accent"]))
-        canvas_obj.setLineWidth(3)
-        canvas_obj.line(40, 40, 40, doc.pagesize[1] - 40)
-        canvas_obj.line(40, doc.pagesize[1] - 40, doc.pagesize[0] - 40, doc.pagesize[1] - 40)
-        canvas_obj.setLineWidth(1)
-        canvas_obj.line(48, 48, 48, doc.pagesize[1] - 48)
-        canvas_obj.line(48, doc.pagesize[1] - 48, doc.pagesize[0] - 48, doc.pagesize[1] - 48)
-        
-        canvas_obj.setFillColor(HexColor(style["accent"]))
-        canvas_obj.circle(doc.pagesize[0] - 80, doc.pagesize[1] - 80, 20, fill=True, stroke=False)
-        
-    w = doc.pagesize[0] - 120
-    panel_w = (w - 20) / 3
-    y_pos = 110
-    panel_h = 110
-    
-    canvas_obj.setFillColor(HexColor(style["accent"]))
-    canvas_obj.rect(60, y_pos, panel_w, panel_h, fill=True, stroke=False)
-    
-    canvas_obj.setFillColor(HexColor(style["primary"]))
-    canvas_obj.rect(60 + panel_w + 10, y_pos, panel_w, panel_h, fill=True, stroke=False)
-    
-    panel3_color = style["cover_sub"] if style["cover_sub"] != style["accent"] else style["text_muted"]
-    canvas_obj.setFillColor(HexColor(panel3_color))
-    canvas_obj.rect(60 + 2 * panel_w + 20, y_pos, panel_w, panel_h, fill=True, stroke=False)
-    
+    # Neyro-tarmoq chizmasi
     ill_x = doc.pagesize[0] - 170
     ill_y = doc.pagesize[1] * 0.6
     draw_tech_illustration(canvas_obj, ill_x, ill_y, style["primary"], style["accent"], doc.style_name)
@@ -489,9 +515,14 @@ def draw_slide_background(canvas_obj, doc):
     style = doc.style_config
     page_num = canvas_obj.getPageNumber()
     
+    # Draw slide background
     canvas_obj.setFillColor(HexColor(style["slide_bg"]))
     canvas_obj.rect(0, 0, doc.pagesize[0], doc.pagesize[1], fill=True, stroke=False)
     
+    # Draw HUD grid & crosshairs
+    draw_hud_decorations(canvas_obj, doc, style)
+    
+    # Slaydlar har xil va kreativ ko'rinishi uchun sahifa raqamiga qarab turli vektor bezaklar chizamiz
     canvas_obj.setFillColor(HexColor(style["accent"]))
     
     if page_num % 3 == 1:
@@ -519,14 +550,17 @@ def draw_slide_background(canvas_obj, doc):
         
         canvas_obj.circle(30, doc.pagesize[1] - 30, 8, fill=True, stroke=False)
 
+    # Draw bottom footer line
     border_color = "#cbd5e1" if doc.style_name != "sleek_dark" else "#334155"
     canvas_obj.setFillColor(HexColor(border_color))
     canvas_obj.rect(54, 45, doc.pagesize[0] - 108, 1, fill=True, stroke=False)
     
+    # Draw footer metadata
     canvas_obj.setFont("Helvetica", 9)
     canvas_obj.setFillColor(HexColor(style["text_muted"]))
     canvas_obj.drawString(54, 28, doc.topic_title)
     
+    # Draw page number
     canvas_obj.drawRightString(doc.pagesize[0] - 54, 28, f"{page_num} / 10")
     
     canvas_obj.restoreState()
@@ -556,7 +590,6 @@ def create_presentation_pdf(data, style_name, output_path, author_name="Taqdimot
     style_config = STYLE_TEMPLATES[style_name]
     pagesize = landscape(A4)
     
-    # Vertikal bo'shliqni ko'proq saqlash uchun top va bottom marginni 55 ga kamaytirdik
     doc = SimpleDocTemplate(
         output_path,
         pagesize=pagesize,
@@ -601,7 +634,6 @@ def create_presentation_pdf(data, style_name, output_path, author_name="Taqdimot
         alignment=0
     )
     
-    # Kichikroq shriftlar yordamida overflow xavfini bartaraf qilamiz
     slide_title_style = ParagraphStyle(
         "SlideTitle",
         fontName="Helvetica-Bold",
@@ -653,11 +685,10 @@ def create_presentation_pdf(data, style_name, output_path, author_name="Taqdimot
         story.append(Spacer(1, 5))
         story.append(Paragraph(slide.get("title", f"{idx+2}-slayd"), slide_title_style))
         
-        # Slayd tavsifini cheklash
         desc_text = slide.get("description", "")
         if desc_text:
-            if len(desc_text) > 150:
-                desc_text = desc_text[:147] + "..."
+            if len(desc_text) > 250:
+                desc_text = desc_text[:247] + "..."
             story.append(Paragraph(desc_text, slide_desc_style))
             
         points = slide.get("points", [])
@@ -669,7 +700,7 @@ def create_presentation_pdf(data, style_name, output_path, author_name="Taqdimot
             layout_type = layout_types[idx % len(layout_types)]
             
         if num_points > 0:
-            # 1. GRID CARDS LAYOUT
+            # 1. GRID CARDS LAYOUT (Neon border box wrapping)
             if layout_type == "grid_cards":
                 cell_data = []
                 col_widths = []
@@ -720,15 +751,18 @@ def create_presentation_pdf(data, style_name, output_path, author_name="Taqdimot
                         
                 t_style_list = [
                     ('VALIGN', (0,0), (-1,-1), 'TOP'),
-                    ('BOTTOMPADDING', (0,0), (-1,-1), 4),
-                    ('TOPPADDING', (0,0), (-1,-1), 4),
+                    ('BOTTOMPADDING', (0,0), (-1,-1), 8),
+                    ('TOPPADDING', (0,0), (-1,-1), 8),
                 ]
                 for r_idx in range(len(cell_data)):
                     for c_idx in range(len(col_widths)):
-                        t_style_list.append(('LEFTPADDING', (c_idx, r_idx), (c_idx, r_idx), 10))
+                        t_style_list.append(('LEFTPADDING', (c_idx, r_idx), (c_idx, r_idx), 12))
                         t_style_list.append(('RIGHTPADDING', (c_idx, r_idx), (c_idx, r_idx), 12))
                         flat_idx = r_idx * len(col_widths) + c_idx
                         if flat_idx < num_points:
+                            # Premium neon box casing design
+                            t_style_list.append(('BACKGROUND', (c_idx, r_idx), (c_idx, r_idx), HexColor(style_config["accent"] + "0A")))
+                            t_style_list.append(('BOX', (c_idx, r_idx), (c_idx, r_idx), 1, HexColor(style_config["accent"] + "22")))
                             t_style_list.append(('LINEBEFORE', (c_idx, r_idx), (c_idx, r_idx), 3.5, HexColor(style_config["accent"])))
                             
                 points_table = Table(cell_data, colWidths=col_widths, style=TableStyle(t_style_list))
@@ -808,6 +842,8 @@ def create_presentation_pdf(data, style_name, output_path, author_name="Taqdimot
                     ('LEFTPADDING', (0,0), (-1,-1), 12),
                 ]
                 for r_idx in range(len(right_rows)):
+                    r_style_list.append(('BACKGROUND', (0, r_idx), (0, r_idx), HexColor(style_config["accent"] + "0A")))
+                    r_style_list.append(('BOX', (0, r_idx), (0, r_idx), 1, HexColor(style_config["accent"] + "22")))
                     r_style_list.append(('LINEBEFORE', (0, r_idx), (0, r_idx), 3.5, HexColor(style_config["accent"])))
                 right_table.setStyle(TableStyle(r_style_list))
                 
@@ -849,7 +885,7 @@ def create_presentation_pdf(data, style_name, output_path, author_name="Taqdimot
                     cell_flowables = [
                         Paragraph(f"BOSQICH 0{i+1}", step_title_style),
                         Spacer(1, 6),
-                        Table([[icon]], colWidths=[30], style=TableStyle([
+                        Table([[icon]], colWidths=[36], style=TableStyle([
                             ('ALIGN', (0,0), (-1,-1), 'CENTER'),
                             ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
                             ('LEFTPADDING', (0,0), (-1,-1), 0),
@@ -863,13 +899,16 @@ def create_presentation_pdf(data, style_name, output_path, author_name="Taqdimot
                 timeline_table = Table([row_content], colWidths=[col_w]*num_points)
                 t_style_list = [
                     ('VALIGN', (0,0), (-1,-1), 'TOP'),
-                    ('LEFTPADDING', (0,0), (-1,-1), 6),
-                    ('RIGHTPADDING', (0,0), (-1,-1), 6),
-                    ('TOPPADDING', (0,0), (-1,-1), 6),
-                    ('BOTTOMPADDING', (0,0), (-1,-1), 6),
+                    ('LEFTPADDING', (0,0), (-1,-1), 8),
+                    ('RIGHTPADDING', (0,0), (-1,-1), 8),
+                    ('TOPPADDING', (0,0), (-1,-1), 8),
+                    ('BOTTOMPADDING', (0,0), (-1,-1), 8),
                 ]
-                for c_idx in range(1, num_points):
-                    t_style_list.append(('LINEBEFORE', (c_idx, 0), (c_idx, 0), 1.5, HexColor(style_config["text_muted"] + "33")))
+                for c_idx in range(num_points):
+                    t_style_list.append(('BACKGROUND', (c_idx, 0), (c_idx, 0), HexColor(style_config["accent"] + "0A")))
+                    t_style_list.append(('BOX', (c_idx, 0), (c_idx, 0), 1, HexColor(style_config["accent"] + "22")))
+                    t_style_list.append(('LINEBEFORE', (c_idx, 0), (c_idx, 0), 3.5, HexColor(style_config["accent"])))
+                    
                 timeline_table.setStyle(TableStyle(t_style_list))
                 story.append(timeline_table)
 
@@ -933,11 +972,17 @@ def create_presentation_pdf(data, style_name, output_path, author_name="Taqdimot
                 bottom_table = Table([[left_col, right_col]], colWidths=[col_w, col_w])
                 bottom_table.setStyle(TableStyle([
                     ('VALIGN', (0,0), (-1,-1), 'TOP'),
-                    ('LEFTPADDING', (0,0), (-1,-1), 8),
-                    ('RIGHTPADDING', (0,0), (-1,-1), 8),
+                    ('LEFTPADDING', (0,0), (-1,-1), 10),
+                    ('RIGHTPADDING', (0,0), (-1,-1), 10),
                     ('TOPPADDING', (0,0), (-1,-1), 4),
                     ('BOTTOMPADDING', (0,0), (-1,-1), 4),
+                    # Left column card style
+                    ('BACKGROUND', (0,0), (0,0), HexColor(style_config["accent"] + "0A")),
+                    ('BOX', (0,0), (0,0), 1, HexColor(style_config["accent"] + "22")),
                     ('LINEBEFORE', (0,0), (0,0), 3.5, HexColor(style_config["accent"])),
+                    # Right column card style
+                    ('BACKGROUND', (1,0), (1,0), HexColor(style_config["accent"] + "0A")),
+                    ('BOX', (1,0), (1,0), 1, HexColor(style_config["accent"] + "22")),
                     ('LINEBEFORE', (1,0), (1,0), 3.5, HexColor(style_config["accent"])),
                 ]))
                 story.append(bottom_table)
