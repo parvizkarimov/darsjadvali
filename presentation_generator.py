@@ -7,7 +7,7 @@ from groq import Groq
 
 # Reportlab imports
 from reportlab.lib.pagesizes import landscape, A4
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak, KeepTogether
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak, KeepTogether, Table, TableStyle
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.colors import HexColor
 from reportlab.pdfgen import canvas
@@ -328,6 +328,26 @@ def draw_cover_background(canvas_obj, doc):
         canvas_obj.setFillColor(HexColor(style["accent"]))
         canvas_obj.circle(doc.pagesize[0] - 80, doc.pagesize[1] - 80, 20, fill=True, stroke=False)
         
+    # --- DRAW THE CREATIVE VECTOR GRID BANNER (as seen in Canva samples) ---
+    # Draw three styled colored rectangle blocks at the bottom-center of the cover page
+    w = doc.pagesize[0] - 120
+    panel_w = (w - 20) / 3
+    y_pos = 110
+    panel_h = 110
+    
+    # Panel 1 (Accent color)
+    canvas_obj.setFillColor(HexColor(style["accent"]))
+    canvas_obj.rect(60, y_pos, panel_w, panel_h, fill=True, stroke=False)
+    
+    # Panel 2 (Primary color)
+    canvas_obj.setFillColor(HexColor(style["primary"]))
+    canvas_obj.rect(60 + panel_w + 10, y_pos, panel_w, panel_h, fill=True, stroke=False)
+    
+    # Panel 3 (Muted/Sub color accent)
+    panel3_color = style["cover_sub"] if style["cover_sub"] != style["accent"] else style["text_muted"]
+    canvas_obj.setFillColor(HexColor(panel3_color))
+    canvas_obj.rect(60 + 2 * panel_w + 20, y_pos, panel_w, panel_h, fill=True, stroke=False)
+        
     canvas_obj.restoreState()
 
 def draw_slide_background(canvas_obj, doc):
@@ -484,10 +504,57 @@ def create_presentation_pdf(data, style_name, output_path):
         if slide.get("description"):
             story.append(Paragraph(slide.get("description"), slide_desc_style))
             
-        # Bullet points rendering
-        for pt in slide.get("points", []):
-            bullet_html = f"• {pt}"
-            story.append(Paragraph(bullet_html, slide_body_style))
+        # Bullet points rendering in a grid/columns layout
+        points = slide.get("points", [])
+        num_points = len(points)
+        
+        if num_points > 0:
+            cell_data = []
+            col_widths = []
+            
+            # Grid layout logic:
+            if num_points <= 2:
+                # 2 columns, 1 row
+                col_widths = [(doc.pagesize[0] - 120) / 2] * 2
+                cell_data = [[Paragraph(f"<b>0{i+1}.</b> {pt}", slide_body_style) for i, pt in enumerate(points)]]
+                if num_points == 1:
+                    cell_data[0].append(Paragraph("", slide_body_style))
+            elif num_points == 3:
+                # 3 columns, 1 row
+                col_widths = [(doc.pagesize[0] - 120) / 3] * 3
+                cell_data = [[Paragraph(f"<b>0{i+1}.</b> {pt}", slide_body_style) for i, pt in enumerate(points)]]
+            else:
+                # 4 or more points: 2 columns, dynamic rows
+                col_widths = [(doc.pagesize[0] - 120) / 2] * 2
+                row = []
+                for i, pt in enumerate(points):
+                    row.append(Paragraph(f"<b>0{i+1}.</b> {pt}", slide_body_style))
+                    if len(row) == 2:
+                        cell_data.append(row)
+                        row = []
+                if row:
+                    row.append(Paragraph("", slide_body_style))
+                    cell_data.append(row)
+                    
+            # Define table style
+            t_style_list = [
+                ('VALIGN', (0,0), (-1,-1), 'TOP'),
+                ('BOTTOMPADDING', (0,0), (-1,-1), 10),
+                ('TOPPADDING', (0,0), (-1,-1), 8),
+            ]
+            
+            # Add left border accent and padding to each cell
+            for r_idx in range(len(cell_data)):
+                for c_idx in range(len(col_widths)):
+                    t_style_list.append(('LEFTPADDING', (c_idx, r_idx), (c_idx, r_idx), 10))
+                    t_style_list.append(('RIGHTPADDING', (c_idx, r_idx), (c_idx, r_idx), 12))
+                    
+                    flat_idx = r_idx * len(col_widths) + c_idx
+                    if flat_idx < num_points:
+                        t_style_list.append(('LINEBEFORE', (c_idx, r_idx), (c_idx, r_idx), 3.5, HexColor(style_config["accent"])))
+                        
+            points_table = Table(cell_data, colWidths=col_widths, style=TableStyle(t_style_list))
+            story.append(points_table)
             
         # Add PageBreak unless it's the last page
         if idx < len(slides) - 1:
