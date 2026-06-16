@@ -907,8 +907,8 @@ def create_presentation_pdf(data, style_name, output_path, author_name="Taqdimot
                 focus_title_style = ParagraphStyle(
                     f"FocusTitle_{idx}",
                     fontName="Helvetica-Bold",
-                    fontSize=15,
-                    leading=18,
+                    fontSize=12,
+                    leading=16,
                     textColor=get_color("#FFFFFF" if style_name in ["sleek_dark", "cyberpunk", "retro_neon", "midnight_gold"] else style_config["cover_text"])
                 )
                 focus_desc_style = ParagraphStyle(
@@ -926,10 +926,8 @@ def create_presentation_pdf(data, style_name, output_path, author_name="Taqdimot
                 focus_card_content = [
                     Spacer(1, 8),
                     left_icon,
-                    Spacer(1, 8),
-                    Paragraph("DIQQAT MARKAZIDA", focus_title_style),
-                    Spacer(1, 6),
-                    Paragraph(focus_desc, focus_desc_style),
+                    Spacer(1, 10),
+                    Paragraph(focus_desc, focus_title_style),
                     Spacer(1, 8)
                 ]
                 
@@ -1005,7 +1003,7 @@ def create_presentation_pdf(data, style_name, output_path, author_name="Taqdimot
                     )
                     
                     cell_flowables = [
-                        Paragraph(f"BOSQICH 0{i+1}", step_title_style),
+                        Paragraph(f"0{i+1}", step_title_style),
                         Spacer(1, 6),
                         Table([[icon]], colWidths=[36], style=TableStyle([
                             ('ALIGN', (0,0), (-1,-1), 'CENTER'),
