@@ -400,7 +400,17 @@ async def handle_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
             [InlineKeyboardButton("Corporate Blue 🏢", callback_data="style_corporate_blue"),
              InlineKeyboardButton("Sleek Dark 🌙", callback_data="style_sleek_dark")],
             [InlineKeyboardButton("Warm Minimalist 🎨", callback_data="style_warm_minimalist"),
-             InlineKeyboardButton("Eco Green 🌿", callback_data="style_eco_green")]
+             InlineKeyboardButton("Eco Green 🌿", callback_data="style_eco_green")],
+            [InlineKeyboardButton("Sunset Orange 🍊", callback_data="style_sunset_orange"),
+             InlineKeyboardButton("Ocean Breeze 🌊", callback_data="style_ocean_breeze")],
+            [InlineKeyboardButton("Royal Purple 👑", callback_data="style_royal_purple"),
+             InlineKeyboardButton("Cherry Blossom 🌸", callback_data="style_cherry_blossom")],
+            [InlineKeyboardButton("Midnight Gold ✨", callback_data="style_midnight_gold"),
+             InlineKeyboardButton("Retro Neon ⚡", callback_data="style_retro_neon")],
+            [InlineKeyboardButton("Nordic Slate 🏔️", callback_data="style_nordic_slate"),
+             InlineKeyboardButton("Vintage Sepia 📜", callback_data="style_vintage_sepia")],
+            [InlineKeyboardButton("Cyberpunk 🚀", callback_data="style_cyberpunk"),
+             InlineKeyboardButton("Coffee & Cream ☕", callback_data="style_coffee_cream")]
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
         await update.message.reply_text(

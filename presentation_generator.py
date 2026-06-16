@@ -59,6 +59,116 @@ STYLE_TEMPLATES = {
         "text_muted": "#4B6B60",    # Muted green-gray
         "cover_text": "#FFFFFF",
         "cover_sub": "#A7F3D0",     # Emerald 200
+    },
+    "sunset_orange": {
+        "name": "Sunset Orange 🍊",
+        "cover_bg": "#EA580C",      # Orange 600
+        "slide_bg": "#FFF7ED",      # Orange 50
+        "primary": "#7C2D12",       # Orange 800
+        "accent": "#F97316",        # Orange 500
+        "text_color": "#431407",    # Dark brown
+        "text_muted": "#9A3412",
+        "cover_text": "#FFFFFF",
+        "cover_sub": "#FFEDD5",
+    },
+    "ocean_breeze": {
+        "name": "Ocean Breeze 🌊",
+        "cover_bg": "#115E59",      # Teal 800
+        "slide_bg": "#F0FDFA",      # Teal 50
+        "primary": "#0F766E",       # Teal 700
+        "accent": "#06B6D4",        # Cyan 500
+        "text_color": "#115E59",
+        "text_muted": "#0D9488",
+        "cover_text": "#FFFFFF",
+        "cover_sub": "#CCFBF1",
+    },
+    "royal_purple": {
+        "name": "Royal Purple 👑",
+        "cover_bg": "#4C1D95",      # Violet 800
+        "slide_bg": "#F5F3FF",      # Violet 50
+        "primary": "#5B21B6",       # Violet 700
+        "accent": "#8B5CF6",        # Violet 500
+        "text_color": "#2E1065",
+        "text_muted": "#7C3AED",
+        "cover_text": "#FFFFFF",
+        "cover_sub": "#DDD6FE",
+    },
+    "cherry_blossom": {
+        "name": "Cherry Blossom 🌸",
+        "cover_bg": "#BE185D",      # Pink 700
+        "slide_bg": "#FDF2F8",      # Pink 50
+        "primary": "#9D174D",       # Pink 800
+        "accent": "#EC4899",        # Pink 500
+        "text_color": "#500724",
+        "text_muted": "#DB2777",
+        "cover_text": "#FFFFFF",
+        "cover_sub": "#FCE7F3",
+    },
+    "midnight_gold": {
+        "name": "Midnight Gold ✨",
+        "cover_bg": "#030712",      # Gray 950
+        "slide_bg": "#0B0F19",      # Dark Blue-Gray
+        "primary": "#F59E0B",       # Amber 500
+        "accent": "#D97706",        # Amber 600
+        "text_color": "#F9FAFB",    # Gray 50
+        "text_muted": "#9CA3AF",    # Gray 400
+        "cover_text": "#FFFFFF",
+        "cover_sub": "#FDE68A",
+    },
+    "retro_neon": {
+        "name": "Retro Neon ⚡",
+        "cover_bg": "#09090B",      # Zinc 950
+        "slide_bg": "#18181B",      # Zinc 900
+        "primary": "#06B6D4",       # Cyan 500
+        "accent": "#10B981",        # Emerald 500
+        "text_color": "#FAFAFA",    # Zinc 50
+        "text_muted": "#A1A1AA",    # Zinc 400
+        "cover_text": "#FFFFFF",
+        "cover_sub": "#A7F3D0",
+    },
+    "nordic_slate": {
+        "name": "Nordic Slate 🏔️",
+        "cover_bg": "#1F2937",      # Gray 800
+        "slide_bg": "#F3F4F6",      # Gray 100
+        "primary": "#374151",       # Gray 700
+        "accent": "#4B5563",       # Gray 600
+        "text_color": "#111827",    # Gray 900
+        "text_muted": "#6B7280",    # Gray 500
+        "cover_text": "#FFFFFF",
+        "cover_sub": "#E5E7EB",
+    },
+    "vintage_sepia": {
+        "name": "Vintage Sepia 📜",
+        "cover_bg": "#451A03",      # Amber 950
+        "slide_bg": "#FEF3C7",      # Amber 100
+        "primary": "#78350F",       # Amber 900
+        "accent": "#D97706",        # Amber 600
+        "text_color": "#451A03",
+        "text_muted": "#B45309",
+        "cover_text": "#FFFFFF",
+        "cover_sub": "#FDE68A",
+    },
+    "cyberpunk": {
+        "name": "Cyberpunk 🚀",
+        "cover_bg": "#090212",      # Deep dark violet
+        "slide_bg": "#0F051D",      # Dark purple
+        "primary": "#D946EF",       # Fuchsia 500
+        "accent": "#06B6D4",        # Cyan 500
+        "text_color": "#FDF4FF",
+        "text_muted": "#A21CAF",
+        "cover_text": "#FFFFFF",
+        "cover_sub": "#F5D0FE",
+    },
+    "coffee_cream": {
+        "name": "Coffee & Cream ☕",
+        "cover_bg": "#3E2723",      # Brown 900
+        "slide_bg": "#F5EBE6",      # Soft warm cream
+        "primary": "#4E3629",       # Brown 800
+        "accent": "#8C6239",        # Soft bronze
+        "text_color": "#271206",
+        "text_muted": "#6D4C41",
+        "cover_text": "#FFFFFF",
+        "cover_sub": "#EFEBE9",
     }
 }
 
@@ -105,32 +215,34 @@ def generate_presentation_content(topic, api_key):
     client = Groq(api_key=api_key)
     
     prompt = (
-        "Sen malakali taqdimotchi va mutaxassissan. "
+        "Sen yuqori malakali ma'ruzachi va taqdimotchi mutaxassissan. "
         f"Mavzu: '{topic}'.\n"
-        "Ushbu mavzu bo'yicha slaydlar matnini o'zbek tilida tayyorlab ber. "
+        "Ushbu mavzu bo'yicha slaydlar matnini o'zbek tilida juda batafsil va chuqur tahliliy ma'lumotlar bilan tayyorlab ber. "
         "Taqdimot aniq 10 ta slayddan iborat bo'lishi shart. "
         "Javobni faqat va faqat JSON formatda qaytar. Boshqa hech qanday izoh yoki kirish so'zlarini yozma. "
         "JSON formati quyidagi ko'rinishda bo'lishi shart:\n"
         "{\n"
-        "  \"title\": \"Taqdimotning bosh sarlavhasi (Mavzuni to'liq yorituvchi)\",\n"
-        "  \"subtitle\": \"Qisqa va qiziqarli tag-sarlavha\",\n"
+        "  \"title\": \"Taqdimotning bosh sarlavhasi (Mavzuni to'liq yorituvchi va batafsil)\",\n"
+        "  \"subtitle\": \"Mavzuning mohiyatini ochib beruvchi qiziqarli tag-sarlavha\",\n"
         "  \"slides\": [\n"
         "    {\n"
         "      \"slide_number\": 1,\n"
         "      \"title\": \"Slayd sarlavhasi (masalan, Kirish yoki Reja)\",\n"
+        "      \"description\": \"Slayd mavzusi bo'yicha qisqa umumiy tushuncha yoki kirish gap (1-2 gapdan iborat batafsil matn).\",\n"
         "      \"points\": [\n"
-        "        \"Mavzuga oid muhim fakt yoki g'oya\",\n"
-        "        \"Yana bir muhim tushuncha yoki ma'lumot\",\n"
-        "        \"Mavzuning dastlabki tahlili (dars uchun foydali)\"\n"
+        "        \"Mavzuga oid muhim fakt, tahlil yoki g'oya (shunchaki ibora emas, 2-3 ta to'liq gapdan iborat batafsil tushuntirish)\",\n"
+        "        \"Yana bir muhim tushuncha yoki ma'lumot (2-3 ta to'liq gapdan iborat tahlil)\",\n"
+        "        \"Ushbu slayd doirasidagi yakuniy xulosa yoki fakt (2-3 ta to'liq gapdan iborat tahlil)\"\n"
         "      ]\n"
         "    },\n"
         "    ... (yana 9 ta slayd)\n"
         "  ]\n"
         "}\n\n"
         "Qoidalarga amal qil:\n"
-        "1. Har bir slayd sarlavhasi va nuqtalari qisqa, tushunarli va 2-3 qatorlik gaplardan iborat bo'lsin.\n"
-        "2. Har bir slaydda 3 tadan 5 tagacha nuqtalar (points) bo'lishi shart.\n"
-        "3. Slaydlar tartibi mantiqiy bo'lsin: Kirish -> Muammo -> Tahlil -> Yechim -> Kelajak -> Xulosa va h.k."
+        "1. Taqdimot mutlaqo yuzaki bo'lmasin, undagi ma'lumotlar hajmi va chuqurligi dars o'tishga, o'rganishga yetarli darajada ko'p va professional bo'lsin.\n"
+        "2. Har bir slaydning 'description' maydonida shu slayd uchun kirish/umumiy mohiyatni yorituvchi 1-2 ta to'liq gap yozilsin.\n"
+        "3. Har bir slaydda 3 tadan 5 tagacha 'points' (nuqtalar) bo'lishi shart. Har bir nuqta shunchaki qisqa so'zlar emas, balki 2-3 ta gapdan iborat batafsil va boyitilgan tushuntirish matni bo'lishi shart.\n"
+        "4. Slaydlar tartibi mantiqiy bo'lsin: Kirish -> Muammo -> Tahlil -> Yechim -> Kelajak -> Xulosa va h.k."
     )
 
     try:
@@ -166,8 +278,9 @@ def draw_cover_background(canvas_obj, doc):
     
     # Draw modern style-specific decorative elements
     canvas_obj.setFillColor(HexColor(style["accent"]))
-    if doc.style_name == "corporate_blue":
-        # Draw a beautiful polygon/stripe on the left
+    
+    # Left stripe/polygon accent (Corporate Blue, Eco Green, Ocean Breeze, Coffee & Cream)
+    if doc.style_name in ["corporate_blue", "eco_green", "ocean_breeze", "coffee_cream"]:
         p = canvas_obj.beginPath()
         p.moveTo(0, 0)
         p.lineTo(doc.pagesize[0] * 0.28, 0)
@@ -176,14 +289,14 @@ def draw_cover_background(canvas_obj, doc):
         p.close()
         canvas_obj.drawPath(p, fill=True, stroke=False)
         
-        # Floating background circles
-        canvas_obj.setFillColor(HexColor("#3b82f6")) # soft accent
+        # Soft top-right circle
+        canvas_obj.setFillColor(HexColor(style["accent"]))
         canvas_obj.circle(doc.pagesize[0] * 0.9, doc.pagesize[1] * 0.85, 130, fill=True, stroke=False)
         canvas_obj.setFillColor(HexColor(style["cover_bg"]))
         canvas_obj.circle(doc.pagesize[0] * 0.9, doc.pagesize[1] * 0.85, 115, fill=True, stroke=False)
-        
-    elif doc.style_name == "sleek_dark":
-        # Elegant geometric lines and triangles
+
+    # Glowing cyber/neon triangles (Sleek Dark, Midnight Gold, Retro Neon, Cyberpunk)
+    elif doc.style_name in ["sleek_dark", "midnight_gold", "retro_neon", "cyberpunk"]:
         p = canvas_obj.beginPath()
         p.moveTo(doc.pagesize[0], 0)
         p.lineTo(doc.pagesize[0] * 0.65, 0)
@@ -191,15 +304,17 @@ def draw_cover_background(canvas_obj, doc):
         p.close()
         canvas_obj.drawPath(p, fill=True, stroke=False)
         
-        canvas_obj.setFillColor(HexColor("#4c1d95")) # dark purple accent
+        # Lighter secondary accent
+        canvas_obj.setFillColor(HexColor(style["primary"]))
         p2 = canvas_obj.beginPath()
         p2.moveTo(0, doc.pagesize[1])
         p2.lineTo(doc.pagesize[0] * 0.15, doc.pagesize[1])
         p2.lineTo(0, doc.pagesize[1] * 0.7)
         p2.close()
         canvas_obj.drawPath(p2, fill=True, stroke=False)
-        
-    elif doc.style_name == "warm_minimalist":
+
+    # Geometric elegant borders (Warm Minimalist, Sunset Orange, Royal Purple, Cherry Blossom, Nordic Slate, Vintage Sepia)
+    else:
         # Double border line for minimalist look
         canvas_obj.setStrokeColor(HexColor(style["accent"]))
         canvas_obj.setLineWidth(3)
@@ -209,19 +324,9 @@ def draw_cover_background(canvas_obj, doc):
         canvas_obj.line(48, 48, 48, doc.pagesize[1] - 48)
         canvas_obj.line(48, doc.pagesize[1] - 48, doc.pagesize[0] - 48, doc.pagesize[1] - 48)
         
-    elif doc.style_name == "eco_green":
-        # Forest organic green vibes
-        p = canvas_obj.beginPath()
-        p.moveTo(0, 0)
-        p.lineTo(doc.pagesize[0] * 0.35, 0)
-        p.lineTo(0, doc.pagesize[1] * 0.5)
-        p.close()
-        canvas_obj.drawPath(p, fill=True, stroke=False)
-        
-        canvas_obj.setFillColor(HexColor("#34d399")) # Mint accent
-        canvas_obj.circle(doc.pagesize[0] * 0.92, doc.pagesize[1] * 0.88, 100, fill=True, stroke=False)
-        canvas_obj.setFillColor(HexColor(style["cover_bg"]))
-        canvas_obj.circle(doc.pagesize[0] * 0.92, doc.pagesize[1] * 0.88, 90, fill=True, stroke=False)
+        # Decorative circle in corner
+        canvas_obj.setFillColor(HexColor(style["accent"]))
+        canvas_obj.circle(doc.pagesize[0] - 80, doc.pagesize[1] - 80, 20, fill=True, stroke=False)
         
     canvas_obj.restoreState()
 
@@ -292,7 +397,7 @@ def create_presentation_pdf(data, style_name, output_path):
         leading=44,
         textColor=HexColor(style_config["cover_text"]),
         spaceAfter=15,
-        alignment=0 if style_name == "corporate_blue" else 1 # corporate is left-aligned due to left stripe, others centered
+        alignment=0 if style_name in ["corporate_blue", "eco_green", "ocean_breeze", "coffee_cream"] else 1
     )
     
     cover_sub_style = ParagraphStyle(
@@ -302,7 +407,7 @@ def create_presentation_pdf(data, style_name, output_path):
         leading=24,
         textColor=HexColor(style_config["cover_sub"]),
         spaceAfter=40,
-        alignment=0 if style_name == "corporate_blue" else 1
+        alignment=0 if style_name in ["corporate_blue", "eco_green", "ocean_breeze", "coffee_cream"] else 1
     )
     
     cover_footer_style = ParagraphStyle(
@@ -311,40 +416,45 @@ def create_presentation_pdf(data, style_name, output_path):
         fontSize=12,
         leading=16,
         textColor=HexColor(style_config["cover_text"]),
-        alignment=0 if style_name == "corporate_blue" else 1
+        alignment=0 if style_name in ["corporate_blue", "eco_green", "ocean_breeze", "coffee_cream"] else 1
     )
     
     # Slide pages styles
     slide_title_style = ParagraphStyle(
         "SlideTitle",
         fontName="Helvetica-Bold",
-        fontSize=24,
-        leading=30,
+        fontSize=22,
+        leading=26,
         textColor=HexColor(style_config["primary"]),
-        spaceAfter=25
+        spaceAfter=12
+    )
+    
+    slide_desc_style = ParagraphStyle(
+        "SlideDesc",
+        fontName="Helvetica-Oblique",
+        fontSize=11,
+        leading=16,
+        textColor=HexColor(style_config["accent"]),
+        spaceAfter=12
     )
     
     slide_body_style = ParagraphStyle(
         "SlideBody",
         fontName="Helvetica",
-        fontSize=14,
-        leading=22,
+        fontSize=11,
+        leading=16,
         textColor=HexColor(style_config["text_color"]),
-        spaceAfter=15
+        spaceAfter=10
     )
     
     story = []
     
     # --- 1. MUQOVA SLAYD (Cover page) ---
-    # Left indent for Corporate Blue style to avoid overlapping with the left decoration stripe
-    if style_name == "corporate_blue":
+    # Left indent for left-stripe styles to avoid overlapping with the left decoration shape
+    if style_name in ["corporate_blue", "eco_green", "ocean_breeze", "coffee_cream"]:
         story.append(Spacer(1, 100))
-        # Wrap in a flowable list to add indentation
-        title_para = Paragraph(f"<font color='white'>{data.get('title', 'Taqdimot')}</font>", cover_title_style)
-        sub_para = Paragraph(data.get('subtitle', ''), cover_sub_style)
-        footer_para = Paragraph("3-kurs Finance (FINP-S-1323U) | AI Yordamchi", cover_footer_style)
         
-        # We can add left indent to corporate blue layout elements
+        # We can add left indent to layout elements
         indent_style_title = ParagraphStyle("IndentTitle", parent=cover_title_style, leftIndent=80)
         indent_style_sub = ParagraphStyle("IndentSub", parent=cover_sub_style, leftIndent=80)
         indent_style_foot = ParagraphStyle("IndentFoot", parent=cover_footer_style, leftIndent=80)
@@ -367,9 +477,13 @@ def create_presentation_pdf(data, style_name, output_path):
         slides = slides[:9]
         
     for idx, slide in enumerate(slides):
-        story.append(Spacer(1, 10)) # Small gap from top line
+        story.append(Spacer(1, 5)) # Small gap from top line
         story.append(Paragraph(slide.get("title", f"{idx+2}-slayd"), slide_title_style))
         
+        # Description rendering if present
+        if slide.get("description"):
+            story.append(Paragraph(slide.get("description"), slide_desc_style))
+            
         # Bullet points rendering
         for pt in slide.get("points", []):
             bullet_html = f"• {pt}"
