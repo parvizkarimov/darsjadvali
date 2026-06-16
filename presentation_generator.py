@@ -11,6 +11,7 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak, 
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.colors import HexColor
 from reportlab.pdfgen import canvas
+from reportlab.graphics.shapes import Drawing, Circle, Rect, Polygon, Line
 
 logger = logging.getLogger(__name__)
 
@@ -266,6 +267,73 @@ def generate_presentation_content(topic, api_key):
         logger.error(f"Failed to generate presentation via Groq: {e}")
         raise e
 
+# ===== VECTOR GRAPHICS & ICONS GENERATION =====
+
+def get_slide_icon(primary, accent, style_name):
+    """Slayd kartalari uchun yuqori aniqlikdagi vektor ikonkalarini chizish"""
+    d = Drawing(30, 30)
+    if style_name in ["sleek_dark", "cyberpunk", "retro_neon", "midnight_gold"]:
+        # High-tech neon diamond/hexagon icon
+        poly = Polygon([15, 2, 28, 15, 15, 28, 2, 15], fillColor=HexColor(accent), strokeColor=None)
+        d.add(poly)
+        inner = Polygon([15, 7, 23, 15, 15, 23, 7, 15], fillColor=HexColor(primary), strokeColor=None)
+        d.add(inner)
+        d.add(Circle(15, 15, 2.5, fillColor=HexColor("#FFFFFF"), strokeColor=None))
+    elif style_name in ["corporate_blue", "ocean_breeze", "eco_green", "coffee_cream"]:
+        # Clean target circular icon
+        d.add(Circle(15, 15, 13, fillColor=HexColor(accent), strokeColor=None))
+        d.add(Circle(15, 15, 8, fillColor=HexColor(primary), strokeColor=None))
+        d.add(Circle(15, 15, 3, fillColor=HexColor("#FFFFFF"), strokeColor=None))
+    else:
+        # Retro geometric squares icon
+        d.add(Rect(2, 2, 26, 26, fillColor=HexColor(accent), strokeColor=None))
+        d.add(Rect(6, 6, 18, 18, fillColor=HexColor(primary), strokeColor=None))
+        d.add(Rect(11, 11, 8, 8, fillColor=HexColor("#FFFFFF"), strokeColor=None))
+    return d
+
+def draw_tech_illustration(canvas_obj, x, y, primary, accent, style_name):
+    """Muqova varag'ida sun'iy intellekt va blockchain mavzusiga oid katta neyro-tarmoq chizmasini chizish"""
+    # 1. Tashqi yarim shaffof halqa
+    canvas_obj.setFillColor(HexColor(accent))
+    canvas_obj.circle(x, y, 90, fill=True, stroke=False)
+    
+    # 2. Ichki to'q halqa
+    canvas_obj.setFillColor(HexColor(primary))
+    canvas_obj.circle(x, y, 75, fill=True, stroke=False)
+    
+    # 3. Neyron liniyalarini chizish
+    line_color = "#FFFFFF" if style_name in ["sleek_dark", "cyberpunk", "retro_neon", "midnight_gold", "corporate_blue", "eco_green", "ocean_breeze", "coffee_cream"] else primary
+    canvas_obj.setStrokeColor(HexColor(line_color))
+    canvas_obj.setLineWidth(1.2)
+    
+    # Ichki concentric doiralar
+    canvas_obj.circle(x, y, 45, fill=False, stroke=True)
+    canvas_obj.circle(x, y, 20, fill=False, stroke=True)
+    
+    # Grid tarmoq liniyalari
+    canvas_obj.line(x - 65, y, x + 65, y)
+    canvas_obj.line(x, y - 65, x, y + 65)
+    canvas_obj.line(x - 45, y - 45, x + 45, y + 45)
+    canvas_obj.line(x - 45, y + 45, x + 45, y - 45)
+    
+    # 4. Tugun nuqtalari (neyronlar)
+    node_color = "#FFFFFF" if style_name in ["sleek_dark", "cyberpunk", "retro_neon", "midnight_gold"] else accent
+    canvas_obj.setFillColor(HexColor(node_color))
+    canvas_obj.circle(x - 45, y, 5, fill=True, stroke=False)
+    canvas_obj.circle(x + 45, y, 5, fill=True, stroke=False)
+    canvas_obj.circle(x, y - 45, 5, fill=True, stroke=False)
+    canvas_obj.circle(x, y + 45, 5, fill=True, stroke=False)
+    canvas_obj.circle(x - 32, y + 32, 5, fill=True, stroke=False)
+    canvas_obj.circle(x + 32, y - 32, 5, fill=True, stroke=False)
+    canvas_obj.circle(x - 32, y - 32, 5, fill=True, stroke=False)
+    canvas_obj.circle(x + 32, y + 32, 5, fill=True, stroke=False)
+    
+    # 5. Core markaz
+    canvas_obj.setFillColor(HexColor(accent))
+    canvas_obj.circle(x, y, 12, fill=True, stroke=False)
+    canvas_obj.setFillColor(HexColor("#FFFFFF"))
+    canvas_obj.circle(x, y, 5, fill=True, stroke=False)
+
 # ===== DRAWING HANDLERS FOR REPORTLAB =====
 
 def draw_cover_background(canvas_obj, doc):
@@ -347,6 +415,10 @@ def draw_cover_background(canvas_obj, doc):
     panel3_color = style["cover_sub"] if style["cover_sub"] != style["accent"] else style["text_muted"]
     canvas_obj.setFillColor(HexColor(panel3_color))
     canvas_obj.rect(60 + 2 * panel_w + 20, y_pos, panel_w, panel_h, fill=True, stroke=False)
+    # --- DRAW NEURAL NETWORK GRAPHIC ON THE RIGHT ---
+    ill_x = doc.pagesize[0] - 170
+    ill_y = doc.pagesize[1] * 0.6
+    draw_tech_illustration(canvas_obj, ill_x, ill_y, style["primary"], style["accent"], doc.style_name)
         
     canvas_obj.restoreState()
 
@@ -379,7 +451,7 @@ def draw_slide_background(canvas_obj, doc):
 
 # ===== PDF YARATISH LOGIKASI =====
 
-def create_presentation_pdf(data, style_name, output_path):
+def create_presentation_pdf(data, style_name, output_path, author_name="Taqdimotchi"):
     """Keltirilgan ma'lumotlar asosida 10 varaqalik taqdimot PDF yaratadi"""
     if style_name not in STYLE_TEMPLATES:
         style_name = "corporate_blue"
@@ -409,7 +481,7 @@ def create_presentation_pdf(data, style_name, output_path):
     # Styles definition
     styles = getSampleStyleSheet()
     
-    # Cover page styles
+    # Cover page styles - Left-aligned to look premium next to the tech vector graphic on the right
     cover_title_style = ParagraphStyle(
         "CoverTitle",
         fontName="Helvetica-Bold",
@@ -417,7 +489,7 @@ def create_presentation_pdf(data, style_name, output_path):
         leading=44,
         textColor=HexColor(style_config["cover_text"]),
         spaceAfter=15,
-        alignment=0 if style_name in ["corporate_blue", "eco_green", "ocean_breeze", "coffee_cream"] else 1
+        alignment=0
     )
     
     cover_sub_style = ParagraphStyle(
@@ -427,7 +499,7 @@ def create_presentation_pdf(data, style_name, output_path):
         leading=24,
         textColor=HexColor(style_config["cover_sub"]),
         spaceAfter=40,
-        alignment=0 if style_name in ["corporate_blue", "eco_green", "ocean_breeze", "coffee_cream"] else 1
+        alignment=0
     )
     
     cover_footer_style = ParagraphStyle(
@@ -436,7 +508,7 @@ def create_presentation_pdf(data, style_name, output_path):
         fontSize=12,
         leading=16,
         textColor=HexColor(style_config["cover_text"]),
-        alignment=0 if style_name in ["corporate_blue", "eco_green", "ocean_breeze", "coffee_cream"] else 1
+        alignment=0
     )
     
     # Slide pages styles
@@ -470,23 +542,17 @@ def create_presentation_pdf(data, style_name, output_path):
     story = []
     
     # --- 1. MUQOVA SLAYD (Cover page) ---
-    # Left indent for left-stripe styles to avoid overlapping with the left decoration shape
-    if style_name in ["corporate_blue", "eco_green", "ocean_breeze", "coffee_cream"]:
-        story.append(Spacer(1, 100))
-        
-        # We can add left indent to layout elements
-        indent_style_title = ParagraphStyle("IndentTitle", parent=cover_title_style, leftIndent=80)
-        indent_style_sub = ParagraphStyle("IndentSub", parent=cover_sub_style, leftIndent=80)
-        indent_style_foot = ParagraphStyle("IndentFoot", parent=cover_footer_style, leftIndent=80)
-        
-        story.append(Paragraph(data.get('title', 'Taqdimot'), indent_style_title))
-        story.append(Paragraph(data.get('subtitle', ''), indent_style_sub))
-        story.append(Paragraph("Dars Jadvali Bot orqali tayyorlandi", indent_style_foot))
-    else:
-        story.append(Spacer(1, 120))
-        story.append(Paragraph(data.get('title', 'Taqdimot'), cover_title_style))
-        story.append(Paragraph(data.get('subtitle', ''), cover_sub_style))
-        story.append(Paragraph("Dars Jadvali Bot orqali tayyorlandi", cover_footer_style))
+    # Indent cover slide flowables to the left to avoid overlapping with the tech vector graphic on the right
+    story.append(Spacer(1, 100))
+    
+    # We can add left indent to layout elements
+    indent_style_title = ParagraphStyle("IndentTitle", parent=cover_title_style, leftIndent=80)
+    indent_style_sub = ParagraphStyle("IndentSub", parent=cover_sub_style, leftIndent=80)
+    indent_style_foot = ParagraphStyle("IndentFoot", parent=cover_footer_style, leftIndent=80)
+    
+    story.append(Paragraph(data.get('title', 'Taqdimot'), indent_style_title))
+    story.append(Paragraph(data.get('subtitle', ''), indent_style_sub))
+    story.append(Paragraph(f"Tayyorladi: {author_name}", indent_style_foot))
         
     story.append(PageBreak())
     
@@ -516,24 +582,40 @@ def create_presentation_pdf(data, style_name, output_path):
             if num_points <= 2:
                 # 2 columns, 1 row
                 col_widths = [(doc.pagesize[0] - 120) / 2] * 2
-                cell_data = [[Paragraph(f"<b>0{i+1}.</b> {pt}", slide_body_style) for i, pt in enumerate(points)]]
+                cell_data = [[
+                    [
+                        get_slide_icon(style_config["primary"], style_config["accent"], style_name),
+                        Spacer(1, 6),
+                        Paragraph(f"<b>0{i+1}.</b> {pt}", slide_body_style)
+                    ] for i, pt in enumerate(points)
+                ]]
                 if num_points == 1:
-                    cell_data[0].append(Paragraph("", slide_body_style))
+                    cell_data[0].append([Paragraph("", slide_body_style)])
             elif num_points == 3:
                 # 3 columns, 1 row
                 col_widths = [(doc.pagesize[0] - 120) / 3] * 3
-                cell_data = [[Paragraph(f"<b>0{i+1}.</b> {pt}", slide_body_style) for i, pt in enumerate(points)]]
+                cell_data = [[
+                    [
+                        get_slide_icon(style_config["primary"], style_config["accent"], style_name),
+                        Spacer(1, 6),
+                        Paragraph(f"<b>0{i+1}.</b> {pt}", slide_body_style)
+                    ] for i, pt in enumerate(points)
+                ]]
             else:
                 # 4 or more points: 2 columns, dynamic rows
                 col_widths = [(doc.pagesize[0] - 120) / 2] * 2
                 row = []
                 for i, pt in enumerate(points):
-                    row.append(Paragraph(f"<b>0{i+1}.</b> {pt}", slide_body_style))
+                    row.append([
+                        get_slide_icon(style_config["primary"], style_config["accent"], style_name),
+                        Spacer(1, 6),
+                        Paragraph(f"<b>0{i+1}.</b> {pt}", slide_body_style)
+                    ])
                     if len(row) == 2:
                         cell_data.append(row)
                         row = []
                 if row:
-                    row.append(Paragraph("", slide_body_style))
+                    row.append([Paragraph("", slide_body_style)])
                     cell_data.append(row)
                     
             # Define table style

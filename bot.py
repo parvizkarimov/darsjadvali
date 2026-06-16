@@ -41,10 +41,11 @@ chat_history = {}
 
 # ===== TAQDIMOT REJIMI HOLATLARI =====
 STATE_NONE = 0
-STATE_AWAITING_TOPIC = 1
-STATE_AWAITING_STYLE = 2
+STATE_AWAITING_AUTHOR = 1
+STATE_AWAITING_TOPIC = 2
+STATE_AWAITING_STYLE = 3
 
-user_states = {} # user_id: {"state": state, "topic": topic}
+user_states = {} # user_id: {"state": state, "author": author, "topic": topic}
 
 
 # ===== BAZANI ISHGA TUSHIRISH =====
@@ -159,6 +160,19 @@ def main_menu_keyboard():
         [KeyboardButton("📋 Haftalik jadval"), KeyboardButton("📚 To'liq jadval")],
         [KeyboardButton("📝 Prezentatsiya"), KeyboardButton("ℹ️ Yordam")],
     ]
+    return ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
+
+def author_keyboard():
+    """Muallif nomini tanlash/kiritish uchun reply keyboard"""
+    keyboard = [
+        [KeyboardButton("👤 Telegram ismimdan olish")],
+        [KeyboardButton("🔙 Bekor qilish")]
+    ]
+    return ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=True)
+
+def cancel_keyboard():
+    """Oddiy bekor qilish reply keyboard"""
+    keyboard = [[KeyboardButton("🔙 Bekor qilish")]]
     return ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
 
 def back_keyboard():
@@ -380,21 +394,47 @@ async def handle_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     menu_buttons = ["🟢 Hozirgi dars", "📅 Bugungi darslar", "⏩ Ertangi darslar", "⏰ Keyingi dars", "📋 Haftalik jadval", "📚 To'liq jadval", "📝 Prezentatsiya", "ℹ️ Yordam"]
     
-    # Agar boshqa tugma bosilsa, joriy taqdimot holatini tozalaymiz
-    if text in menu_buttons and text != "📝 Prezentatsiya":
+    # Agar boshqa tugma bosilsa yoki Bekor qilish tanlansa, holatni tozalaymiz
+    if (text in menu_buttons and text != "📝 Prezentatsiya") or text == "🔙 Bekor qilish":
         if user_id in user_states:
             del user_states[user_id]
+        if text == "🔙 Bekor qilish":
+            await update.message.reply_text("❌ Taqdimot yaratish bekor qilindi.", reply_markup=main_menu_keyboard())
+            return
             
     current_state = user_states.get(user_id, {}).get("state", STATE_NONE)
     
-    # Agar foydalanuvchi taqdimot mavzusini kiritayotgan bo'lsa va bu boshqa tugma bo'lmasa
-    if current_state == STATE_AWAITING_TOPIC and text not in menu_buttons:
-        topic = text.strip()
-        if not topic:
-            await update.message.reply_text("⚠️ Iltimos, yaroqli mavzu kiriting.")
+    # 1. Muallif ismini kiritish holati
+    if current_state == STATE_AWAITING_AUTHOR and text not in menu_buttons:
+        author = text.strip()
+        if text == "👤 Telegram ismimdan olish":
+            author = user.first_name
+            if user.last_name:
+                author += f" {user.last_name}"
+                
+        if not author:
+            await update.message.reply_text("⚠️ Iltimos, muallif ismini kiriting.", reply_markup=author_keyboard())
             return
             
-        user_states[user_id] = {"state": STATE_AWAITING_STYLE, "topic": topic}
+        user_states[user_id] = {"state": STATE_AWAITING_TOPIC, "author": author}
+        await update.message.reply_text(
+            f"👤 Muallif: *\"{author}\"*\n\n"
+            "Endi taqdimot (prezentatsiya) mavzusini yozib yuboring:\n"
+            "Masalan: `Sun'iy intellektning kelajagi` yoki `O'zbekiston iqtisodiyoti`",
+            parse_mode="Markdown",
+            reply_markup=cancel_keyboard()
+        )
+        return
+
+    # 2. Mavzuni kiritish holati
+    elif current_state == STATE_AWAITING_TOPIC and text not in menu_buttons:
+        topic = text.strip()
+        if not topic:
+            await update.message.reply_text("⚠️ Iltimos, yaroqli mavzu kiriting.", reply_markup=cancel_keyboard())
+            return
+            
+        author = user_states[user_id]["author"]
+        user_states[user_id] = {"state": STATE_AWAITING_STYLE, "author": author, "topic": topic}
         
         keyboard = [
             [InlineKeyboardButton("Corporate Blue 🏢", callback_data="style_corporate_blue"),
@@ -413,10 +453,17 @@ async def handle_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
              InlineKeyboardButton("Coffee & Cream ☕", callback_data="style_coffee_cream")]
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
+        
+        # Bosh menyuni tiklab qo'yamiz inline tugmalardan oldin
         await update.message.reply_text(
-            f"📌 Taqdimot mavzusi: *\"{topic}\"*\n\n"
+            f"📌 Taqdimot mavzusi: *\"{topic}\"*\n"
+            f"👤 Muallif: *\"{author}\"*\n\n"
             "Endi quyidagi dizayn shablonlaridan birini tanlang: 👇",
             parse_mode="Markdown",
+            reply_markup=main_menu_keyboard()
+        )
+        await update.message.reply_text(
+            "Dizayn shablonini tanlang:",
             reply_markup=reply_markup
         )
         return
@@ -437,12 +484,13 @@ async def handle_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif text == "📚 To'liq jadval":
         await cmd_jadval(update, context)
     elif text == "📝 Prezentatsiya":
-        user_states[user_id] = {"state": STATE_AWAITING_TOPIC}
+        user_states[user_id] = {"state": STATE_AWAITING_AUTHOR}
         await update.message.reply_text(
             "📝 *Yangi taqdimot yaratish*\n\n"
-            "Iltimos, taqdimot (prezentatsiya) mavzusini yozib yuboring.\n"
-            "Masalan: `Sun'iy intellektning kelajagi` yoki `Moliya tizimi`",
-            parse_mode="Markdown"
+            "Taqdimot slaydlarida muallif sifatida ko'rsatiladigan Ism va Familiyangizni kiriting:\n\n"
+            "_(Telegramdagi ismingizni ishlatish uchun quyidagi tugmani bosing)_ 👇",
+            parse_mode="Markdown",
+            reply_markup=author_keyboard()
         )
     elif text == "ℹ️ Yordam":
         await cmd_yordam(update, context)
@@ -757,10 +805,11 @@ async def cmd_send(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 # ===== PROCESS PRESENTATION (BACKGROUND TASK) =====
 
-async def process_presentation(update, context, user_id, topic, style_name, query):
+async def process_presentation(update, context, user_id, topic, style_name, query, author):
     # Edit the inline button message to show loading status
     status_msg = await query.edit_message_text(
         f"🤖 *\"{topic}\"* mavzusida taqdimot tayyorlash boshlandi...\n\n"
+        f"👤 Muallif: *{author}*\n"
         f"🎨 Shablon: *{style_name.replace('_', ' ').title()}*\n"
         "⏳ Groq AI kontent yaratmoqda (bu 15-30 soniya vaqt olishi mumkin)...",
         parse_mode="Markdown"
@@ -776,6 +825,7 @@ async def process_presentation(update, context, user_id, topic, style_name, quer
         
         await status_msg.edit_text(
             f"🤖 *\"{topic}\"* mavzusida taqdimot...\n\n"
+            f"👤 Muallif: *{author}*\n"
             f"🎨 Shablon: *{style_name.replace('_', ' ').title()}*\n"
             "📄 PDF slaydlar yig'ilmoqda...",
             parse_mode="Markdown"
@@ -789,7 +839,7 @@ async def process_presentation(update, context, user_id, topic, style_name, quer
         # Run PDF creation in executor
         await loop.run_in_executor(
             None,
-            lambda: create_presentation_pdf(data, style_name, output_path)
+            lambda: create_presentation_pdf(data, style_name, output_path, author)
         )
         
         await status_msg.edit_text("📤 Taqdimot tayyor! Fayl yuborilmoqda...")
@@ -802,6 +852,7 @@ async def process_presentation(update, context, user_id, topic, style_name, quer
                 filename=f"{topic[:30].replace(' ', '_')}_taqdimot.pdf",
                 caption=f"✅ *\"{topic}\"* mavzusidagi taqdimot tayyor bo'ldi!\n\n"
                         f"📊 Slaydlar soni: 10 ta\n"
+                        f"👤 Muallif: {author}\n"
                         f"🎨 Tanlangan shablon: {style_name.replace('_', ' ').title()}",
                 parse_mode="Markdown",
                 reply_markup=main_menu_keyboard()
@@ -837,11 +888,12 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             return
             
         topic = user_data["topic"]
+        author = user_data["author"]
         # Clear user state immediately
         del user_states[user_id]
         
         # Process presentation in a background task
-        asyncio.create_task(process_presentation(update, context, user_id, topic, style_name, query))
+        asyncio.create_task(process_presentation(update, context, user_id, topic, style_name, query, author))
         return
     if query.data == "main_menu":
         await query.message.reply_text(
