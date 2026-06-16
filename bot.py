@@ -274,7 +274,10 @@ def format_schedule_by_date(lessons):
         text += f"\n━━━━━━━━━━━━━━━\n📅 *{date} — {day_name}*\n━━━━━━━━━━━━━━━\n"
         for lesson in sorted(day_lessons, key=lambda x: x[1]):
             _, hour, minute, subject, teacher, room = lesson
-            text += f"\n🕐 *{hour:02d}:{minute:02d}* — {subject}\n"
+            start_time = f"{hour:02d}:{minute:02d}"
+            end_dt = datetime.strptime(start_time, "%H:%M") + timedelta(minutes=50)
+            end_time = end_dt.strftime("%H:%M")
+            text += f"\n🕐 *{start_time} - {end_time}* — {subject}\n"
             text += f"👩‍🏫 _{teacher}_\n"
             text += f"🚪 Xona: *{room}*\n"
     return text
