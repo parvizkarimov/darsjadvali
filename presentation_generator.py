@@ -231,7 +231,7 @@ def generate_presentation_content(topic, api_key):
         "      \"layout_type\": \"Slayd maketi turi: 'grid_cards', 'split_focus', 'horizontal_timeline' yoki 'quote_highlight'\",\n"
         "      \"points\": [\n"
         "        {\n"
-        "          \"text\": \"Mavzuga oid muhim fakt, tahlil yoki g'oya (2-3 ta gapdan iborat batafsil tushuntirish)\",\n"
+        "          \"text\": \"Mavzuga oid muhim fakt, tahlil yoki g'oya (1-2 ta tushunarli, aniq gapdan iborat lo'nda tushuntirish, maksimal 150 ta belgi)\",\n"
         "          \"icon_type\": \"Ushbu nuqtaga mos ikonka turi: 'trend', 'shield', 'database', 'user', 'globe', 'idea', 'gear', 'lock', 'chat', 'star'\"\n"
         "        },\n"
         "        ...\n"
@@ -241,10 +241,10 @@ def generate_presentation_content(topic, api_key):
         "  ]\n"
         "}\n\n"
         "Qoidalarga amal qil:\n"
-        "1. Taqdimot mutlaqo yuzaki bo'lmasin, ma'lumotlar hajmi va chuqurligi dars o'tishga, o'rganishga yetarli darajada professional bo'lsin.\n"
+        "1. Taqdimot mutlaqo yuzaki bo'lmasin, ma'lumotlar hajmi va chuqurligi professional bo'lsin.\n"
         "2. Har bir slaydning 'layout_type' maydoni bo'lsin. Mavzuga va slayd kontentiga qarab layout turlarini turlicha tanla. Masalan, reja va bosqichlar uchun 'horizontal_timeline', tahlillar va xulosalar uchun 'split_focus' yoki 'quote_highlight', umumiy ma'lumotlar uchun 'grid_cards' ishlating. Har bir taqdimotda kamida 3-4 xil layout turlari aralash bo'lsin (hammasi bir xil bo'lib qolmasin).\n"
         "3. Har bir slaydda 3 tadan 5 tagacha 'points' (nuqtalar) bo'lishi shart. Har bir nuqta uchun uning ma'nosiga mos 'icon_type' tanlansin (masalan: kiberxavfsizlikka shield/lock, o'sishga trend, ma'lumotlarga database, texnik jarayonlarga gear, muloqotga chat).\n"
-        "4. Har bir nuqtaning 'text' maydonidagi matn shunchaki qisqa so'zlar emas, balki 2-3 ta gapdan iborat batafsil va boyitilgan tushuntirish bo'lishi shart.\n"
+        "4. Har bir nuqtaning 'text' maydonidagi matn 1 ta (maksimal 2 ta) lo'nda, tushunarli va mazmunli gapdan iborat bo'lishi shart (juda uzun bo'lib ketmasin, slaydda chiroyli turishi uchun).\n"
         "5. Slaydlar tartibi mantiqiy bo'lsin: Kirish -> Muammo -> Tahlil -> Yechim -> Kelajak -> Xulosa va h.k."
     )
 
@@ -275,7 +275,6 @@ def get_custom_vector_icon(icon_type, primary, accent, size=30):
     d = Drawing(size, size)
     scale = size / 30.0
     
-    # Helper functions to scale coordinates
     def s_x(val): return val * scale
     def s_y(val): return val * scale
     
@@ -283,7 +282,6 @@ def get_custom_vector_icon(icon_type, primary, accent, size=30):
     a_color = HexColor(accent)
     w_color = HexColor("#FFFFFF")
     
-    # Orqa fon uchun yarim-shaffof aylana doska
     d.add(Circle(s_x(15), s_y(15), s_x(14), fillColor=HexColor(accent + "1A"), strokeColor=a_color, strokeWidth=1))
     
     if icon_type == "trend":
@@ -364,7 +362,6 @@ def get_custom_vector_icon(icon_type, primary, accent, size=30):
         d.add(Polygon(points, fillColor=a_color, strokeColor=None))
         
     else:
-        # Default high-tech diamond
         poly = Polygon([s_x(15), s_y(3), s_x(27), s_y(15), s_x(15), s_y(27), s_x(3), s_y(15)], fillColor=a_color, strokeColor=None)
         d.add(poly)
         d.add(Circle(s_x(15), s_y(15), s_x(5), fillColor=p_color, strokeColor=None))
@@ -373,7 +370,6 @@ def get_custom_vector_icon(icon_type, primary, accent, size=30):
     return d
 
 def get_slide_icon(primary, accent, style_name):
-    # Eski funksiya bilan muvofiqlik (backwards compatibility)
     return get_custom_vector_icon("default", primary, accent)
 
 def draw_tech_illustration(canvas_obj, x, y, primary, accent, style_name):
@@ -467,7 +463,6 @@ def draw_cover_background(canvas_obj, doc):
         canvas_obj.setFillColor(HexColor(style["accent"]))
         canvas_obj.circle(doc.pagesize[0] - 80, doc.pagesize[1] - 80, 20, fill=True, stroke=False)
         
-    # muqova tagidagi 3 talik rangli panellar
     w = doc.pagesize[0] - 120
     panel_w = (w - 20) / 3
     y_pos = 110
@@ -483,7 +478,6 @@ def draw_cover_background(canvas_obj, doc):
     canvas_obj.setFillColor(HexColor(panel3_color))
     canvas_obj.rect(60 + 2 * panel_w + 20, y_pos, panel_w, panel_h, fill=True, stroke=False)
     
-    # Neyro-tarmoq chizmasi
     ill_x = doc.pagesize[0] - 170
     ill_y = doc.pagesize[1] * 0.6
     draw_tech_illustration(canvas_obj, ill_x, ill_y, style["primary"], style["accent"], doc.style_name)
@@ -495,15 +489,12 @@ def draw_slide_background(canvas_obj, doc):
     style = doc.style_config
     page_num = canvas_obj.getPageNumber()
     
-    # Draw slide background
     canvas_obj.setFillColor(HexColor(style["slide_bg"]))
     canvas_obj.rect(0, 0, doc.pagesize[0], doc.pagesize[1], fill=True, stroke=False)
     
-    # Slaydlar har xil va kreativ ko'rinishi uchun sahifa raqamiga qarab turli vektor bezaklar chizamiz
     canvas_obj.setFillColor(HexColor(style["accent"]))
     
     if page_num % 3 == 1:
-        # Layout 1 bezagi: Yuqori chiziq va o'ng-yuqori burchakda uchburchak
         canvas_obj.rect(54, doc.pagesize[1] - 40, doc.pagesize[0] - 108, 4, fill=True, stroke=False)
         
         p = canvas_obj.beginPath()
@@ -514,7 +505,6 @@ def draw_slide_background(canvas_obj, doc):
         canvas_obj.drawPath(p, fill=True, stroke=False)
         
     elif page_num % 3 == 2:
-        # Layout 2 bezagi: Chap tomonda vertikal chiziq va o'ng-pastki burchakda aylana
         canvas_obj.rect(40, 54, 4, doc.pagesize[1] - 108, fill=True, stroke=False)
         
         canvas_obj.circle(doc.pagesize[0] - 20, 20, 40, fill=True, stroke=False)
@@ -522,7 +512,6 @@ def draw_slide_background(canvas_obj, doc):
         canvas_obj.circle(doc.pagesize[0] - 20, 20, 34, fill=True, stroke=False)
         
     else:
-        # Layout 3 bezagi: Yuqorida qo'shaloq chiziq va chap-yuqori burchakda kichik aylana
         canvas_obj.setFillColor(HexColor(style["primary"]))
         canvas_obj.rect(54, doc.pagesize[1] - 40, doc.pagesize[0] - 108, 3, fill=True, stroke=False)
         canvas_obj.setFillColor(HexColor(style["accent"]))
@@ -530,17 +519,14 @@ def draw_slide_background(canvas_obj, doc):
         
         canvas_obj.circle(30, doc.pagesize[1] - 30, 8, fill=True, stroke=False)
 
-    # Draw bottom footer line
     border_color = "#cbd5e1" if doc.style_name != "sleek_dark" else "#334155"
     canvas_obj.setFillColor(HexColor(border_color))
     canvas_obj.rect(54, 45, doc.pagesize[0] - 108, 1, fill=True, stroke=False)
     
-    # Draw footer metadata
     canvas_obj.setFont("Helvetica", 9)
     canvas_obj.setFillColor(HexColor(style["text_muted"]))
     canvas_obj.drawString(54, 28, doc.topic_title)
     
-    # Draw page number
     canvas_obj.drawRightString(doc.pagesize[0] - 54, 28, f"{page_num} / 10")
     
     canvas_obj.restoreState()
@@ -553,6 +539,11 @@ def extract_point_info(pt):
     else:
         text = str(pt)
         icon_type = "default"
+        
+    # Xatolik va cheksiz aylanib qolishni oldini olish maqsadida matnni cheklaymiz (180 belgi)
+    if len(text) > 180:
+        text = text[:177] + "..."
+        
     return text, icon_type
 
 # ===== PDF YARATISH LOGIKASI =====
@@ -565,13 +556,14 @@ def create_presentation_pdf(data, style_name, output_path, author_name="Taqdimot
     style_config = STYLE_TEMPLATES[style_name]
     pagesize = landscape(A4)
     
+    # Vertikal bo'shliqni ko'proq saqlash uchun top va bottom marginni 55 ga kamaytirdik
     doc = SimpleDocTemplate(
         output_path,
         pagesize=pagesize,
         leftMargin=60,
         rightMargin=60,
-        topMargin=80,
-        bottomMargin=80
+        topMargin=55,
+        bottomMargin=55
     )
     
     doc.style_name = style_name
@@ -609,31 +601,32 @@ def create_presentation_pdf(data, style_name, output_path, author_name="Taqdimot
         alignment=0
     )
     
+    # Kichikroq shriftlar yordamida overflow xavfini bartaraf qilamiz
     slide_title_style = ParagraphStyle(
         "SlideTitle",
         fontName="Helvetica-Bold",
-        fontSize=22,
-        leading=26,
+        fontSize=20,
+        leading=24,
         textColor=HexColor(style_config["primary"]),
-        spaceAfter=12
+        spaceAfter=10
     )
     
     slide_desc_style = ParagraphStyle(
         "SlideDesc",
         fontName="Helvetica-Oblique",
-        fontSize=11,
-        leading=16,
+        fontSize=10,
+        leading=14,
         textColor=HexColor(style_config["accent"]),
-        spaceAfter=12
+        spaceAfter=10
     )
     
     slide_body_style = ParagraphStyle(
         "SlideBody",
         fontName="Helvetica",
-        fontSize=11,
-        leading=16,
+        fontSize=10,
+        leading=14,
         textColor=HexColor(style_config["text_color"]),
-        spaceAfter=10
+        spaceAfter=6
     )
     
     story = []
@@ -660,13 +653,16 @@ def create_presentation_pdf(data, style_name, output_path, author_name="Taqdimot
         story.append(Spacer(1, 5))
         story.append(Paragraph(slide.get("title", f"{idx+2}-slayd"), slide_title_style))
         
-        if slide.get("description"):
-            story.append(Paragraph(slide.get("description"), slide_desc_style))
+        # Slayd tavsifini cheklash
+        desc_text = slide.get("description", "")
+        if desc_text:
+            if len(desc_text) > 150:
+                desc_text = desc_text[:147] + "..."
+            story.append(Paragraph(desc_text, slide_desc_style))
             
         points = slide.get("points", [])
         num_points = len(points)
         
-        # Slayd maket turini aniqlash (bo'sh bo'lsa yoki LLM qaytarmasa, navbatma-navbat tanlaymiz)
         layout_type = slide.get("layout_type", "grid_cards")
         if layout_type not in ["grid_cards", "split_focus", "horizontal_timeline", "quote_highlight"]:
             layout_types = ["grid_cards", "split_focus", "horizontal_timeline", "quote_highlight"]
@@ -724,8 +720,8 @@ def create_presentation_pdf(data, style_name, output_path, author_name="Taqdimot
                         
                 t_style_list = [
                     ('VALIGN', (0,0), (-1,-1), 'TOP'),
-                    ('BOTTOMPADDING', (0,0), (-1,-1), 10),
-                    ('TOPPADDING', (0,0), (-1,-1), 8),
+                    ('BOTTOMPADDING', (0,0), (-1,-1), 4),
+                    ('TOPPADDING', (0,0), (-1,-1), 4),
                 ]
                 for r_idx in range(len(cell_data)):
                     for c_idx in range(len(col_widths)):
@@ -755,26 +751,30 @@ def create_presentation_pdf(data, style_name, output_path, author_name="Taqdimot
                 focus_title_style = ParagraphStyle(
                     f"FocusTitle_{idx}",
                     fontName="Helvetica-Bold",
-                    fontSize=16,
-                    leading=20,
+                    fontSize=15,
+                    leading=18,
                     textColor=HexColor("#FFFFFF" if style_name in ["sleek_dark", "cyberpunk", "retro_neon", "midnight_gold"] else style_config["cover_text"])
                 )
                 focus_desc_style = ParagraphStyle(
                     f"FocusDesc_{idx}",
                     fontName="Helvetica",
-                    fontSize=11,
-                    leading=15,
+                    fontSize=10,
+                    leading=14,
                     textColor=HexColor(style_config["cover_sub"] if style_name in ["sleek_dark", "cyberpunk", "retro_neon", "midnight_gold"] else style_config["primary"])
                 )
                 
+                focus_desc = slide.get("description", "Asosiy xulosalar.")
+                if len(focus_desc) > 150:
+                    focus_desc = focus_desc[:147] + "..."
+                    
                 focus_card_content = [
-                    Spacer(1, 10),
+                    Spacer(1, 8),
                     left_icon,
-                    Spacer(1, 10),
+                    Spacer(1, 8),
                     Paragraph("DIQQAT MARKAZIDA", focus_title_style),
                     Spacer(1, 6),
-                    Paragraph(slide.get("description", "Ushbu bo'limning asosiy tushunchalari va muhim tahliliy ma'lumotlari."), focus_desc_style),
-                    Spacer(1, 10)
+                    Paragraph(focus_desc, focus_desc_style),
+                    Spacer(1, 8)
                 ]
                 
                 left_table = Table([[focus_card_content]], colWidths=[w_left - 10])
@@ -782,10 +782,10 @@ def create_presentation_pdf(data, style_name, output_path, author_name="Taqdimot
                 left_table.setStyle(TableStyle([
                     ('BACKGROUND', (0,0), (-1,-1), HexColor(left_bg)),
                     ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
-                    ('BOTTOMPADDING', (0,0), (-1,-1), 15),
-                    ('TOPPADDING', (0,0), (-1,-1), 15),
-                    ('LEFTPADDING', (0,0), (-1,-1), 15),
-                    ('RIGHTPADDING', (0,0), (-1,-1), 15),
+                    ('BOTTOMPADDING', (0,0), (-1,-1), 10),
+                    ('TOPPADDING', (0,0), (-1,-1), 10),
+                    ('LEFTPADDING', (0,0), (-1,-1), 12),
+                    ('RIGHTPADDING', (0,0), (-1,-1), 12),
                 ]))
                 
                 right_rows = []
@@ -803,9 +803,9 @@ def create_presentation_pdf(data, style_name, output_path, author_name="Taqdimot
                 
                 r_style_list = [
                     ('VALIGN', (0,0), (-1,-1), 'TOP'),
-                    ('BOTTOMPADDING', (0,0), (-1,-1), 12),
-                    ('TOPPADDING', (0,0), (-1,-1), 10),
-                    ('LEFTPADDING', (0,0), (-1,-1), 15),
+                    ('BOTTOMPADDING', (0,0), (-1,-1), 6),
+                    ('TOPPADDING', (0,0), (-1,-1), 6),
+                    ('LEFTPADDING', (0,0), (-1,-1), 12),
                 ]
                 for r_idx in range(len(right_rows)):
                     r_style_list.append(('LINEBEFORE', (0, r_idx), (0, r_idx), 3.5, HexColor(style_config["accent"])))
@@ -841,21 +841,21 @@ def create_presentation_pdf(data, style_name, output_path, author_name="Taqdimot
                     step_body_style = ParagraphStyle(
                         f"StepBody_{idx}_{i}",
                         parent=slide_body_style,
-                        fontSize=10,
-                        leading=14,
+                        fontSize=9.5,
+                        leading=13.5,
                         alignment=1
                     )
                     
                     cell_flowables = [
                         Paragraph(f"BOSQICH 0{i+1}", step_title_style),
-                        Spacer(1, 8),
+                        Spacer(1, 6),
                         Table([[icon]], colWidths=[30], style=TableStyle([
                             ('ALIGN', (0,0), (-1,-1), 'CENTER'),
                             ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
                             ('LEFTPADDING', (0,0), (-1,-1), 0),
                             ('RIGHTPADDING', (0,0), (-1,-1), 0),
                         ])),
-                        Spacer(1, 10),
+                        Spacer(1, 8),
                         Paragraph(text, step_body_style)
                     ]
                     row_content.append(cell_flowables)
@@ -863,10 +863,10 @@ def create_presentation_pdf(data, style_name, output_path, author_name="Taqdimot
                 timeline_table = Table([row_content], colWidths=[col_w]*num_points)
                 t_style_list = [
                     ('VALIGN', (0,0), (-1,-1), 'TOP'),
-                    ('LEFTPADDING', (0,0), (-1,-1), 10),
-                    ('RIGHTPADDING', (0,0), (-1,-1), 10),
-                    ('TOPPADDING', (0,0), (-1,-1), 10),
-                    ('BOTTOMPADDING', (0,0), (-1,-1), 10),
+                    ('LEFTPADDING', (0,0), (-1,-1), 6),
+                    ('RIGHTPADDING', (0,0), (-1,-1), 6),
+                    ('TOPPADDING', (0,0), (-1,-1), 6),
+                    ('BOTTOMPADDING', (0,0), (-1,-1), 6),
                 ]
                 for c_idx in range(1, num_points):
                     t_style_list.append(('LINEBEFORE', (c_idx, 0), (c_idx, 0), 1.5, HexColor(style_config["text_muted"] + "33")))
@@ -878,11 +878,14 @@ def create_presentation_pdf(data, style_name, output_path, author_name="Taqdimot
                 w_total = doc.pagesize[0] - 120
                 
                 takeaway_text = slide.get("description", "Asosiy xulosa kiritilmagan.")
+                if len(takeaway_text) > 150:
+                    takeaway_text = takeaway_text[:147] + "..."
+                    
                 quote_text_style = ParagraphStyle(
                     f"QuoteTextStyle_{idx}",
                     fontName="Helvetica-Oblique",
-                    fontSize=13,
-                    leading=18,
+                    fontSize=12,
+                    leading=16,
                     textColor=HexColor(style_config["primary"]),
                 )
                 
@@ -898,13 +901,13 @@ def create_presentation_pdf(data, style_name, output_path, author_name="Taqdimot
                     ('BACKGROUND', (0,0), (-1,-1), HexColor(style_config["accent"] + "12")),
                     ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
                     ('LINEBEFORE', (0,0), (0,0), 4, HexColor(style_config["accent"])),
-                    ('TOPPADDING', (0,0), (-1,-1), 12),
-                    ('BOTTOMPADDING', (0,0), (-1,-1), 12),
-                    ('LEFTPADDING', (0,0), (-1,-1), 15),
-                    ('RIGHTPADDING', (0,0), (-1,-1), 15),
+                    ('TOPPADDING', (0,0), (-1,-1), 8),
+                    ('BOTTOMPADDING', (0,0), (-1,-1), 8),
+                    ('LEFTPADDING', (0,0), (-1,-1), 12),
+                    ('RIGHTPADDING', (0,0), (-1,-1), 12),
                 ]))
                 story.append(quote_table)
-                story.append(Spacer(1, 15))
+                story.append(Spacer(1, 12))
                 
                 col_w = w_total / 2
                 left_col = []
@@ -930,8 +933,10 @@ def create_presentation_pdf(data, style_name, output_path, author_name="Taqdimot
                 bottom_table = Table([[left_col, right_col]], colWidths=[col_w, col_w])
                 bottom_table.setStyle(TableStyle([
                     ('VALIGN', (0,0), (-1,-1), 'TOP'),
-                    ('LEFTPADDING', (0,0), (-1,-1), 10),
-                    ('RIGHTPADDING', (0,0), (-1,-1), 10),
+                    ('LEFTPADDING', (0,0), (-1,-1), 8),
+                    ('RIGHTPADDING', (0,0), (-1,-1), 8),
+                    ('TOPPADDING', (0,0), (-1,-1), 4),
+                    ('BOTTOMPADDING', (0,0), (-1,-1), 4),
                     ('LINEBEFORE', (0,0), (0,0), 3.5, HexColor(style_config["accent"])),
                     ('LINEBEFORE', (1,0), (1,0), 3.5, HexColor(style_config["accent"])),
                 ]))
