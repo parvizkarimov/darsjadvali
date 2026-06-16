@@ -105,6 +105,20 @@ def init_db():
             cursor.execute("ALTER TABLE broadcasts ADD COLUMN failed_count INTEGER DEFAULT 0")
         except:
             pass
+        
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS presentations (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id TEXT,
+                username TEXT,
+                topic TEXT,
+                style_name TEXT,
+                author_name TEXT,
+                file_id TEXT,
+                status TEXT DEFAULT 'success',
+                created_at TEXT
+            )
+        ''')
             
         conn.commit()
 
@@ -846,7 +860,7 @@ async def process_presentation(update, context, user_id, topic, style_name, quer
         
         # Send PDF
         with open(output_path, 'rb') as f:
-            await context.bot.send_document(
+            sent_doc = await context.bot.send_document(
                 chat_id=query.message.chat_id,
                 document=f,
                 filename=f"{topic[:30].replace(' ', '_')}_taqdimot.pdf",
@@ -857,6 +871,24 @@ async def process_presentation(update, context, user_id, topic, style_name, quer
                 parse_mode="Markdown",
                 reply_markup=main_menu_keyboard()
             )
+        
+        # Save presentation record to DB
+        try:
+            file_id = sent_doc.document.file_id if sent_doc and sent_doc.document else None
+            pres_user = query.from_user
+            pres_username = pres_user.first_name or "UNKNOWN"
+            if pres_user.last_name:
+                pres_username += f" {pres_user.last_name}"
+            created_at = datetime.now(TZ).strftime("%d.%m.%Y %H:%M:%S")
+            with sqlite3.connect(DB_PATH) as conn:
+                cursor = conn.cursor()
+                cursor.execute(
+                    "INSERT INTO presentations (user_id, username, topic, style_name, author_name, file_id, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                    (user_id, pres_username, topic, style_name, author, file_id, 'success', created_at)
+                )
+                conn.commit()
+        except Exception as db_err:
+            logger.error(f"Presentation DB insert error: {db_err}")
             
         # Delete temp file
         if os.path.exists(output_path):
@@ -1130,6 +1162,7 @@ HTML_TEMPLATE = """
             
             <div class="tabs">
                 <a href="?tab=broadcast" class="tab {% if tab == 'broadcast' %}active{% endif %}">📣 Xabarnoma</a>
+                <a href="?tab=presentations" class="tab {% if tab == 'presentations' %}active{% endif %}">📝 Prezentatsiyalar</a>
                 <a href="?tab=users" class="tab {% if tab == 'users' %}active{% endif %}">👥 Foydalanuvchilar</a>
                 <a href="?tab=logs" class="tab {% if tab == 'logs' %}active{% endif %}">📊 Harakatlar Tarixi</a>
             </div>
@@ -1180,6 +1213,47 @@ HTML_TEMPLATE = """
                     </table>
                     {% else %}
                     <div class="empty">Hozircha xabar yuborilmagan</div>
+                    {% endif %}
+                </div>
+
+            {% elif tab == 'presentations' %}
+                <h2 style="margin-bottom: 1.5rem; font-weight: 600; text-align: center;">📝 Prezentatsiyalar Tarixi (Jami: <b style="color: white;">{{ presentations|length }}</b> ta)</h2>
+                <div class="glass table-wrapper" style="margin-bottom: 5rem;">
+                    {% if presentations %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Foydalanuvchi</th>
+                                <th>Mavzu</th>
+                                <th>Shablon</th>
+                                <th>Muallif</th>
+                                <th>Yuklab olish</th>
+                                <th>Vaqti</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for p in presentations %}
+                            <tr>
+                                <td style="color: var(--text-muted);">{{ p[0] }}</td>
+                                <td style="font-weight: 600;">{{ p[2] }}<br><span style="color: var(--text-muted); font-size: 0.8rem;">ID: {{ p[1] }}</span></td>
+                                <td style="max-width: 250px; word-wrap: break-word; font-weight: 600; color: #60a5fa;">{{ p[3] }}</td>
+                                <td><span style="background: rgba(167, 139, 250, 0.2); color: #a78bfa; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600;">{{ p[4]|replace('_', ' ')|title }}</span></td>
+                                <td>{{ p[5] }}</td>
+                                <td>
+                                    {% if p[6] %}
+                                    <a href="https://api.telegram.org/bot{{ bot_token }}/getFile?file_id={{ p[6] }}" target="_blank" style="color: #10b981; text-decoration: none; font-weight: 600;">📥 Yuklab olish</a>
+                                    {% else %}
+                                    <span style="color: var(--text-muted);">—</span>
+                                    {% endif %}
+                                </td>
+                                <td style="color: var(--text-muted); font-size: 0.9rem;">{{ p[8] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <div class="empty">Hozircha prezentatsiya yaratilmagan</div>
                     {% endif %}
                 </div>
 
@@ -1279,6 +1353,7 @@ def dashboard():
     logs = []
     users = []
     broadcasts = []
+    presentations = []
     try:
         with sqlite3.connect(DB_PATH) as conn:
             cursor = conn.cursor()
@@ -1291,11 +1366,14 @@ def dashboard():
             elif tab == 'broadcast':
                 cursor.execute("SELECT id, message, status, success_count, failed_count, created_at FROM broadcasts ORDER BY id DESC LIMIT 50")
                 broadcasts = cursor.fetchall()
+            elif tab == 'presentations':
+                cursor.execute("SELECT id, user_id, username, topic, style_name, author_name, file_id, status, created_at FROM presentations ORDER BY id DESC LIMIT 100")
+                presentations = cursor.fetchall()
     except Exception as e:
         logger.error(f"Web DB error: {e}")
         
     msg_success = session.pop('msg_success', False)
-    return render_template_string(HTML_TEMPLATE, require_login=False, tab=tab, logs=logs, users=users, broadcasts=broadcasts, msg_success=msg_success)
+    return render_template_string(HTML_TEMPLATE, require_login=False, tab=tab, logs=logs, users=users, broadcasts=broadcasts, presentations=presentations, msg_success=msg_success, bot_token=BOT_TOKEN)
 
 @app_web.route('/broadcast', methods=['POST'])
 def broadcast():
