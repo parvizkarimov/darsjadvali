@@ -1338,13 +1338,34 @@ async def check_broadcasts(context: ContextTypes.DEFAULT_TYPE):
                     success_count = 0
                     failed_count = 0
                     for (u_id,) in users:
+                        # Convert to int if possible for maximum compatibility
                         try:
-                            await context.bot.send_message(chat_id=u_id, text=message, parse_mode="Markdown")
+                            target_chat_id = int(u_id)
+                        except ValueError:
+                            target_chat_id = u_id
+                            
+                        try:
+                            # Try sending with Markdown parse mode
+                            await context.bot.send_message(chat_id=target_chat_id, text=message, parse_mode="Markdown")
                             success_count += 1
                         except Exception as e:
-                            failed_count += 1
-                            logger.error(f"Broadcast yuborishda xatolik (ID: {u_id}): {e}")
-                            
+                            logger.warning(f"Markdown broadcast failed for {u_id}, retrying as plain text: {e}")
+                            try:
+                                # Fallback to plain text if Markdown format fails
+                                await context.bot.send_message(chat_id=target_chat_id, text=message)
+                                success_count += 1
+                            except Exception as e_fallback:
+                                failed_count += 1
+                                logger.error(f"Broadcast yuborishda xatolik (ID: {u_id}): {e_fallback}")
+                                # Log exact exception to DB logs table for easy debugging in dashboard logs tab
+                                try:
+                                    cursor.execute(
+                                        "INSERT INTO logs (user_id, username, action_type, content, ai_response) VALUES (?, ?, ?, ?, ?)",
+                                        (str(u_id), "SYSTEM", "broadcast_error", f"Msg ID: {b_id}", f"Error: {str(e_fallback)}")
+                                    )
+                                except Exception as log_err:
+                                    logger.error(f"Error inserting broadcast error log: {log_err}")
+                                    
                     cursor.execute("UPDATE broadcasts SET status = 'completed', success_count = ?, failed_count = ? WHERE id = ?", (success_count, failed_count, b_id))
                     conn.commit()
                     logger.info(f"Broadcast #{b_id} {success_count} kishiga yuborildi.")
