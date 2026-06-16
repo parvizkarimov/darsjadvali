@@ -12,6 +12,10 @@ import pytz
 from telegram import Bot, Update, InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup, KeyboardButton
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, MessageHandler, filters, ContextTypes
 from groq import Groq
+import asyncio
+import tempfile
+from presentation_generator import generate_presentation_content, create_presentation_pdf
+
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -34,6 +38,14 @@ user_rate_limits = {}
 
 # Suhbat xotirasi: {user_id: [{"role": "user", "content": "..."}, {"role": "assistant", "content": "..."}]}
 chat_history = {}
+
+# ===== TAQDIMOT REJIMI HOLATLARI =====
+STATE_NONE = 0
+STATE_AWAITING_TOPIC = 1
+STATE_AWAITING_STYLE = 2
+
+user_states = {} # user_id: {"state": state, "topic": topic}
+
 
 # ===== BAZANI ISHGA TUSHIRISH =====
 def init_db():
@@ -145,7 +157,7 @@ def main_menu_keyboard():
         [KeyboardButton("🟢 Hozirgi dars"), KeyboardButton("📅 Bugungi darslar")],
         [KeyboardButton("⏩ Ertangi darslar"), KeyboardButton("⏰ Keyingi dars")],
         [KeyboardButton("📋 Haftalik jadval"), KeyboardButton("📚 To'liq jadval")],
-        [KeyboardButton("ℹ️ Yordam")],
+        [KeyboardButton("📝 Prezentatsiya"), KeyboardButton("ℹ️ Yordam")],
     ]
     return ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
 
@@ -364,8 +376,41 @@ async def handle_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
     
     text = update.message.text
+    user_id = str(user.id)
     
-    menu_buttons = ["🟢 Hozirgi dars", "📅 Bugungi darslar", "⏩ Ertangi darslar", "⏰ Keyingi dars", "📋 Haftalik jadval", "📚 To'liq jadval", "ℹ️ Yordam"]
+    menu_buttons = ["🟢 Hozirgi dars", "📅 Bugungi darslar", "⏩ Ertangi darslar", "⏰ Keyingi dars", "📋 Haftalik jadval", "📚 To'liq jadval", "📝 Prezentatsiya", "ℹ️ Yordam"]
+    
+    # Agar boshqa tugma bosilsa, joriy taqdimot holatini tozalaymiz
+    if text in menu_buttons and text != "📝 Prezentatsiya":
+        if user_id in user_states:
+            del user_states[user_id]
+            
+    current_state = user_states.get(user_id, {}).get("state", STATE_NONE)
+    
+    # Agar foydalanuvchi taqdimot mavzusini kiritayotgan bo'lsa va bu boshqa tugma bo'lmasa
+    if current_state == STATE_AWAITING_TOPIC and text not in menu_buttons:
+        topic = text.strip()
+        if not topic:
+            await update.message.reply_text("⚠️ Iltimos, yaroqli mavzu kiriting.")
+            return
+            
+        user_states[user_id] = {"state": STATE_AWAITING_STYLE, "topic": topic}
+        
+        keyboard = [
+            [InlineKeyboardButton("Corporate Blue 🏢", callback_data="style_corporate_blue"),
+             InlineKeyboardButton("Sleek Dark 🌙", callback_data="style_sleek_dark")],
+            [InlineKeyboardButton("Warm Minimalist 🎨", callback_data="style_warm_minimalist"),
+             InlineKeyboardButton("Eco Green 🌿", callback_data="style_eco_green")]
+        ]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        await update.message.reply_text(
+            f"📌 Taqdimot mavzusi: *\"{topic}\"*\n\n"
+            "Endi quyidagi dizayn shablonlaridan birini tanlang: 👇",
+            parse_mode="Markdown",
+            reply_markup=reply_markup
+        )
+        return
+        
     action_type = "TUGMA" if text in menu_buttons else "MATN"
     log_id = log_action(user, action_type, text)
 
@@ -381,6 +426,14 @@ async def handle_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await cmd_hafta(update, context)
     elif text == "📚 To'liq jadval":
         await cmd_jadval(update, context)
+    elif text == "📝 Prezentatsiya":
+        user_states[user_id] = {"state": STATE_AWAITING_TOPIC}
+        await update.message.reply_text(
+            "📝 *Yangi taqdimot yaratish*\n\n"
+            "Iltimos, taqdimot (prezentatsiya) mavzusini yozib yuboring.\n"
+            "Masalan: `Sun'iy intellektning kelajagi` yoki `Moliya tizimi`",
+            parse_mode="Markdown"
+        )
     elif text == "ℹ️ Yordam":
         await cmd_yordam(update, context)
     else:
@@ -692,11 +745,94 @@ async def cmd_send(update: Update, context: ContextTypes.DEFAULT_TYPE):
         parse_mode="HTML"
     )
 
+# ===== PROCESS PRESENTATION (BACKGROUND TASK) =====
+
+async def process_presentation(update, context, user_id, topic, style_name, query):
+    # Edit the inline button message to show loading status
+    status_msg = await query.edit_message_text(
+        f"🤖 *\"{topic}\"* mavzusida taqdimot tayyorlash boshlandi...\n\n"
+        f"🎨 Shablon: *{style_name.replace('_', ' ').title()}*\n"
+        "⏳ Groq AI kontent yaratmoqda (bu 15-30 soniya vaqt olishi mumkin)...",
+        parse_mode="Markdown"
+    )
+    
+    try:
+        # Run content generation in executor
+        loop = asyncio.get_event_loop()
+        data = await loop.run_in_executor(
+            None, 
+            lambda: generate_presentation_content(topic, GROQ_API_KEY)
+        )
+        
+        await status_msg.edit_text(
+            f"🤖 *\"{topic}\"* mavzusida taqdimot...\n\n"
+            f"🎨 Shablon: *{style_name.replace('_', ' ').title()}*\n"
+            "📄 PDF slaydlar yig'ilmoqda...",
+            parse_mode="Markdown"
+        )
+        
+        # Create temp file
+        temp_dir = tempfile.gettempdir()
+        output_filename = f"prezentatsiya_{user_id}_{int(datetime.now().timestamp())}.pdf"
+        output_path = os.path.join(temp_dir, output_filename)
+        
+        # Run PDF creation in executor
+        await loop.run_in_executor(
+            None,
+            lambda: create_presentation_pdf(data, style_name, output_path)
+        )
+        
+        await status_msg.edit_text("📤 Taqdimot tayyor! Fayl yuborilmoqda...")
+        
+        # Send PDF
+        with open(output_path, 'rb') as f:
+            await context.bot.send_document(
+                chat_id=query.message.chat_id,
+                document=f,
+                filename=f"{topic[:30].replace(' ', '_')}_taqdimot.pdf",
+                caption=f"✅ *\"{topic}\"* mavzusidagi taqdimot tayyor bo'ldi!\n\n"
+                        f"📊 Slaydlar soni: 10 ta\n"
+                        f"🎨 Tanlangan shablon: {style_name.replace('_', ' ').title()}",
+                parse_mode="Markdown",
+                reply_markup=main_menu_keyboard()
+            )
+            
+        # Delete temp file
+        if os.path.exists(output_path):
+            os.remove(output_path)
+            
+        await status_msg.delete()
+        
+    except Exception as e:
+        logger.error(f"Presentation generation error: {e}")
+        error_text = f"❌ Kechirasiz, *\"{topic}\"* mavzusida taqdimot tayyorlashda xatolik yuz berdi."
+        if "GROQ_API_KEY" in str(e) or not GROQ_API_KEY:
+            error_text += "\n⚠️ Botda Groq API kaliti o'rnatilmagan yoki noto'g'ri."
+        await status_msg.edit_text(error_text, parse_mode="Markdown", reply_markup=main_menu_keyboard())
+
+
 # ===== CALLBACK (inline tugmalar) =====
 
 async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
+    
+    if query.data.startswith("style_"):
+        user_id = str(update.effective_user.id)
+        style_name = query.data.replace("style_", "")
+        
+        user_data = user_states.get(user_id)
+        if not user_data or user_data.get("state") != STATE_AWAITING_STYLE:
+            await query.message.reply_text("⚠️ Prezentatsiya seansi muddati tugagan. Iltimos, bosh menyudan qayta urinib ko'ring.", reply_markup=main_menu_keyboard())
+            return
+            
+        topic = user_data["topic"]
+        # Clear user state immediately
+        del user_states[user_id]
+        
+        # Process presentation in a background task
+        asyncio.create_task(process_presentation(update, context, user_id, topic, style_name, query))
+        return
     if query.data == "main_menu":
         await query.message.reply_text(
             "Bosh menyu 👇",
