@@ -231,8 +231,8 @@ def generate_presentation_content(topic, api_key):
         "      \"layout_type\": \"Slayd maketi turi: 'grid_cards', 'split_focus', 'horizontal_timeline' yoki 'quote_highlight'\",\n"
         "      \"points\": [\n"
         "        {\n"
-        "          \"text\": \"Mavzuga oid muhim fakt, tahlil yoki g'oya (1-2 ta tushunarli, aniq gapdan iborat lo'nda tushuntirish, maksimal 150 ta belgi)\",\n"
-        "          \"icon_type\": \"Ushbu nuqtaga mos ikonka turi: 'trend', 'shield', 'database', 'user', 'globe', 'idea', 'gear', 'lock', 'chat', 'star'\"\n"
+        "          \"text\": \"Mavzuga oid chuqur tahliliy fakt yoki g'oya (2-3 ta gapdan iborat batafsil tushuntirish, 200-280 ta belgi)\",\n"
+          "icon_type\": \"Ushbu nuqtaga mos ikonka turi: 'trend', 'shield', 'database', 'user', 'globe', 'idea', 'gear', 'lock', 'chat', 'star'\"\n"
         "        },\n"
         "        ...\n"
         "      ]\n"
@@ -244,7 +244,7 @@ def generate_presentation_content(topic, api_key):
         "1. Taqdimot mutlaqo yuzaki bo'lmasin, ma'lumotlar hajmi va chuqurligi professional bo'lsin.\n"
         "2. Har bir slaydning 'layout_type' maydoni bo'lsin. Mavzuga va slayd kontentiga qarab layout turlarini turlicha tanla. Masalan, reja va bosqichlar uchun 'horizontal_timeline', tahlillar va xulosalar uchun 'split_focus' yoki 'quote_highlight', umumiy ma'lumotlar uchun 'grid_cards' ishlating. Har bir taqdimotda kamida 3-4 xil layout turlari aralash bo'lsin (hammasi bir xil bo'lib qolmasin).\n"
         "3. Har bir slaydda 3 tadan 5 tagacha 'points' (nuqtalar) bo'lishi shart. Har bir nuqta uchun uning ma'nosiga mos 'icon_type' tanlansin (masalan: kiberxavfsizlikka shield/lock, o'sishga trend, ma'lumotlarga database, texnik jarayonlarga gear, muloqotga chat).\n"
-        "4. Har bir nuqtaning 'text' maydonidagi matn 1 ta (maksimal 2 ta) lo'nda, tushunarli va mazmunli gapdan iborat bo'lishi shart (juda uzun bo'lib ketmasin, slaydda chiroyli turishi uchun).\n"
+        "4. Har bir nuqtaning 'text' maydonidagi matn chuqur tahliliy ma'lumotlarga boy va professional bo'lishi shart. Har bir punkt 2-3 ta batafsil gapdan iborat bo'lib, o'rtacha 200-280 ta belgi atrofida yozilsin (juda qisqa gaplar yoki iboralar bo'lmasin).\n"
         "5. Slaydlar tartibi mantiqiy bo'lsin: Kirish -> Muammo -> Tahlil -> Yechim -> Kelajak -> Xulosa va h.k."
     )
 
@@ -540,9 +540,9 @@ def extract_point_info(pt):
         text = str(pt)
         icon_type = "default"
         
-    # Xatolik va cheksiz aylanib qolishni oldini olish maqsadida matnni cheklaymiz (180 belgi)
-    if len(text) > 180:
-        text = text[:177] + "..."
+    # Xatolik va cheksiz aylanib qolishni oldini olish maqsadida matnni cheklaymiz (320 belgi)
+    if len(text) > 320:
+        text = text[:317] + "..."
         
     return text, icon_type
 
@@ -764,8 +764,8 @@ def create_presentation_pdf(data, style_name, output_path, author_name="Taqdimot
                 )
                 
                 focus_desc = slide.get("description", "Asosiy xulosalar.")
-                if len(focus_desc) > 150:
-                    focus_desc = focus_desc[:147] + "..."
+                if len(focus_desc) > 250:
+                    focus_desc = focus_desc[:247] + "..."
                     
                 focus_card_content = [
                     Spacer(1, 8),
@@ -878,8 +878,8 @@ def create_presentation_pdf(data, style_name, output_path, author_name="Taqdimot
                 w_total = doc.pagesize[0] - 120
                 
                 takeaway_text = slide.get("description", "Asosiy xulosa kiritilmagan.")
-                if len(takeaway_text) > 150:
-                    takeaway_text = takeaway_text[:147] + "..."
+                if len(takeaway_text) > 250:
+                    takeaway_text = takeaway_text[:247] + "..."
                     
                 quote_text_style = ParagraphStyle(
                     f"QuoteTextStyle_{idx}",
