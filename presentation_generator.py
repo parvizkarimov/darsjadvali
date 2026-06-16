@@ -9,11 +9,22 @@ from groq import Groq
 from reportlab.lib.pagesizes import landscape, A4
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak, Table, TableStyle
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib.colors import HexColor
+from reportlab.lib.colors import HexColor, Color
 from reportlab.pdfgen import canvas
 from reportlab.graphics.shapes import Drawing, Circle, Rect, Polygon, Line
 
 logger = logging.getLogger(__name__)
+
+def get_color(color_val):
+    """Hex rangni Reportlab Color formatiga o'tkazish, shaffoflikni (alpha) to'g'ri qo'llash"""
+    if not color_val:
+        return None
+    if not isinstance(color_val, str):
+        return color_val
+    cleaned = color_val.lstrip('#')
+    if len(cleaned) == 8:
+        return HexColor('#' + cleaned, hasAlpha=True)
+    return HexColor('#' + cleaned)
 
 # ===== DIZAYN SHABLONLARI (STYLES) =====
 STYLE_TEMPLATES = {
