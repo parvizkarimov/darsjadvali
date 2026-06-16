@@ -579,10 +579,7 @@ def draw_bottom_tech_decoration(canvas_obj, x, y, primary, accent, style_name, p
         canvas_obj.setLineWidth(1.5)
         canvas_obj.line(x, y, x + 38, y + 38)
         canvas_obj.circle(x + 38, y + 38, 3, fill=True, stroke=False)
-        # Text label
-        canvas_obj.setFont("Helvetica-Bold", 7)
-        canvas_obj.setFillColor(get_color(accent + "44"))
-        canvas_obj.drawString(x - 55, y - 50, "RADAR_SWEEP // ACTIVE")
+
         
     elif page_num % 3 == 2:
         # B: Signal Oscilloscope / Wave grid (Bottom-Right)
@@ -604,10 +601,7 @@ def draw_bottom_tech_decoration(canvas_obj, x, y, primary, accent, style_name, p
             points_wave.append((wx, wy))
         for j in range(len(points_wave) - 1):
             canvas_obj.line(points_wave[j][0], points_wave[j][1], points_wave[j+1][0], points_wave[j+1][1])
-        # Text label
-        canvas_obj.setFont("Helvetica-Bold", 7)
-        canvas_obj.setFillColor(get_color(accent + "44"))
-        canvas_obj.drawString(gx, gy - 8, "FREQ_OSCILLOSCOPE // 44.1 KHZ")
+
         
     else:
         # C: Hexagonal Tech Mesh / Nodes (Bottom-Right)
@@ -627,10 +621,7 @@ def draw_bottom_tech_decoration(canvas_obj, x, y, primary, accent, style_name, p
         canvas_obj.circle(x, y, 4, fill=True, stroke=False)
         canvas_obj.setFillColor(w_color)
         canvas_obj.circle(x, y, 1.8, fill=True, stroke=False)
-        # Text label
-        canvas_obj.setFont("Helvetica-Bold", 7)
-        canvas_obj.setFillColor(get_color(accent + "44"))
-        canvas_obj.drawString(x - 45, y - 40, "MESH_GRID // NODE_ACTIVE")
+
         
     canvas_obj.restoreState()
 
@@ -684,11 +675,7 @@ def draw_slide_background(canvas_obj, doc):
     canvas_obj.setFillColor(get_color(border_color))
     canvas_obj.rect(54, 45, doc.pagesize[0] - 108, 1, fill=True, stroke=False)
     
-    # Draw tech status feed line above footer
-    canvas_obj.setFont("Helvetica-Bold", 6)
-    canvas_obj.setFillColor(get_color(style["accent"] + "44"))
-    status_text = f"[ SYS.FEED // CONNECTED // PAGE_0{page_num} ] ---------------------------------------------------- [ SECURE // SHIELD_ON ]"
-    canvas_obj.drawString(54, 52, status_text)
+
     
     # Draw footer metadata
     canvas_obj.setFont("Helvetica", 9)
