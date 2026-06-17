@@ -173,7 +173,8 @@ def main_menu_keyboard():
         [KeyboardButton("🟢 Hozirgi dars"), KeyboardButton("📅 Bugungi darslar")],
         [KeyboardButton("⏩ Ertangi darslar"), KeyboardButton("⏰ Keyingi dars")],
         [KeyboardButton("📋 Haftalik jadval"), KeyboardButton("📚 To'liq jadval")],
-        [KeyboardButton("📝 Prezentatsiya"), KeyboardButton("ℹ️ Yordam")],
+        [KeyboardButton("📝 Prezentatsiya"), KeyboardButton("🌤 Ob-havo")],
+        [KeyboardButton("ℹ️ Yordam")],
     ]
     return ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
 
@@ -407,7 +408,7 @@ async def handle_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text
     user_id = str(user.id)
     
-    menu_buttons = ["🟢 Hozirgi dars", "📅 Bugungi darslar", "⏩ Ertangi darslar", "⏰ Keyingi dars", "📋 Haftalik jadval", "📚 To'liq jadval", "📝 Prezentatsiya", "ℹ️ Yordam"]
+    menu_buttons = ["🟢 Hozirgi dars", "📅 Bugungi darslar", "⏩ Ertangi darslar", "⏰ Keyingi dars", "📋 Haftalik jadval", "📚 To'liq jadval", "📝 Prezentatsiya", "🌤 Ob-havo", "ℹ️ Yordam"]
     
     # Agar boshqa tugma bosilsa yoki Bekor qilish tanlansa, holatni tozalaymiz
     if (text in menu_buttons and text != "📝 Prezentatsiya") or text == "🔙 Bekor qilish":
@@ -507,6 +508,8 @@ async def handle_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
             parse_mode="Markdown",
             reply_markup=author_keyboard()
         )
+    elif text == "🌤 Ob-havo":
+        await cmd_weather(update, context)
     elif text == "ℹ️ Yordam":
         await cmd_yordam(update, context)
     else:
@@ -734,6 +737,39 @@ async def cmd_yordam(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup=main_menu_keyboard()
     )
 
+def get_samarkand_weather(date_str):
+    from datetime import datetime
+    try:
+        dt = datetime.strptime(date_str, "%d.%m.%Y")
+        formatted_date = dt.strftime("%Y-%m-%d")
+        url = f"https://api.open-meteo.com/v1/forecast?latitude=39.6525&longitude=66.9558&daily=temperature_2m_max,temperature_2m_min&timezone=Asia/Tashkent&start_date={formatted_date}&end_date={formatted_date}"
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(req) as resp:
+            data = json.loads(resp.read().decode())
+        if "daily" in data:
+            temp_max = data["daily"]["temperature_2m_max"][0]
+            temp_min = data["daily"]["temperature_2m_min"][0]
+            return temp_max, temp_min
+    except Exception as e:
+        logger.error(f"Weather API error: {e}")
+    return None
+
+async def cmd_weather(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    keyboard = [
+        [InlineKeyboardButton("15.06 - Dushanba", callback_data="weather_15.06.2026"),
+         InlineKeyboardButton("16.06 - Seshanba", callback_data="weather_16.06.2026")],
+        [InlineKeyboardButton("17.06 - Chorshanba", callback_data="weather_17.06.2026"),
+         InlineKeyboardButton("18.06 - Payshanba", callback_data="weather_18.06.2026")],
+        [InlineKeyboardButton("19.06 - Juma", callback_data="weather_19.06.2026"),
+         InlineKeyboardButton("20.06 - Shanba", callback_data="weather_20.06.2026")],
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    await update.message.reply_text(
+        "🌤 *Samarqand shahri uchun ob-havo ma'lumoti:*\n\nIltimos, kerakli sanani tanlang: 👇",
+        parse_mode="Markdown",
+        reply_markup=reply_markup
+    )
+
 async def cmd_users(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = str(update.effective_user.id)
     
@@ -956,6 +992,40 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
         await query.edit_message_text("📋 *Qaysi kunning jadvalini ko'rmoqchisiz?*", parse_mode="Markdown", reply_markup=reply_markup)
+    elif query.data.startswith("weather_"):
+        date_str = query.data.replace("weather_", "")
+        
+        # Loading message representation
+        await query.edit_message_text("⏳ Ob-havo ma'lumoti yuklanmoqda...")
+        
+        weather_data = get_samarkand_weather(date_str)
+        if weather_data:
+            temp_max, temp_min = weather_data
+            text = (
+                f"🌤 *Samarqand ob-havosi ({date_str}):*\n\n"
+                f"☀️ Kunduzi: *{temp_max}°C*\n"
+                f"🌙 Kechasi: *{temp_min}°C*"
+            )
+        else:
+            text = f"❌ Kechirasiz, *{date_str}* sanasi uchun ob-havo ma'lumotlarini olib bo'lmadi."
+            
+        back_kb = InlineKeyboardMarkup([[InlineKeyboardButton("🔙 Boshqa sanani tanlash", callback_data="weather_back_to_week")]])
+        await query.edit_message_text(text, parse_mode="Markdown", reply_markup=back_kb)
+    elif query.data == "weather_back_to_week":
+        keyboard = [
+            [InlineKeyboardButton("15.06 - Dushanba", callback_data="weather_15.06.2026"),
+             InlineKeyboardButton("16.06 - Seshanba", callback_data="weather_16.06.2026")],
+            [InlineKeyboardButton("17.06 - Chorshanba", callback_data="weather_17.06.2026"),
+             InlineKeyboardButton("18.06 - Payshanba", callback_data="weather_18.06.2026")],
+            [InlineKeyboardButton("19.06 - Juma", callback_data="weather_19.06.2026"),
+             InlineKeyboardButton("20.06 - Shanba", callback_data="weather_20.06.2026")],
+        ]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        await query.edit_message_text(
+            "🌤 *Samarqand shahri uchun ob-havo ma'lumoti:*\n\nIltimos, kerakli sanani tanlang: 👇",
+            parse_mode="Markdown",
+            reply_markup=reply_markup
+        )
 
 # ===== ESLATMALAR =====
 
