@@ -1006,6 +1006,23 @@ async def send_end_reminder(context: ContextTypes.DEFAULT_TYPE):
     )
     await send_to_all_users(context.bot, text)
 
+async def send_daily_schedule(context: ContextTypes.DEFAULT_TYPE):
+    logger.info("Yuborilmoqda: Kundalik darslar jadvali (9:00)")
+    lessons = get_today_schedule()
+    now = datetime.now(TZ)
+    today = now.strftime("%d.%m.%Y")
+    
+    if not lessons:
+        start_date = TZ.localize(datetime(2026, 6, 15))
+        if now < start_date:
+            text = "⏳ *Darslar 15-iyundan boshlanadi!*"
+        else:
+            text = f"📭 *{today}* kuni dars yo'q."
+    else:
+        text = f"📋 *Bugungi darslar ({today}):*\n" + format_schedule_by_date(lessons)
+        
+    await send_to_all_users(context.bot, text)
+
 async def send_to_all_users(bot, text):
     """Barcha ro'yxatdan o'tgan foydalanuvchilarga xabar yuborish"""
     try:
@@ -1514,6 +1531,11 @@ def main():
         schedule_reminders(application)
             
         application.job_queue.run_repeating(check_broadcasts, interval=10)
+        
+        # Kundalik dars jadvalini 9:00 da yuborish (Toshkent vaqti bilan)
+        daily_time = time(hour=9, minute=0, tzinfo=TZ)
+        application.job_queue.run_daily(send_daily_schedule, time=daily_time, name="daily_schedule_9am")
+        logger.info("Kundalik darslar jadvali xabari (9:00) rejalashtirildi.")
             
         # Adminga deploy xabarini jo'natish
         try:
