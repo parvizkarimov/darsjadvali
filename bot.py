@@ -165,6 +165,16 @@ SCHEDULE = [
     ("20.06.2026", 17, 0, "PUBLIC FINANCE", "ABDUVAXOPOV INOMJON", "A-502"),
 ]
 
+# ===== IMTIHON JADVALI (FIN-S-1323U) =====
+EXAMS = [
+    ("22.06.2026", 9, 20, "ECONOMIC ANALYSIS", "B-202"),
+    ("23.06.2026", 9, 20, "FINANCIAL TECHNOLOGIES", "B-202"),
+    ("24.06.2026", 9, 20, "PUBLIC FINANCE", "B-202"),
+    ("25.06.2026", 9, 20, "INTERNATIONAL NEGOTIATION", "B-202"),
+    ("26.06.2026", 9, 20, "INSURANCE", "B-202"),
+    ("27.06.2026", 9, 20, "ISLAMIC FINANCE", "B-202"),
+]
+
 # ===== MENYULAR =====
 
 def main_menu_keyboard():
@@ -174,7 +184,7 @@ def main_menu_keyboard():
         [KeyboardButton("⏩ Ertangi darslar"), KeyboardButton("⏰ Keyingi dars")],
         [KeyboardButton("📋 Haftalik jadval"), KeyboardButton("📚 To'liq jadval")],
         [KeyboardButton("📝 Prezentatsiya"), KeyboardButton("🌤 Ob-havo")],
-        [KeyboardButton("ℹ️ Yordam")],
+        [KeyboardButton("🎓 Imtihon"), KeyboardButton("ℹ️ Yordam")],
     ]
     return ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
 
@@ -408,7 +418,7 @@ async def handle_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text
     user_id = str(user.id)
     
-    menu_buttons = ["🟢 Hozirgi dars", "📅 Bugungi darslar", "⏩ Ertangi darslar", "⏰ Keyingi dars", "📋 Haftalik jadval", "📚 To'liq jadval", "📝 Prezentatsiya", "🌤 Ob-havo", "ℹ️ Yordam"]
+    menu_buttons = ["🟢 Hozirgi dars", "📅 Bugungi darslar", "⏩ Ertangi darslar", "⏰ Keyingi dars", "📋 Haftalik jadval", "📚 To'liq jadval", "📝 Prezentatsiya", "🌤 Ob-havo", "🎓 Imtihon", "ℹ️ Yordam"]
     
     # Agar boshqa tugma bosilsa yoki Bekor qilish tanlansa, holatni tozalaymiz
     if (text in menu_buttons and text != "📝 Prezentatsiya") or text == "🔙 Bekor qilish":
@@ -510,6 +520,8 @@ async def handle_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
     elif text == "🌤 Ob-havo":
         await cmd_weather(update, context)
+    elif text == "🎓 Imtihon":
+        await cmd_imtihon(update, context)
     elif text == "ℹ️ Yordam":
         await cmd_yordam(update, context)
     else:
@@ -718,6 +730,21 @@ async def cmd_keyingi(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         text, parse_mode="Markdown", disable_web_page_preview=True,
         reply_markup=main_menu_keyboard()
+    )
+
+async def cmd_imtihon(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    text = "🎓 *Imtihonlar jadvali (FIN-S-1323U):*\n"
+    for date, hour, minute, subject, room in EXAMS:
+        start_time = f"{hour:02d}:{minute:02d}"
+        end_dt = datetime.strptime(start_time, "%H:%M") + timedelta(minutes=20)
+        end_time = end_dt.strftime("%H:%M")
+        
+        text += f"\n📅 *{date}* | 🕐 {start_time} - {end_time}\n"
+        text += f"📚 {subject}\n"
+        text += f"🚪 Xona: *{room}*\n"
+        
+    await update.message.reply_text(
+        text, parse_mode="Markdown", reply_markup=main_menu_keyboard()
     )
 
 async def cmd_yordam(update: Update, context: ContextTypes.DEFAULT_TYPE):
