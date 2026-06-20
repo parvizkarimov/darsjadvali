@@ -180,11 +180,9 @@ EXAMS = [
 def main_menu_keyboard():
     """Asosiy pastki menyu (ReplyKeyboard)"""
     keyboard = [
-        [KeyboardButton("🎓 Imtihon"), KeyboardButton("📅 Bugungi darslar")],
-        [KeyboardButton("⏩ Ertangi darslar"), KeyboardButton("⏰ Keyingi dars")],
-        [KeyboardButton("📋 Haftalik jadval"), KeyboardButton("📚 To'liq jadval")],
-        [KeyboardButton("📝 Prezentatsiya"), KeyboardButton("🌤 Ob-havo")],
-        [KeyboardButton("🟢 Hozirgi dars"), KeyboardButton("ℹ️ Yordam")],
+        [KeyboardButton("📅 Bugungi Imtihon"), KeyboardButton("⏩ Ertangi Imtihon")],
+        [KeyboardButton("📋 To'liq ro'yxat"), KeyboardButton("📝 Prezentatsiya")],
+        [KeyboardButton("ℹ️ Yordam")],
     ]
     return ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
 
@@ -418,7 +416,7 @@ async def handle_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text
     user_id = str(user.id)
     
-    menu_buttons = ["🟢 Hozirgi dars", "📅 Bugungi darslar", "⏩ Ertangi darslar", "⏰ Keyingi dars", "📋 Haftalik jadval", "📚 To'liq jadval", "📝 Prezentatsiya", "🌤 Ob-havo", "🎓 Imtihon", "ℹ️ Yordam"]
+    menu_buttons = ["📅 Bugungi Imtihon", "⏩ Ertangi Imtihon", "📋 To'liq ro'yxat", "📝 Prezentatsiya", "ℹ️ Yordam"]
     
     # Agar boshqa tugma bosilsa yoki Bekor qilish tanlansa, holatni tozalaymiz
     if (text in menu_buttons and text != "📝 Prezentatsiya") or text == "🔙 Bekor qilish":
@@ -497,18 +495,12 @@ async def handle_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     action_type = "TUGMA" if text in menu_buttons else "MATN"
     log_id = log_action(user, action_type, text)
 
-    if text == "🟢 Hozirgi dars":
-        await cmd_hozirgi(update, context)
-    elif text == "📅 Bugungi darslar":
-        await cmd_bugun(update, context)
-    elif text == "⏩ Ertangi darslar":
-        await cmd_ertaga(update, context)
-    elif text == "⏰ Keyingi dars":
-        await cmd_keyingi(update, context)
-    elif text == "📋 Haftalik jadval":
-        await cmd_hafta(update, context)
-    elif text == "📚 To'liq jadval":
-        await cmd_jadval(update, context)
+    if text == "📅 Bugungi Imtihon":
+        await cmd_bugungi_imtihon(update, context)
+    elif text == "⏩ Ertangi Imtihon":
+        await cmd_ertangi_imtihon(update, context)
+    elif text == "📋 To'liq ro'yxat":
+        await cmd_imtihon(update, context)
     elif text == "📝 Prezentatsiya":
         user_states[user_id] = {"state": STATE_AWAITING_AUTHOR}
         await update.message.reply_text(
@@ -518,10 +510,6 @@ async def handle_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
             parse_mode="Markdown",
             reply_markup=author_keyboard()
         )
-    elif text == "🌤 Ob-havo":
-        await cmd_weather(update, context)
-    elif text == "🎓 Imtihon":
-        await cmd_imtihon(update, context)
     elif text == "ℹ️ Yordam":
         await cmd_yordam(update, context)
     else:
@@ -732,8 +720,47 @@ async def cmd_keyingi(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup=main_menu_keyboard()
     )
 
+async def cmd_bugungi_imtihon(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    now = datetime.now(TZ)
+    today_str = now.strftime("%d.%m.%Y")
+    
+    exams_today = [e for e in EXAMS if e[0] == today_str]
+    
+    if not exams_today:
+        await update.message.reply_text(f"📭 *{today_str}* kuni imtihon yo'q.", parse_mode="Markdown", reply_markup=main_menu_keyboard())
+        return
+        
+    text = f"📅 *Bugungi Imtihonlar ({today_str}):*\n"
+    for date, hour, minute, subject, room in exams_today:
+        start_time = f"{hour:02d}:{minute:02d}"
+        end_dt = datetime.strptime(start_time, "%H:%M") + timedelta(minutes=20)
+        end_time = end_dt.strftime("%H:%M")
+        text += f"\n🕐 {start_time} - {end_time}\n📚 {subject} | 🚪 Xona: {room}\n"
+        
+    await update.message.reply_text(text, parse_mode="Markdown", reply_markup=main_menu_keyboard())
+
+async def cmd_ertangi_imtihon(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    now = datetime.now(TZ)
+    tomorrow = now + timedelta(days=1)
+    tomorrow_str = tomorrow.strftime("%d.%m.%Y")
+    
+    exams_tomorrow = [e for e in EXAMS if e[0] == tomorrow_str]
+    
+    if not exams_tomorrow:
+        await update.message.reply_text(f"📭 *{tomorrow_str}* kuni imtihon yo'q.", parse_mode="Markdown", reply_markup=main_menu_keyboard())
+        return
+        
+    text = f"⏩ *Ertangi Imtihonlar ({tomorrow_str}):*\n"
+    for date, hour, minute, subject, room in exams_tomorrow:
+        start_time = f"{hour:02d}:{minute:02d}"
+        end_dt = datetime.strptime(start_time, "%H:%M") + timedelta(minutes=20)
+        end_time = end_dt.strftime("%H:%M")
+        text += f"\n🕐 {start_time} - {end_time}\n📚 {subject} | 🚪 Xona: {room}\n"
+        
+    await update.message.reply_text(text, parse_mode="Markdown", reply_markup=main_menu_keyboard())
+
 async def cmd_imtihon(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    text = "🎓 *Imtihonlar jadvali (FIN-S-1323U):*\n"
+    text = "🎓 *To'liq Imtihonlar jadvali (FIN-S-1323U):*\n"
     for date, hour, minute, subject, room in EXAMS:
         start_time = f"{hour:02d}:{minute:02d}"
         end_dt = datetime.strptime(start_time, "%H:%M") + timedelta(minutes=20)
@@ -1058,46 +1085,28 @@ async def callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def send_pre_reminder(context: ContextTypes.DEFAULT_TYPE):
     job_data = context.job.data
-    lesson = job_data["lesson"]
-    _, hour, minute, subject, teacher, room = lesson
+    exam = job_data["exam"]
+    _, hour, minute, subject, room = exam
 
     text = (
         f"🔔 *Eslatma!*\n\n"
-        f"⏰ *Dars boshlanishiga 5 daqiqa qoldi*\n\n"
+        f"⏰ *Imtihon boshlanishiga 20 daqiqa qoldi*\n\n"
         f"🕐 {hour:02d}:{minute:02d}\n"
         f"📚 *{subject}*\n"
-        f"👩‍🏫 {teacher}\n"
         f"🚪 Xona: *{room}*"
     )
     await send_to_all_users(context.bot, text)
 
 async def send_start_reminder(context: ContextTypes.DEFAULT_TYPE):
     job_data = context.job.data
-    lesson = job_data["lesson"]
-    _, hour, minute, subject, teacher, room = lesson
+    exam = job_data["exam"]
+    _, hour, minute, subject, room = exam
     
-    end_dt = datetime.strptime(f"{hour:02d}:{minute:02d}", "%H:%M") + timedelta(minutes=50)
+    end_dt = datetime.strptime(f"{hour:02d}:{minute:02d}", "%H:%M") + timedelta(minutes=20)
 
     text = (
-        f"🟢 *Dars boshlandi!*\n\n"
+        f"🟢 *Imtihon boshlandi!*\n\n"
         f"📚 *{subject}*\n"
-        f"👩‍🏫 O'qituvchi: {teacher}\n"
-        f"🚪 Xona: *{room}*\n"
-        f"🕐 Vaqt: {hour:02d}:{minute:02d} dan {end_dt.strftime('%H:%M')} gacha"
-    )
-    await send_to_all_users(context.bot, text)
-
-async def send_end_reminder(context: ContextTypes.DEFAULT_TYPE):
-    job_data = context.job.data
-    lesson = job_data["lesson"]
-    _, hour, minute, subject, teacher, room = lesson
-    
-    end_dt = datetime.strptime(f"{hour:02d}:{minute:02d}", "%H:%M") + timedelta(minutes=50)
-
-    text = (
-        f"🔴 *Dars tugadi!*\n\n"
-        f"📚 *{subject}*\n"
-        f"👩‍🏫 O'qituvchi: {teacher}\n"
         f"🚪 Xona: *{room}*\n"
         f"🕐 Vaqt: {hour:02d}:{minute:02d} dan {end_dt.strftime('%H:%M')} gacha"
     )
@@ -1150,43 +1159,34 @@ def schedule_reminders(app, chat_id=None):
     logger.info("--- ESLATMALAR TEKSHIRUVI ---")
     logger.info(f"Hozirgi O'zbekiston vaqti (UTC+5): {now.strftime('%d.%m.%Y %H:%M:%S')}")
     logger.info(f"Chat ID: {chat_id}")
-    logger.info(f"Jadvaldagi darslar soni: {len(SCHEDULE)}")
+    logger.info(f"Imtihonlar soni: {len(EXAMS)}")
     
-    for lesson in SCHEDULE:
-        lesson_dt = get_lesson_datetime(lesson[0], lesson[1], lesson[2])
+    for exam in EXAMS:
+        exam_dt = get_lesson_datetime(exam[0], exam[1], exam[2])
         
-        pre_dt = lesson_dt - timedelta(minutes=5)
-        start_dt = lesson_dt
-        end_dt = lesson_dt + timedelta(minutes=50)
+        pre_dt = exam_dt - timedelta(minutes=20)
+        start_dt = exam_dt
 
-        # 1. 5 minut oldin eslatma
+        # 1. 20 minut oldin eslatma
         if pre_dt > now:
-            job_name = f"pre_{lesson[0]}_{lesson[1]}_{lesson[2]}"
+            job_name = f"pre_exam_{exam[0]}_{exam[1]}_{exam[2]}"
             existing = app.job_queue.get_jobs_by_name(job_name)
             if not existing:
                 delay = (pre_dt - now).total_seconds()
-                app.job_queue.run_once(send_pre_reminder, when=delay, data={"chat_id": chat_id, "lesson": lesson}, name=job_name)
-                logger.info(f"  ✅ ESLATMA rejalashtirildi: {lesson[3]} — {pre_dt.strftime('%d.%m.%Y %H:%M')} ({int(delay)}s keyin)")
+                app.job_queue.run_once(send_pre_reminder, when=delay, data={"chat_id": chat_id, "exam": exam}, name=job_name)
+                logger.info(f"  ✅ ESLATMA rejalashtirildi: {exam[3]} — {pre_dt.strftime('%d.%m.%Y %H:%M')} ({int(delay)}s keyin)")
                 count += 1
             else:
                 logger.info(f"  ⏩ Allaqachon mavjud: {job_name}")
         else:
-            logger.info(f"  ⏩ O'tib ketgan: {lesson[3]} — {pre_dt.strftime('%d.%m.%Y %H:%M')}")
+            logger.info(f"  ⏩ O'tib ketgan: {exam[3]} — {pre_dt.strftime('%d.%m.%Y %H:%M')}")
 
-        # 2. Dars boshlandi
+        # 2. Imtihon boshlandi
         if start_dt > now:
-            job_name = f"start_{lesson[0]}_{lesson[1]}_{lesson[2]}"
+            job_name = f"start_exam_{exam[0]}_{exam[1]}_{exam[2]}"
             if not app.job_queue.get_jobs_by_name(job_name):
                 delay = (start_dt - now).total_seconds()
-                app.job_queue.run_once(send_start_reminder, when=delay, data={"chat_id": chat_id, "lesson": lesson}, name=job_name)
-                count += 1
-                
-        # 3. Dars tugadi
-        if end_dt > now:
-            job_name = f"end_{lesson[0]}_{lesson[1]}_{lesson[2]}"
-            if not app.job_queue.get_jobs_by_name(job_name):
-                delay = (end_dt - now).total_seconds()
-                app.job_queue.run_once(send_end_reminder, when=delay, data={"chat_id": chat_id, "lesson": lesson}, name=job_name)
+                app.job_queue.run_once(send_start_reminder, when=delay, data={"chat_id": chat_id, "exam": exam}, name=job_name)
                 count += 1
             
     logger.info(f"Jami {count} ta eslatma hodisalari rejalashtirildi")
