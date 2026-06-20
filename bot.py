@@ -727,7 +727,35 @@ async def cmd_bugungi_imtihon(update: Update, context: ContextTypes.DEFAULT_TYPE
     exams_today = [e for e in EXAMS if e[0] == today_str]
     
     if not exams_today:
-        await update.message.reply_text(f"📭 *{today_str}* kuni imtihon yo'q.", parse_mode="Markdown", reply_markup=main_menu_keyboard())
+        upcoming = sorted(
+            [(get_lesson_datetime(e[0], e[1], e[2]), e) for e in EXAMS
+             if get_lesson_datetime(e[0], e[1], e[2]) > now],
+            key=lambda x: x[0]
+        )
+        if upcoming:
+            next_dt, exam = upcoming[0]
+            delta = next_dt - now
+            days = delta.days
+            hours = int((delta.total_seconds() % 86400) // 3600)
+            minutes = int((delta.total_seconds() % 3600) // 60)
+            
+            time_left = ""
+            if days > 0:
+                time_left += f"{days} kun "
+            if hours > 0:
+                time_left += f"{hours} soat "
+            time_left += f"{minutes} daqiqa"
+            
+            date_str, hour, minute, subject, room = exam
+            await update.message.reply_text(
+                f"📭 *{today_str}* kuni imtihon yo'q.\n\n"
+                f"⏰ *Keyingi imtihon:*\n"
+                f"📅 {date_str} | 🕐 {hour:02d}:{minute:02d} ({time_left.strip()} qoldi)\n"
+                f"📚 {subject} | 🚪 Xona: {room}",
+                parse_mode="Markdown", reply_markup=main_menu_keyboard()
+            )
+        else:
+            await update.message.reply_text(f"📭 *{today_str}* kuni imtihon yo'q. Kelgusi imtihonlar topilmadi.", parse_mode="Markdown", reply_markup=main_menu_keyboard())
         return
         
     text = f"📅 *Bugungi Imtihonlar ({today_str}):*\n"
