@@ -723,6 +723,8 @@ async def cmd_keyingi(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def cmd_bugungi_imtihon(update: Update, context: ContextTypes.DEFAULT_TYPE):
     now = datetime.now(TZ)
     today_str = now.strftime("%d.%m.%Y")
+    day_names = {0: "Dushanba", 1: "Seshanba", 2: "Chorshanba", 3: "Payshanba", 4: "Juma", 5: "Shanba", 6: "Yakshanba"}
+    today_day_name = day_names[now.weekday()]
     
     exams_today = [e for e in EXAMS if e[0] == today_str]
     
@@ -747,18 +749,20 @@ async def cmd_bugungi_imtihon(update: Update, context: ContextTypes.DEFAULT_TYPE
             time_left += f"{minutes} daqiqa"
             
             date_str, hour, minute, subject, room = exam
+            next_day_name = day_names[datetime.strptime(date_str, "%d.%m.%Y").weekday()]
+            
             await update.message.reply_text(
-                f"📭 *{today_str}* kuni imtihon yo'q.\n\n"
+                f"📭 *{today_str} ({today_day_name})* kuni imtihon yo'q.\n\n"
                 f"⏰ *Keyingi imtihon:*\n"
-                f"📅 {date_str} | 🕐 {hour:02d}:{minute:02d} ({time_left.strip()} qoldi)\n"
+                f"📅 {date_str} ({next_day_name}) | 🕐 {hour:02d}:{minute:02d} ({time_left.strip()} qoldi)\n"
                 f"📚 {subject} | 🚪 Xona: {room}",
                 parse_mode="Markdown", reply_markup=main_menu_keyboard()
             )
         else:
-            await update.message.reply_text(f"📭 *{today_str}* kuni imtihon yo'q. Kelgusi imtihonlar topilmadi.", parse_mode="Markdown", reply_markup=main_menu_keyboard())
+            await update.message.reply_text(f"📭 *{today_str} ({today_day_name})* kuni imtihon yo'q. Kelgusi imtihonlar topilmadi.", parse_mode="Markdown", reply_markup=main_menu_keyboard())
         return
         
-    text = f"📅 *Bugungi Imtihonlar ({today_str}):*\n"
+    text = f"📅 *Bugungi Imtihonlar, {today_str} ({today_day_name}):*\n"
     for date, hour, minute, subject, room in exams_today:
         start_time = f"{hour:02d}:{minute:02d}"
         end_dt = datetime.strptime(start_time, "%H:%M") + timedelta(minutes=20)
@@ -771,14 +775,16 @@ async def cmd_ertangi_imtihon(update: Update, context: ContextTypes.DEFAULT_TYPE
     now = datetime.now(TZ)
     tomorrow = now + timedelta(days=1)
     tomorrow_str = tomorrow.strftime("%d.%m.%Y")
+    day_names = {0: "Dushanba", 1: "Seshanba", 2: "Chorshanba", 3: "Payshanba", 4: "Juma", 5: "Shanba", 6: "Yakshanba"}
+    tomorrow_day_name = day_names[tomorrow.weekday()]
     
     exams_tomorrow = [e for e in EXAMS if e[0] == tomorrow_str]
     
     if not exams_tomorrow:
-        await update.message.reply_text(f"📭 *{tomorrow_str}* kuni imtihon yo'q.", parse_mode="Markdown", reply_markup=main_menu_keyboard())
+        await update.message.reply_text(f"📭 *{tomorrow_str} ({tomorrow_day_name})* kuni imtihon yo'q.", parse_mode="Markdown", reply_markup=main_menu_keyboard())
         return
         
-    text = f"⏩ *Ertangi Imtihonlar ({tomorrow_str}):*\n"
+    text = f"⏩ *Ertangi Imtihonlar, {tomorrow_str} ({tomorrow_day_name}):*\n"
     for date, hour, minute, subject, room in exams_tomorrow:
         start_time = f"{hour:02d}:{minute:02d}"
         end_dt = datetime.strptime(start_time, "%H:%M") + timedelta(minutes=20)
@@ -789,12 +795,16 @@ async def cmd_ertangi_imtihon(update: Update, context: ContextTypes.DEFAULT_TYPE
 
 async def cmd_imtihon(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = "🎓 *To'liq Imtihonlar jadvali (FIN-S-1323U):*\n"
+    day_names = {0: "Dushanba", 1: "Seshanba", 2: "Chorshanba", 3: "Payshanba", 4: "Juma", 5: "Shanba", 6: "Yakshanba"}
     for date, hour, minute, subject, room in EXAMS:
         start_time = f"{hour:02d}:{minute:02d}"
         end_dt = datetime.strptime(start_time, "%H:%M") + timedelta(minutes=20)
         end_time = end_dt.strftime("%H:%M")
         
-        text += f"\n📅 *{date}* | 🕐 {start_time} - {end_time}\n"
+        day_idx = datetime.strptime(date, "%d.%m.%Y").weekday()
+        day_name = day_names[day_idx]
+        
+        text += f"\n📅 *{date} ({day_name})* | 🕐 {start_time} - {end_time}\n"
         text += f"📚 {subject}\n"
         text += f"🚪 Xona: *{room}*\n"
         
