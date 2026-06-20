@@ -180,11 +180,11 @@ EXAMS = [
 def main_menu_keyboard():
     """Asosiy pastki menyu (ReplyKeyboard)"""
     keyboard = [
-        [KeyboardButton("🟢 Hozirgi dars"), KeyboardButton("📅 Bugungi darslar")],
+        [KeyboardButton("🎓 Imtihon"), KeyboardButton("📅 Bugungi darslar")],
         [KeyboardButton("⏩ Ertangi darslar"), KeyboardButton("⏰ Keyingi dars")],
         [KeyboardButton("📋 Haftalik jadval"), KeyboardButton("📚 To'liq jadval")],
         [KeyboardButton("📝 Prezentatsiya"), KeyboardButton("🌤 Ob-havo")],
-        [KeyboardButton("🎓 Imtihon"), KeyboardButton("ℹ️ Yordam")],
+        [KeyboardButton("🟢 Hozirgi dars"), KeyboardButton("ℹ️ Yordam")],
     ]
     return ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
 
