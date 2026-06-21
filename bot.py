@@ -1914,7 +1914,7 @@ EXAM_HTML_TEMPLATE = """
                             id: idx + 1,
                             text: q.text,
                             options: q.options,
-                            correct: q.correct
+                            correct: parseInt(q.correct, 10)
                         }));
                         dbQuestions = allQuestions;
                         showScreen('homeScreen');
@@ -2156,7 +2156,7 @@ EXAM_HTML_TEMPLATE = """
             const q = questions[currentIndex];
             if (selectedIdx === q.correct) {
                 btnElement.classList.add('correct');
-                score += 3.5;
+                score += 5;
                 correctCount++;
                 questionState[currentIndex] = 'green';
                 document.getElementById('scoreDisplay').innerText = score;
