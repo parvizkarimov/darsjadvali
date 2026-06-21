@@ -121,6 +121,21 @@ def init_db():
                 created_at TEXT
             )
         ''')
+        
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS test_results (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id TEXT,
+                first_name TEXT,
+                last_name TEXT,
+                username TEXT,
+                score REAL,
+                correct_count INTEGER,
+                wrong_count INTEGER,
+                skipped_count INTEGER,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            )
+        ''')
             
         conn.commit()
 
@@ -813,7 +828,8 @@ async def cmd_imtihon(update: Update, context: ContextTypes.DEFAULT_TYPE):
     reply_markup = None
     if WEBAPP_URL:
         # Agar WEBAPP_URL kiritilgan bo'lsa, inline tugma ham qo'shamiz
-        ik = InlineKeyboardMarkup([[InlineKeyboardButton("📱 Imtihon Tayyorgarlik (Web App)", web_app=WebAppInfo(url=f"{WEBAPP_URL}/exam-app"))]])
+        # Web app URL oxirida '/' qo'yilmasa Telegram qabul qilmadi deb xato bermasligi uchun
+        ik = InlineKeyboardMarkup([[InlineKeyboardButton("📱 Imtihon Tayyorgarlik (Web App)", web_app=WebAppInfo(url=f"{WEBAPP_URL}/"))]])
         await update.message.reply_text(text, parse_mode="Markdown", reply_markup=main_menu_keyboard())
         await update.message.reply_text("👇 Test ishlash va savol-javoblarni ko'rish uchun quyidagi Web App ni oching:", reply_markup=ik)
     else:
@@ -1325,6 +1341,7 @@ HTML_TEMPLATE = """
                 <a href="?tab=presentations" class="tab {% if tab == 'presentations' %}active{% endif %}">📝 Prezentatsiyalar</a>
                 <a href="?tab=users" class="tab {% if tab == 'users' %}active{% endif %}">👥 Foydalanuvchilar</a>
                 <a href="?tab=logs" class="tab {% if tab == 'logs' %}active{% endif %}">📊 Harakatlar Tarixi</a>
+                <a href="?tab=test_results" class="tab {% if tab == 'test_results' %}active{% endif %}">🏆 Test Natijalari</a>
             </div>
 
             {% if tab == 'broadcast' %}
@@ -1487,6 +1504,42 @@ HTML_TEMPLATE = """
                     <div class="empty">Hozircha ma'lumot yo'q</div>
                     {% endif %}
                 </div>
+            {% elif tab == 'test_results' %}
+                <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; align-items: center;">
+                    <span style="color: var(--text-muted);">Jami test yechganlar: <b style="color: white;">{{ test_results|length }}</b> ta</span>
+                </div>
+                <div class="glass table-wrapper">
+                    {% if test_results %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Foydalanuvchi</th>
+                                <th>Ball</th>
+                                <th>To'g'ri</th>
+                                <th>Xato</th>
+                                <th>Sariq</th>
+                                <th>Vaqti</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for r in test_results %}
+                            <tr>
+                                <td style="color: var(--text-muted);">{{ r[0] }}</td>
+                                <td style="font-weight: 600;">{{ r[2] }} {{ r[3] or '' }}<br><span style="color: #3b82f6; font-size: 0.8rem;">{% if r[4] %}@{{ r[4] }}{% else %}{{ r[1] }}{% endif %}</span></td>
+                                <td><span style="color:var(--green); font-weight:bold;">{{ r[5] }}</span></td>
+                                <td><span style="color:var(--green);">{{ r[6] }}</span></td>
+                                <td><span style="color:var(--red);">{{ r[7] }}</span></td>
+                                <td><span style="color:var(--yellow);">{{ r[8] }}</span></td>
+                                <td style="color: var(--text-muted); font-size: 0.9rem;">{{ r[9] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <div class="empty">Hozircha test natijalari yo'q</div>
+                    {% endif %}
+                </div>
             {% endif %}
         {% endif %}
     </div>
@@ -1494,8 +1547,7 @@ HTML_TEMPLATE = """
 </html>
 """
 
-@app_web.route('/', methods=['GET', 'POST'])
-@app_web.route('/logs', methods=['GET', 'POST'])
+@app_web.route('/admin', methods=['GET', 'POST'])
 def dashboard():
     error = None
     if request.method == 'POST':
@@ -1514,6 +1566,7 @@ def dashboard():
     users = []
     broadcasts = []
     presentations = []
+    test_results = []
     try:
         with sqlite3.connect(DB_PATH) as conn:
             cursor = conn.cursor()
@@ -1529,11 +1582,14 @@ def dashboard():
             elif tab == 'presentations':
                 cursor.execute("SELECT id, user_id, username, topic, style_name, author_name, file_id, status, created_at FROM presentations ORDER BY id DESC LIMIT 100")
                 presentations = cursor.fetchall()
+            elif tab == 'test_results':
+                cursor.execute("SELECT id, user_id, first_name, last_name, username, score, correct_count, wrong_count, skipped_count, created_at FROM test_results ORDER BY id DESC LIMIT 500")
+                test_results = cursor.fetchall()
     except Exception as e:
         logger.error(f"Web DB error: {e}")
         
     msg_success = session.pop('msg_success', False)
-    return render_template_string(HTML_TEMPLATE, require_login=False, tab=tab, logs=logs, users=users, broadcasts=broadcasts, presentations=presentations, msg_success=msg_success)
+    return render_template_string(HTML_TEMPLATE, require_login=False, tab=tab, logs=logs, users=users, broadcasts=broadcasts, presentations=presentations, test_results=test_results, msg_success=msg_success)
 
 @app_web.route('/broadcast', methods=['POST'])
 def broadcast():
@@ -1891,15 +1947,61 @@ EXAM_HTML_TEMPLATE = """
             document.getElementById('resWrong').innerText = wrongCount;
             document.getElementById('resSkipped').innerText = currentQueue.length;
             showScreen('resultsScreen');
+            
+            // Serverga natijani yuborish
+            const user = tg.initDataUnsafe?.user;
+            if (user) {
+                fetch('/save-test-result', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        user_id: user.id,
+                        first_name: user.first_name,
+                        last_name: user.last_name,
+                        username: user.username,
+                        score: score,
+                        correct_count: correctCount,
+                        wrong_count: wrongCount,
+                        skipped_count: currentQueue.length
+                    })
+                }).catch(err => console.error("Xatolik:", err));
+            }
         }
     </script>
 </body>
 </html>
 """
 
-@app_web.route('/exam-app')
+@app_web.route('/')
 def exam_app():
     return render_template_string(EXAM_HTML_TEMPLATE)
+
+@app_web.route('/save-test-result', methods=['POST'])
+def save_test_result():
+    data = request.json
+    if not data:
+        return {"status": "error", "message": "No data"}, 400
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            cursor = conn.cursor()
+            cursor.execute('''
+                INSERT INTO test_results (user_id, first_name, last_name, username, score, correct_count, wrong_count, skipped_count)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            ''', (
+                str(data.get('user_id')),
+                data.get('first_name'),
+                data.get('last_name'),
+                data.get('username'),
+                data.get('score'),
+                data.get('correct_count'),
+                data.get('wrong_count'),
+                data.get('skipped_count')
+            ))
+            conn.commit()
+        return {"status": "ok"}
+    except Exception as e:
+        logger.error(f"Test natijasini saqlashda xatolik: {e}")
+        return {"status": "error", "message": str(e)}, 500
 
 def run_flask():
     port = int(os.environ.get("PORT", 8080))
