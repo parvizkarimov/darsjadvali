@@ -2054,22 +2054,44 @@ def save_test_result():
     if not data:
         return {"status": "error", "message": "No data"}, 400
     try:
+        user_id = str(data.get('user_id'))
+        first_name = data.get('first_name', '')
+        last_name = data.get('last_name', '')
+        username = data.get('username', '')
+        score = data.get('score', 0)
+        correct_count = data.get('correct_count', 0)
+        wrong_count = data.get('wrong_count', 0)
+        skipped_count = data.get('skipped_count', 0)
+
         with sqlite3.connect(DB_PATH) as conn:
             cursor = conn.cursor()
             cursor.execute('''
                 INSERT INTO test_results (user_id, first_name, last_name, username, score, correct_count, wrong_count, skipped_count)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            ''', (
-                str(data.get('user_id')),
-                data.get('first_name'),
-                data.get('last_name'),
-                data.get('username'),
-                data.get('score'),
-                data.get('correct_count'),
-                data.get('wrong_count'),
-                data.get('skipped_count')
-            ))
+            ''', (user_id, first_name, last_name, username, score, correct_count, wrong_count, skipped_count))
             conn.commit()
+
+        import requests
+        url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+        
+        # User message
+        text_user = f"📊 *Sizning test natijangiz:*\n\n✅ To'g'ri: {correct_count}\n❌ Xato: {wrong_count}\n⏭ O'tkazib yuborilgan: {skipped_count}\n\n🏆 Umumiy ball: {score}"
+        try:
+            requests.post(url, json={"chat_id": user_id, "text": text_user, "parse_mode": "Markdown"}, timeout=3)
+        except Exception as e:
+            logger.error(f"Userga xabar yuborishda xatolik: {e}")
+        
+        # Admin message
+        if ADMIN_ID:
+            full_name = f"{first_name} {last_name}".strip()
+            if username:
+                full_name += f" (@{username})"
+            text_admin = f"📝 *Yangi test natijasi*\n\n👤 O'quvchi: {full_name} (ID: {user_id})\n✅ To'g'ri: {correct_count}\n❌ Xato: {wrong_count}\n⏭ O'tkazib yuborilgan: {skipped_count}\n\n🏆 Ball: {score}"
+            try:
+                requests.post(url, json={"chat_id": ADMIN_ID, "text": text_admin, "parse_mode": "Markdown"}, timeout=3)
+            except Exception as e:
+                logger.error(f"Adminga xabar yuborishda xatolik: {e}")
+
         return {"status": "ok"}
     except Exception as e:
         logger.error(f"Test natijasini saqlashda xatolik: {e}")
