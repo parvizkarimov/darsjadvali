@@ -1662,12 +1662,12 @@ EXAM_HTML_TEMPLATE = """
             --text-color: var(--tg-theme-text-color, #f8fafc);
             --button-color: var(--tg-theme-button-color, #3b82f6);
             --button-text-color: var(--tg-theme-button-text-color, #ffffff);
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --border-color: rgba(255, 255, 255, 0.1);
+            --card-bg: var(--tg-theme-secondary-bg-color, rgba(128, 128, 128, 0.08));
+            --border-color: rgba(128, 128, 128, 0.3);
             --green: #10b981;
             --red: #ef4444;
             --yellow: #f59e0b;
-            --gray: #4b5563;
+            --gray: #6b7280;
         }
         * { box-sizing: border-box; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
         body { background-color: var(--bg-color); color: var(--text-color); padding: 16px; overflow-x: hidden; }
@@ -1687,8 +1687,8 @@ EXAM_HTML_TEMPLATE = """
         
         /* Study Mode */
         .qa-card { margin-bottom: 16px; }
-        .q-text { font-weight: 600; margin-bottom: 8px; font-size: 16px; }
-        .a-text { color: var(--green); font-size: 15px; }
+        .q-text { font-weight: 600; margin-bottom: 8px; font-size: 15px; }
+        .a-text { color: var(--green); font-size: 14px; }
         
         /* Test Mode */
         .top-bar { display: flex; justify-content: space-between; align-items: center; background: var(--card-bg); padding: 12px 16px; border-radius: 12px; border: 1px solid var(--border-color); }
@@ -1704,7 +1704,7 @@ EXAM_HTML_TEMPLATE = """
         .nav-dot.yellow { background: var(--yellow); }
         .nav-dot.active-dot { box-shadow: 0 0 0 3px var(--bg-color), 0 0 0 5px var(--button-color); transform: scale(1.1); }
         
-        .option-btn { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 16px; border-radius: 12px; font-size: 16px; text-align: left; transition: all 0.2s; width: 100%; cursor: pointer; margin-bottom: 12px; }
+        .option-btn { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 12px 14px; border-radius: 8px; font-size: 14px; text-align: left; transition: all 0.2s; width: 100%; cursor: pointer; margin-bottom: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); line-height: 1.4; }
         .option-btn:active { transform: scale(0.98); }
         .option-btn.correct { background: var(--green); color: white; border-color: var(--green); }
         .option-btn.wrong { background: var(--red); color: white; border-color: var(--red); }
