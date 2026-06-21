@@ -1983,10 +1983,10 @@ EXAM_HTML_TEMPLATE = """
                                 <div style="font-weight: bold; width: 24px; color: var(--text-muted);">${rank}.</div>
                                 <div>
                                     <div style="font-weight: 600; ${isMe ? 'color: var(--green);' : ''}">${name} ${isMe ? '(Siz)' : ''}</div>
-                                    <div style="font-size: 12px; color: var(--text-muted);">To'g'ri javoblar: ${item.correct} ta</div>
+                                    <div style="font-size: 12px; color: var(--text-muted);">Umumiy to'g'ri javoblar: ${item.correct} ta</div>
                                 </div>
                             </div>
-                            <div style="font-weight: bold; font-size: 18px;">${item.score} <span style="font-size: 12px; font-weight: normal; color: var(--text-muted);">ball</span></div>
+                            <div style="font-weight: bold; font-size: 18px;">${item.score} <span style="font-size: 12px; font-weight: normal; color: var(--text-muted);">/ 1000 ball</span></div>
                         `;
                         
                         if(isMe) {
@@ -2156,7 +2156,7 @@ EXAM_HTML_TEMPLATE = """
             const q = questions[currentIndex];
             if (selectedIdx === q.correct) {
                 btnElement.classList.add('correct');
-                score += 5;
+                score += 3.5;
                 correctCount++;
                 questionState[currentIndex] = 'green';
                 document.getElementById('scoreDisplay').innerText = score;
@@ -2305,12 +2305,12 @@ def api_results():
     try:
         with sqlite3.connect(DB_PATH) as conn:
             cursor = conn.cursor()
-            # Group by user_id to show leaderboard
+            # Guruhlash orqali barcha urinishlardagi ballarni qo'shish (1000 ballik tizim)
             cursor.execute('''
-                SELECT user_id, first_name, last_name, username, MAX(score) as max_score, SUM(correct_count) as total_correct, MAX(created_at) as last_attempt
+                SELECT user_id, first_name, last_name, username, SUM(score) as total_score, SUM(correct_count) as total_correct, MAX(created_at) as last_attempt
                 FROM test_results
                 GROUP BY user_id
-                ORDER BY max_score DESC
+                ORDER BY total_score DESC
             ''')
             rows = cursor.fetchall()
             
