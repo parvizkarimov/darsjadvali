@@ -1704,15 +1704,23 @@ EXAM_HTML_TEMPLATE = """
         .nav-dot.yellow { background: var(--yellow); }
         .nav-dot.active-dot { box-shadow: 0 0 0 3px var(--bg-color), 0 0 0 5px var(--button-color); transform: scale(1.1); }
         
-        .option-btn { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 16px; border-radius: 12px; font-size: 16px; text-align: left; margin-bottom: 12px; transition: all 0.2s; width: 100%; cursor: pointer; }
+        .option-btn { background: var(--card-bg); border: none; color: var(--text-color); padding: 16px; border-radius: 12px; font-size: 16px; text-align: left; transition: all 0.2s; width: 100%; cursor: pointer; }
         .option-btn:active { transform: scale(0.98); }
-        .option-btn.correct { background: var(--green); color: white; border-color: var(--green); }
-        .option-btn.wrong { background: var(--red); color: white; border-color: var(--red); }
+        .option-btn.correct { background: var(--green); color: white; }
+        .option-btn.wrong { background: var(--red); color: white; }
+        .option-divider { height: 1px; background: var(--border-color); margin: 4px 16px; }
         
-        .skip-btn { background: var(--yellow); color: #000; font-weight: 600; margin-top: 16px; }
+        .skip-btn { background: var(--yellow); color: #000; font-weight: 600; margin-top: 16px; padding: 12px 20px; font-size: 14px; border-radius: 8px; width: auto; display: inline-block; }
+        .next-btn { background: var(--button-color); color: var(--button-text-color); font-weight: 600; margin-top: 16px; padding: 12px 20px; font-size: 14px; border-radius: 8px; width: auto; display: none; float: right; border: none; cursor: pointer; }
         
         #resultsScreen h1 { font-size: 32px; margin-bottom: 8px; }
         .stat-row { display: flex; justify-content: space-between; font-size: 18px; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
+        
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 65px; background: var(--card-bg); backdrop-filter: blur(10px); border-top: 1px solid var(--border-color); display: flex; justify-content: space-around; align-items: center; z-index: 1000; padding-bottom: env(safe-area-inset-bottom); }
+        .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 12px; font-weight: 600; color: var(--text-color); cursor: pointer; opacity: 0.6; transition: 0.2s; }
+        .nav-item.active { opacity: 1; color: var(--button-color); }
+        .nav-item i { font-size: 20px; margin-bottom: 4px; font-style: normal; }
+        body { padding-bottom: 80px; }
     </style>
 </head>
 <body>
@@ -1746,8 +1754,10 @@ EXAM_HTML_TEMPLATE = """
             <div class="q-text" id="testQuestionText">Savol matni...</div>
             <div id="optionsContainer" style="margin-top: 20px;"></div>
         </div>
-        
-        <button class="btn-large skip-btn" id="skipBtn" onclick="skipQuestion()">⏭ O'tkazib yuborish</button>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <button class="btn-large skip-btn" id="skipBtn" onclick="skipQuestion()">⏭ O'tkazib yuborish</button>
+            <button class="btn-large next-btn" id="nextBtn" onclick="goToNextAfterAnswer()">Keyingi savol ➡</button>
+        </div>
     </div>
 
     <div id="resultsScreen" class="screen">
@@ -1759,6 +1769,18 @@ EXAM_HTML_TEMPLATE = """
             <div class="stat-row"><span>Xato javoblar:</span> <strong id="resWrong" style="color: var(--red);">0</strong></div>
             <div class="stat-row" style="border:none;"><span>O'tkazib yuborilgan:</span> <strong id="resSkipped" style="color: var(--yellow);">0</strong></div>
             <button class="btn-large" style="margin-top: 24px;" onclick="goHome()">🏠 Asosiy menyu</button>
+        </div>
+    </div>
+
+    <div class="bottom-nav" id="bottomNav" style="display: none;">
+        <div class="nav-item active" onclick="goHome()" id="nav-home">
+            <i>🏠</i><span>Asosiy sahifa</span>
+        </div>
+        <div class="nav-item" onclick="startStudyMode()" id="nav-study">
+            <i>📚</i><span>Savol-javob</span>
+        </div>
+        <div class="nav-item" onclick="startTestMode()" id="nav-test">
+            <i>📝</i><span>Real test</span>
         </div>
     </div>
 
@@ -1779,9 +1801,17 @@ EXAM_HTML_TEMPLATE = """
         let timerInterval = null;
         let timeLeft = 1200; 
 
+        function updateBottomNav(activeId) {
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            if(activeId) document.getElementById(activeId).classList.add('active');
+        }
+
         function showScreen(id) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
+            if (id !== 'subjectScreen') {
+                document.getElementById('bottomNav').style.display = 'flex';
+            }
         }
 
         function selectSubject(subjectName) {
@@ -1798,6 +1828,7 @@ EXAM_HTML_TEMPLATE = """
                         }));
                         dbQuestions = allQuestions;
                         showScreen('homeScreen');
+                        updateBottomNav('nav-home');
                     } else {
                         alert("Bu fan bo'yicha savollar topilmadi!");
                     }
@@ -1811,6 +1842,7 @@ EXAM_HTML_TEMPLATE = """
         function goHome() {
             clearInterval(timerInterval);
             showScreen('homeScreen');
+            updateBottomNav('nav-home');
         }
 
         function startStudyMode() {
@@ -1819,13 +1851,23 @@ EXAM_HTML_TEMPLATE = """
             dbQuestions.forEach((q, idx) => {
                 const card = document.createElement('div');
                 card.className = 'glass qa-card';
+                let optsHTML = q.options.map((opt, i) => {
+                    let isCorrect = (i === q.correct);
+                    let letter = String.fromCharCode(65 + i);
+                    let color = isCorrect ? 'color: var(--green); font-weight: bold;' : 'color: var(--text-color);';
+                    let icon = isCorrect ? '✅' : '⚪️';
+                    let border = (i < q.options.length - 1) ? 'border-bottom: 1px solid var(--border-color);' : '';
+                    return `<div style="padding: 10px 0; ${border} ${color}">${icon} <b>${letter})</b> ${opt}</div>`;
+                }).join('');
+                
                 card.innerHTML = `
                     <div class="q-text">${idx + 1}. ${q.text}</div>
-                    <div class="a-text">✅ ${q.options[q.correct]}</div>
+                    <div style="margin-top: 12px;">${optsHTML}</div>
                 `;
                 list.appendChild(card);
             });
             showScreen('studyScreen');
+            updateBottomNav('nav-study');
         }
 
         function startTestMode() {
@@ -1845,6 +1887,7 @@ EXAM_HTML_TEMPLATE = """
             startTimer();
             loadNextQuestion();
             showScreen('testScreen');
+            updateBottomNav('nav-test');
         }
 
         function buildNavigator() {
@@ -1892,18 +1935,27 @@ EXAM_HTML_TEMPLATE = """
             q.options.forEach((optText, optIdx) => {
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
-                btn.innerText = optText;
+                const letter = String.fromCharCode(65 + optIdx);
+                btn.innerHTML = `<b>${letter})</b> ${optText}`;
                 btn.onclick = () => selectOption(optIdx, btn);
                 optsContainer.appendChild(btn);
+                
+                if (optIdx < q.options.length - 1) {
+                    const divider = document.createElement('div');
+                    divider.className = 'option-divider';
+                    optsContainer.appendChild(divider);
+                }
             });
             
-            document.getElementById('skipBtn').style.display = 'block';
+            document.getElementById('skipBtn').style.display = 'inline-block';
+            document.getElementById('nextBtn').style.display = 'none';
         }
 
         function selectOption(selectedIdx, btnElement) {
             const btns = document.querySelectorAll('.option-btn');
             btns.forEach(b => b.onclick = null); 
             document.getElementById('skipBtn').style.display = 'none';
+            document.getElementById('nextBtn').style.display = 'inline-block';
 
             const q = questions[currentIndex];
             if (selectedIdx === q.correct) {
@@ -1921,10 +1973,10 @@ EXAM_HTML_TEMPLATE = """
             
             updateNavigatorDot(currentIndex);
             currentQueue.shift();
-            
-            setTimeout(() => {
-                loadNextQuestion();
-            }, 1000);
+        }
+
+        function goToNextAfterAnswer() {
+            loadNextQuestion();
         }
 
         function skipQuestion() {
