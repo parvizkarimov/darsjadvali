@@ -1845,8 +1845,17 @@ EXAM_HTML_TEMPLATE = """
             <div class="stat-row"><span>To'g'ri javoblar:</span> <strong id="resCorrect" style="color: var(--green);">0</strong></div>
             <div class="stat-row"><span>Xato javoblar:</span> <strong id="resWrong" style="color: var(--red);">0</strong></div>
             <div class="stat-row" style="border:none;"><span>O'tkazib yuborilgan:</span> <strong id="resSkipped" style="color: var(--yellow);">0</strong></div>
-            <button class="btn-large" style="margin-top: 24px;" onclick="goHome()">🏠 Asosiy menyu</button>
+            <button class="btn-large" style="margin-top: 24px;" onclick="showAllResults()">📊 Barcha natijalarni ko'rish</button>
         </div>
+    </div>
+
+    <div id="allResultsScreen" class="screen">
+        <h2 style="margin-bottom: 16px; text-align: center;">🏆 Reyting</h2>
+        
+        <div id="myResultContainer" style="margin-bottom: 24px;"></div>
+        
+        <h3 style="margin-bottom: 12px; font-size: 16px; color: var(--text-color); opacity: 0.8;">Boshqalar natijalari</h3>
+        <div id="otherResultsContainer"></div>
     </div>
 
     <div class="bottom-nav" id="bottomNav" style="display: none;">
@@ -1858,6 +1867,9 @@ EXAM_HTML_TEMPLATE = """
         </div>
         <div class="nav-item" onclick="startTestMode()" id="nav-test">
             <i>📝</i><span>Real test</span>
+        </div>
+        <div class="nav-item" onclick="showAllResults()" id="nav-results">
+            <i>📊</i><span>Natijalar</span>
         </div>
     </div>
 
@@ -1920,6 +1932,81 @@ EXAM_HTML_TEMPLATE = """
             clearInterval(timerInterval);
             showScreen('homeScreen');
             updateBottomNav('nav-home');
+        }
+
+        function showAllResults() {
+            clearInterval(timerInterval);
+            showScreen('allResultsScreen');
+            updateBottomNav('nav-results');
+            
+            const myContainer = document.getElementById('myResultContainer');
+            const otherContainer = document.getElementById('otherResultsContainer');
+            
+            myContainer.innerHTML = '<div style="text-align:center;">Yuklanmoqda...</div>';
+            otherContainer.innerHTML = '';
+            
+            fetch('/api/results')
+                .then(res => res.json())
+                .then(data => {
+                    myContainer.innerHTML = '';
+                    otherContainer.innerHTML = '';
+                    
+                    if(data.error) {
+                        myContainer.innerHTML = `<div style="color:red; text-align:center;">Xatolik: ${data.error}</div>`;
+                        return;
+                    }
+                    
+                    const currentUser = tg.initDataUnsafe?.user;
+                    const myId = currentUser ? String(currentUser.id) : null;
+                    
+                    let rank = 1;
+                    data.forEach(item => {
+                        const isMe = String(item.user_id) === myId;
+                        const name = (item.first_name + " " + item.last_name).trim() || item.username || "Anonim";
+                        
+                        const card = document.createElement('div');
+                        card.className = 'glass';
+                        card.style.marginBottom = '10px';
+                        card.style.padding = '12px 16px';
+                        card.style.display = 'flex';
+                        card.style.justifyContent = 'space-between';
+                        card.style.alignItems = 'center';
+                        
+                        if(isMe) {
+                            card.style.background = 'rgba(16, 185, 129, 0.15)'; // Yashilroq fon
+                            card.style.border = '1px solid rgba(16, 185, 129, 0.3)';
+                        }
+                        
+                        card.innerHTML = `
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div style="font-weight: bold; width: 24px; color: var(--text-muted);">${rank}.</div>
+                                <div>
+                                    <div style="font-weight: 600; ${isMe ? 'color: var(--green);' : ''}">${name} ${isMe ? '(Siz)' : ''}</div>
+                                    <div style="font-size: 12px; color: var(--text-muted);">To'g'ri javoblar: ${item.correct} ta</div>
+                                </div>
+                            </div>
+                            <div style="font-weight: bold; font-size: 18px;">${item.score} <span style="font-size: 12px; font-weight: normal; color: var(--text-muted);">ball</span></div>
+                        `;
+                        
+                        if(isMe) {
+                            myContainer.appendChild(card);
+                        } else {
+                            otherContainer.appendChild(card);
+                        }
+                        rank++;
+                    });
+                    
+                    if(myContainer.innerHTML === '') {
+                        myContainer.innerHTML = '<div class="glass" style="text-align:center; color: var(--text-muted);">Siz hali test ishlamagansiz.</div>';
+                    }
+                    if(otherContainer.innerHTML === '') {
+                        otherContainer.innerHTML = '<div class="glass" style="text-align:center; color: var(--text-muted);">Boshqalar hali test ishlashmadi.</div>';
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    myContainer.innerHTML = '<div style="color:red; text-align:center;">Natijalarni yuklashda xatolik!</div>';
+                });
         }
 
         function startStudyMode() {
@@ -2158,7 +2245,7 @@ def save_test_result():
             requests.post(url, json={"chat_id": user_id, "text": text_user, "parse_mode": "Markdown"}, timeout=3)
         except Exception as e:
             logger.error(f"Userga xabar yuborishda xatolik: {e}")
-        
+            
         # Admin message
         if ADMIN_ID:
             full_name = f"{first_name} {last_name}".strip()
@@ -2174,6 +2261,36 @@ def save_test_result():
     except Exception as e:
         logger.error(f"Test natijasini saqlashda xatolik: {e}")
         return {"status": "error", "message": str(e)}, 500
+
+@app_web.route('/api/results')
+def api_results():
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            cursor = conn.cursor()
+            # Group by user_id to show leaderboard
+            cursor.execute('''
+                SELECT user_id, first_name, last_name, username, MAX(score) as max_score, SUM(correct_count) as total_correct, MAX(created_at) as last_attempt
+                FROM test_results
+                GROUP BY user_id
+                ORDER BY max_score DESC
+            ''')
+            rows = cursor.fetchall()
+            
+            results = []
+            for r in rows:
+                results.append({
+                    "user_id": r[0],
+                    "first_name": r[1] or "",
+                    "last_name": r[2] or "",
+                    "username": r[3] or "",
+                    "score": r[4],
+                    "correct": r[5]
+                })
+        return jsonify(results)
+    except Exception as e:
+        logger.error(f"Error loading test results API: {e}")
+        return jsonify({"error": str(e)}), 500
+
 
 def run_flask():
     port = int(os.environ.get("PORT", 8080))
