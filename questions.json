@@ -1,7 +1,7 @@
 {
   "ECONOMIC ANALYSIS": [
     {
-      "text": "Natijaviy ko‘rsatkichning o‘zgarishiga nechta omil ta’sir ko‘rsatganda qayta hisoblash usulidan foydalaniladi?",
+      "text": "Natijaviy ko'rsatkichning o'zgarishiga nechta omil ta'sir ko'rsatganda qayta hisoblash usulidan foydalaniladi?",
       "options": [
         "3 ta yoki 4 ta omillar",
         "2 va undan ziyod omillar",
@@ -11,7 +11,7 @@
       "correct": 1
     },
     {
-      "text": "Natijaviy ko‘rsatkich bilan omil belgi o‘rtasidagi bog‘lanish shakliga ko‘ra tahlilda omillar nechta turga bo‘linadi?",
+      "text": "Natijaviy ko'rsatkich bilan omil belgi o'rtasidagi bog'lanish shakliga ko'ra tahlilda omillar nechta turga bo'linadi?",
       "options": [
         "4",
         "2",
@@ -21,7 +21,7 @@
       "correct": 1
     },
     {
-      "text": "Korxonaning uzoq muddatli aktivlari 100 mln so’m, joriy aktivlari 500 mln so’m, xususiy kapitali 400 mln so’mga teng bo’lsa korxonaning kreditorlik qarzlarini aniqlang?",
+      "text": "Korxonaning uzoq muddatli aktivlari 100 mln so'm, joriy aktivlari 500 mln so'm, xususiy kapitali 400 mln so'mga teng bo'lsa korxonaning kreditorlik qarzlarini aniqlang?",
       "options": [
         "100 mln",
         "200 mln",
@@ -31,7 +31,7 @@
       "correct": 1
     },
     {
-      "text": "Natijaviy ko‘rsatkich bilan omil belgi o‘rtasidagi bog‘liqlik zichligiga qarab tahlilda omillar nechta turga bo‘linadi?",
+      "text": "Natijaviy ko'rsatkich bilan omil belgi o'rtasidagi bog'liqlik zichligiga qarab tahlilda omillar nechta turga bo'linadi?",
       "options": [
         "3",
         "4",
@@ -41,22 +41,22 @@
       "correct": 0
     },
     {
-      "text": "Korxonaning faoliyatiga bog‘liq bo‘lmagan tarzda uning natijaviy ko‘rsatkichlariga tashqaridan ta’sir ko‘rsatuvchi omillar qanday ataladi?",
+      "text": "Korxonaning faoliyatiga bog'liq bo'lmagan tarzda uning natijaviy ko'rsatkichlariga tashqaridan ta'sir ko'rsatuvchi omillar qanday ataladi?",
       "options": [
-        "Ob’ektiv omillar",
-        "Sub’ektiv omillar",
+        "Ob'ektiv omillar",
+        "Sub'ektiv omillar",
         "Nokerak omillar",
-        "Qo‘shimcha omillar"
+        "Qo'shimcha omillar"
       ],
       "correct": 0
     },
     {
-      "text": "Korxonaning faoliyatiga bog‘liq ravishda ta’sir etuvchi omillar qanday ataladi?",
+      "text": "Korxonaning faoliyatiga bog'liq ravishda ta'sir etuvchi omillar qanday ataladi?",
       "options": [
-        "Ob’ektiv omillar",
-        "Sub’ektiv omillar",
+        "Ob'ektiv omillar",
+        "Sub'ektiv omillar",
         "Nokerak omillar",
-        "Qo‘shimcha omillar"
+        "Qo'shimcha omillar"
       ],
       "correct": 1
     },
@@ -71,17 +71,17 @@
       "correct": 2
     },
     {
-      "text": "Natijaviy ko‘rsatkichga ta’sir etuvchi omillarni o‘zgarish sur’atlarini hamda ularning ulushini aniqlagan holda miqdoriy baho berish zarurati paydo bo‘lganda tahlilning qaysi an’anaviy usulidan foydalanish zarur?",
+      "text": "Natijaviy ko'rsatkichga ta'sir etuvchi omillarni o'zgarish sur'atlarini hamda ularning ulushini aniqlagan holda miqdoriy baho berish zarurati paydo bo'lganda tahlilning qaysi an'anaviy usulidan foydalanish zarur?",
       "options": [
         "Mutloq farqlanish usuli",
-        "Nisbiy ko‘rsatkichlardan foydalanish usuli",
+        "Nisbiy ko'rsatkichlardan foydalanish usuli",
         "Indeks usuli",
         "Qayta hisoblash usuli"
       ],
       "correct": 1
     },
     {
-      "text": "Natijaviy ko‘rsatkichga ta’sir etuvchi omillar turli xil o‘lchov birligida ifodalangan bo‘lsa bunday holda tahlilning qaysi an’anaviy usuldan foydalaniladi?",
+      "text": "Natijaviy ko'rsatkichga ta'sir etuvchi omillar turli xil o'lchov birligida ifodalangan bo'lsa bunday holda tahlilning qaysi an'anaviy usuldan foydalaniladi?",
       "options": [
         "Zanjirli almashtirish usuli",
         "Qayta hisoblash usuli",
@@ -91,77 +91,77 @@
       "correct": 2
     },
     {
-      "text": "Agarda omil belgi oshganda natijaviy belgi ham ko‘paysa bunday bog‘liqlik qanday bog‘liqlik hisoblanadi?",
+      "text": "Agarda omil belgi oshganda natijaviy belgi ham ko'paysa bunday bog'liqlik qanday bog'liqlik hisoblanadi?",
       "options": [
-        "To‘g‘ri proporsional",
+        "To'g'ri proporsional",
         "Teskari proporsional",
-        "Bog‘lanish mavjud emas",
-        "Qisman bog‘liqlik"
+        "Bog'lanish mavjud emas",
+        "Qisman bog'liqlik"
       ],
       "correct": 0
     },
     {
       "text": "Iqtisodiy tahlilning boshqa fanlardan farqli jihati nimada?",
       "options": [
-        "Dinamik o‘zgarishlarni o‘rganadi",
-        "Tarkibiy o‘zgarishlarni o‘rganadi",
-        "Omillar ta’siriga baho beriladi",
-        "Hududlar bo‘yicha o‘zgarishlarni o‘rganadi"
+        "Dinamik o'zgarishlarni o'rganadi",
+        "Tarkibiy o'zgarishlarni o'rganadi",
+        "Omillar ta'siriga baho beriladi",
+        "Hududlar bo'yicha o'zgarishlarni o'rganadi"
       ],
       "correct": 2
     },
     {
       "text": "“Induksiya” bu- ?",
       "options": [
-        "Xususiylikdan umumiylik sari o‘rganish",
-        "Umumiylikdan xususiylik sari o‘rganish",
-        "Davrlar bo‘yicha o‘zgarishlarni o‘rganish",
-        "Tarkibiy o‘zgarishni o‘rganish"
+        "Xususiylikdan umumiylik sari o'rganish",
+        "Umumiylikdan xususiylik sari o'rganish",
+        "Davrlar bo'yicha o'zgarishlarni o'rganish",
+        "Tarkibiy o'zgarishni o'rganish"
       ],
       "correct": 0
     },
     {
-      "text": "Sub’ektiv omillar sanab o‘tilgan javobni ko‘rsating?",
+      "text": "Sub'ektiv omillar sanab o'tilgan javobni ko'rsating?",
       "options": [
         "Inflyatsiya darajasi, narx, talab, soliq siyosati",
         "Davlat siyosati, valyuta kurslari, eksport munosabatlari",
         "Ish soatlari, mehnat unumdorligi, ishchilarning ish haqqi",
-        "Pandemiya, import munosabatlari, ob-havodagi o‘zgarishlar"
+        "Pandemiya, import munosabatlari, ob-havodagi o'zgarishlar"
       ],
       "correct": 2
     },
     {
-      "text": "Faqat ob’ektiv omillar sanab o‘tilgan javobni aniqlang?",
+      "text": "Faqat ob'ektiv omillar sanab o'tilgan javobni aniqlang?",
       "options": [
         "Soliq siyosati, inflyatsiya darajasi, narx-navo",
         "Soliq siyosati, ishchilar ish haqqi, mehnat unumdorligi",
-        "Soliq siyosati, moddiy resrslar bilan ta’minlanganlik, ish haqqi",
-        "Soliq siyosati, valyuta kurslari, moliyaviy resurslar bilan ta’minlanganlik"
+        "Soliq siyosati, moddiy resrslar bilan ta'minlanganlik, ish haqqi",
+        "Soliq siyosati, valyuta kurslari, moliyaviy resurslar bilan ta'minlanganlik"
       ],
       "correct": 0
     },
     {
-      "text": "Davriylik tamoyiliga ko‘ra xo‘jalik yurituvchi sub’ektlar faoliyatini tahlil qilishda davrlar to‘liq va to‘g‘ri ko‘rsatilgan javobni aniqlang?",
+      "text": "Davriylik tamoyiliga ko'ra xo'jalik yurituvchi sub'ektlar faoliyatini tahlil qilishda davrlar to'liq va to'g'ri ko'rsatilgan javobni aniqlang?",
       "options": [
-        "Soat, kun, hafta, dekada, oy, chorak, yarim yillik, to‘qqiz oylik, bir yillik",
-        "Soat, kun, hafta, oy, chorak, yarim yillik, to‘qqiz oylik, bir yillik",
+        "Soat, kun, hafta, dekada, oy, chorak, yarim yillik, to'qqiz oylik, bir yillik",
+        "Soat, kun, hafta, oy, chorak, yarim yillik, to'qqiz oylik, bir yillik",
         "Soat, kun, hafta, dekada, oy, chorak, yarim yillik, bir yillik",
         "Soat, kun, hafta, oy, chorak, yarim yillik, bir yillik"
       ],
       "correct": 3
     },
     {
-      "text": "Additiv modeli bo‘yicha natijaviy ko‘rsatkichga ta’sir etuvchi omillar o‘rtasidagi bog‘lanish qanday ko‘rinishda bo‘ladi?",
+      "text": "Additiv modeli bo'yicha natijaviy ko'rsatkichga ta'sir etuvchi omillar o'rtasidagi bog'lanish qanday ko'rinishda bo'ladi?",
       "options": [
-        "kasr ko‘rinishida",
-        "yig‘indi ko‘rinishida",
-        "ko‘paytiruv ko‘rinishida",
+        "kasr ko'rinishida",
+        "yig'indi ko'rinishida",
+        "ko'paytiruv ko'rinishida",
         "aralash"
       ],
       "correct": 1
     },
     {
-      "text": "Natijaviy ko‘rsatkichga faqatgina 2 ta omil ta’sir ko‘rsatsa tahlilning qaysi oddiy-an’anaviy usulidan foydalaniladi?",
+      "text": "Natijaviy ko'rsatkichga faqatgina 2 ta omil ta'sir ko'rsatsa tahlilning qaysi oddiy-an'anaviy usulidan foydalaniladi?",
       "options": [
         "Muvozanat usuli",
         "Farqli usul",
@@ -176,32 +176,32 @@
         "funksional qiymatli tahlil",
         "kompleks tahlil",
         "buxgalteriya hisobotlari tahlili",
-        "xo‘jalik faoliyatini tizimli tahlili"
+        "xo'jalik faoliyatini tizimli tahlili"
       ],
       "correct": 3
     },
     {
-      "text": "XIX asrda buxgalteriya balansidagi ba’zi ko‘rsatkichlarga izoh berish...?",
+      "text": "XIX asrda buxgalteriya balansidagi ba'zi ko'rsatkichlarga izoh berish...?",
       "options": [
         "auditni vujudga keltirgan",
         "reviziyaga asos slogan",
-        "tahlil fanini vujudga kelishi uchun ob’ektiv asos bo‘lgan",
-        "hech qanday ta’siri bo‘lmagan"
+        "tahlil fanini vujudga kelishi uchun ob'ektiv asos bo'lgan",
+        "hech qanday ta'siri bo'lmagan"
       ],
       "correct": 2
     },
     {
-      "text": "XIX asrda xo‘jalik faoliyatini chuqurroq o‘rganish .......... talab qildi?",
+      "text": "XIX asrda xo'jalik faoliyatini chuqurroq o'rganish .......... talab qildi?",
       "options": [
         "auditni tashkil qilishni",
         "reviziyani tashkil qilishni",
-        "buxgalteriya balansidagi ba’zi ko‘rsatkichlarga izoh berishni",
+        "buxgalteriya balansidagi ba'zi ko'rsatkichlarga izoh berishni",
         "iqtisodiy tushuntirishlarni"
       ],
       "correct": 3
     },
     {
-      "text": "Bir butunli bo‘laklarga bo‘lib o‘rganish -",
+      "text": "Bir butunli bo'laklarga bo'lib o'rganish -",
       "options": [
         "analiz",
         "sintez",
@@ -211,12 +211,12 @@
       "correct": 0
     },
     {
-      "text": "Omilli tahlilga ta’rif bering?",
+      "text": "Omilli tahlilga ta'rif bering?",
       "options": [
-        "Xo‘jalik faoliyati natijasiga ta’sirqiluvchi omillarni aniqlashva ularning ta’sirini hisoblash usullarini majmuasini o‘zida aks ettiradigan tahlildir",
-        "Xo‘jalik yurituvchi sub’ekt istiqbolini, biznes-rejasini, invistisiya loyihalarini asoslash uchun halisodir bo‘lmagan, ya’ni bo‘lishi kutilayotgan iqtisodiy jarayonlarni o‘rgatadigan tahlildir",
-        "Xo‘jalik yurituvchi sub’ekt faoliyatini makon va zamon nuqtai nazaridan barcha tuzilmalari bilan birga batafsil tahlil qilishdir",
-        "Xo‘jalik yurituvchi sub’yekt moliyaviy natijalari va moliyaviy holatini o‘rganishga qaratilgan tahlildir"
+        "Xo'jalik faoliyati natijasiga ta'sirqiluvchi omillarni aniqlashva ularning ta'sirini hisoblash usullarini majmuasini o'zida aks ettiradigan tahlildir",
+        "Xo'jalik yurituvchi sub'ekt istiqbolini, biznes-rejasini, invistisiya loyihalarini asoslash uchun halisodir bo'lmagan, ya'ni bo'lishi kutilayotgan iqtisodiy jarayonlarni o'rgatadigan tahlildir",
+        "Xo'jalik yurituvchi sub'ekt faoliyatini makon va zamon nuqtai nazaridan barcha tuzilmalari bilan birga batafsil tahlil qilishdir",
+        "Xo'jalik yurituvchi sub'yekt moliyaviy natijalari va moliyaviy holatini o'rganishga qaratilgan tahlildir"
       ],
       "correct": 0
     },
@@ -225,7 +225,7 @@
       "options": [
         "sabablar natijadorligi tahlili",
         "masalalar tahlili",
-        "omillar ta’sirini tahlili",
+        "omillar ta'sirini tahlili",
         "evristik tahlil"
       ],
       "correct": 0
@@ -261,7 +261,7 @@
       "correct": 2
     },
     {
-      "text": "Xususiylikdan umumiylik sari o‘rganish -",
+      "text": "Xususiylikdan umumiylik sari o'rganish -",
       "options": [
         "analiz",
         "induksiya",
@@ -271,12 +271,12 @@
       "correct": 0
     },
     {
-      "text": "Xo‘jalik subyektlarida  tahlilni tashkillashtirishning yana bir muhim tamoyillaridan biri …",
+      "text": "Xo'jalik subyektlarida  tahlilni tashkillashtirishning yana bir muhim tamoyillaridan biri …",
       "options": [
-        "uning kamchiqimligini ta’minlashdir",
+        "uning kamchiqimligini ta'minlashdir",
         "daromad keltirishi kerak",
         "tahlilda xarajat ahamiyatga ega emas",
-        "xarajatga  e’tibor bermaslik  kerak"
+        "xarajatga  e'tibor bermaslik  kerak"
       ],
       "correct": 0
     },
@@ -285,8 +285,8 @@
       "options": [
         "boshqaruv qarorlari beriladi hamda natija bo'yicha xulosa tayyorlanadi",
         "farmon beriladi",
-        "boshqaruv qarorlarini ilmiy asoslanishi ta’minlanadi",
-        "qarorlar qaytadan ko‘rib chiqiladi hamda qaror rentabelligi baholanadi"
+        "boshqaruv qarorlarini ilmiy asoslanishi ta'minlanadi",
+        "qarorlar qaytadan ko'rib chiqiladi hamda qaror rentabelligi baholanadi"
       ],
       "correct": 0
     },
@@ -301,37 +301,37 @@
       "correct": 2
     },
     {
-      "text": "Tuzilish vaqtiga ko‘ra buxgalteriya balansi tarkibi qaysi javobda to‘liq ko‘rsatilgan?",
+      "text": "Tuzilish vaqtiga ko'ra buxgalteriya balansi tarkibi qaysi javobda to'liq ko'rsatilgan?",
       "options": [
         "joriy, tarkibiy, balans-netto",
         "joriy, bulish va birlashtirish, balans-netto",
         "kirish va joriy, balans-brutto",
-        "kirish, joriy, tugatish, bo‘lish va birlashtirish"
+        "kirish, joriy, tugatish, bo'lish va birlashtirish"
       ],
       "correct": 3
     },
     {
-      "text": "Trend tahliliga ta’rif bering.",
+      "text": "Trend tahliliga ta'rif bering.",
       "options": [
         "moliyaviy hisobot asosida tahlil",
-        "operativma’lumotlar  asosida o‘tkaziladigan tahlil",
-        "moliyaviy hisobot elementlari va ko‘rsatkichlarini joriy davrga bo‘lgan holatini bazis yili yoki asosiy yili ko‘rsatkichi bilan o‘rganish",
-        "tarkibiy tahlil bo‘lib, tahlil qilinayotgan ob’ektni barcha qismlari bo‘yicha o‘rganish"
+        "operativma'lumotlar  asosida o'tkaziladigan tahlil",
+        "moliyaviy hisobot elementlari va ko'rsatkichlarini joriy davrga bo'lgan holatini bazis yili yoki asosiy yili ko'rsatkichi bilan o'rganish",
+        "tarkibiy tahlil bo'lib, tahlil qilinayotgan ob'ektni barcha qismlari bo'yicha o'rganish"
       ],
       "correct": 2
     },
     {
       "text": "Tezkor tahlil deganda nimani tushunasiz?",
       "options": [
-        "milliy iqtisodiyotning tarmoqlari bo‘yicha bir butunlikda o‘tkaziladigan tahlilni",
-        "milliy iqtisodiyot bo‘yicha o‘tkaziladigan qismlarga ajrtatgan holdagi tahlilni",
-        "kunlik, smenalik va o‘n kunlik ish yakuni bo‘yicha o‘tkaziladigan tahlilni",
-        "yillik ish yakuni bo‘yicha o‘tkaziladigan tahlilni"
+        "milliy iqtisodiyotning tarmoqlari bo'yicha bir butunlikda o'tkaziladigan tahlilni",
+        "milliy iqtisodiyot bo'yicha o'tkaziladigan qismlarga ajrtatgan holdagi tahlilni",
+        "kunlik, smenalik va o'n kunlik ish yakuni bo'yicha o'tkaziladigan tahlilni",
+        "yillik ish yakuni bo'yicha o'tkaziladigan tahlilni"
       ],
       "correct": 2
     },
     {
-      "text": "Tashqi iste’molchilar o‘tkazadigan tahlil qanday tahlil?",
+      "text": "Tashqi iste'molchilar o'tkazadigan tahlil qanday tahlil?",
       "options": [
         "iqtisodiy",
         "moliyaviy",
@@ -341,7 +341,7 @@
       "correct": 1
     },
     {
-      "text": "Tahlilning eng asosiy tamoyillari qaysi javobda to‘liq aks ettirilgan?",
+      "text": "Tahlilning eng asosiy tamoyillari qaysi javobda to'liq aks ettirilgan?",
       "options": [
         "ishonchlilik, betaraflilik, davriylik, taqqoslanuvchanlik, pulli baholash, hisobga olish, aniq baholash",
         "tahlil dasturini tuzib olishlik, tizilmalilik, ishonchlilik, betaraflilik, davriylik, taqqoslanuvchanlik",
@@ -354,26 +354,26 @@
       "text": "Tahlil vujudga kelgandan buyon qo'llanilib kelinayotgan usullar qanday usullar?",
       "options": [
         "matematik",
-        "an’anaviy",
+        "an'anaviy",
         "doimiy",
         "tahliliy"
       ],
       "correct": 1
     },
     {
-      "text": "Vertikal tahlilga ta’rif bering.",
+      "text": "Vertikal tahlilga ta'rif bering.",
       "options": [
-        "hisobot davrini o‘tgan yil ko‘rsatkichlari bilan solishtirish va natijani tahlil qilish",
+        "hisobot davrini o'tgan yil ko'rsatkichlari bilan solishtirish va natijani tahlil qilish",
         "moliyaviy hisobot asosida tahlil",
-        "tarkibiy tahlil bo‘lib, tahlil qilinayotgan ob’ektni barcha qismlari bo‘yicha o‘rganish",
-        "operativ ma’lumotlar  asosida o‘tkaziladigan tahlil bo'lib joriy ma'lumotlar asossida olib boriladi"
+        "tarkibiy tahlil bo'lib, tahlil qilinayotgan ob'ektni barcha qismlari bo'yicha o'rganish",
+        "operativ ma'lumotlar  asosida o'tkaziladigan tahlil bo'lib joriy ma'lumotlar asossida olib boriladi"
       ],
       "correct": 2
     },
     {
-      "text": "Tahlilni boshqaruv va moliyaviy tahlilga bo‘linishini qanday izohlash mumkin?",
+      "text": "Tahlilni boshqaruv va moliyaviy tahlilga bo'linishini qanday izohlash mumkin?",
       "options": [
-        "korxona buxgalteriya hisobi tizimini boshqaruv va moliyaviy hisobiga bo‘linishi asosida takomillashishi",
+        "korxona buxgalteriya hisobi tizimini boshqaruv va moliyaviy hisobiga bo'linishi asosida takomillashishi",
         "menejmentni takomillashishi",
         "marketingni takomillashishi",
         "auditni hamda buxgalteriya hisobini rivojlanishi natijasida tezlashtirilgan shaklda hamda BHMSlar asosida takomillashishi"
@@ -381,7 +381,7 @@
       "correct": 0
     },
     {
-      "text": "Tahlil uchun yig‘ilgan ma’lumotlarni tekshirish nechta va qanday usullarda olib boriladi?",
+      "text": "Tahlil uchun yig'ilgan ma'lumotlarni tekshirish nechta va qanday usullarda olib boriladi?",
       "options": [
         "3 ta usul orqali: taqqoslash usuli; texnik (yuzaki) tekshirish usuli; mazmunan (mantiqiy) tekshirish usuli",
         "2 ta usul orqali: texnik (yuzaki) tekshirish usuli; mazmunan (mantiqiy) tekshirish usuli",
@@ -391,22 +391,22 @@
       "correct": 1
     },
     {
-      "text": "Tahlil uchun kerak bo‘lgan ko‘rsatkichlar turi hamda miqdori ...",
+      "text": "Tahlil uchun kerak bo'lgan ko'rsatkichlar turi hamda miqdori ...",
       "options": [
-        "o‘rganilayotgan iqtisodiy jarayonga aloqasi yo‘q",
-        "o‘rganilayotgan iqtisodiy jarayonning shakliga hamda vujudga kelish manbasiga bog‘liq",
-        "o‘rganilayotgan iqtisodiy jarayonning mazmuniga, hajmiga, davriga bog‘liq",
-        "foydaga bog‘liq"
+        "o'rganilayotgan iqtisodiy jarayonga aloqasi yo'q",
+        "o'rganilayotgan iqtisodiy jarayonning shakliga hamda vujudga kelish manbasiga bog'liq",
+        "o'rganilayotgan iqtisodiy jarayonning mazmuniga, hajmiga, davriga bog'liq",
+        "foydaga bog'liq"
       ],
       "correct": 2
     },
     {
-      "text": "Tahlil so‘zining lug‘aviy mazmuni nimani anglatadi?",
+      "text": "Tahlil so'zining lug'aviy mazmuni nimani anglatadi?",
       "options": [
-        "“tahlil” frantsuzcha so‘zdan olingan bo‘lib, “butunni bo‘lakchalarga bo‘lib o‘rganaman” ma’nosini anglatadi",
-        "“tahlil” lotincha so‘zdan olingan bo‘lib, “butunni bo‘lakchalarga bo‘lib o‘rganaman” ma’nosini anglatadi",
-        "“tahlil” grekcha so‘zdan olingan bo‘lib, “butunni bo‘lakchalarga bo‘lib o‘rganaman” ma’nosini anglatadi",
-        "“tahlil” inglizcha so‘zdan olinib, “butunni bo‘lakchalarga bo‘lib o‘rganaman” ma’nosini anglatadi"
+        "“tahlil” frantsuzcha so'zdan olingan bo'lib, “butunni bo'lakchalarga bo'lib o'rganaman” ma'nosini anglatadi",
+        "“tahlil” lotincha so'zdan olingan bo'lib, “butunni bo'lakchalarga bo'lib o'rganaman” ma'nosini anglatadi",
+        "“tahlil” grekcha so'zdan olingan bo'lib, “butunni bo'lakchalarga bo'lib o'rganaman” ma'nosini anglatadi",
+        "“tahlil” inglizcha so'zdan olinib, “butunni bo'lakchalarga bo'lib o'rganaman” ma'nosini anglatadi"
       ],
       "correct": 2
     },
@@ -415,7 +415,7 @@
       "options": [
         "iqtisodiy va huquqiy",
         "iqtisodiy",
-        "iqtisodiy, huquqiy-me’yoriy, ilmiy-texnologik, tabiiy-ekologik va boshqa turdagi ma’lumotlar",
+        "iqtisodiy, huquqiy-me'yoriy, ilmiy-texnologik, tabiiy-ekologik va boshqa turdagi ma'lumotlar",
         "huquqiy va tabiiy ekologik"
       ],
       "correct": 2
@@ -423,7 +423,7 @@
     {
       "text": "Stoxastik tahlil",
       "options": [
-        "statistik yo‘l bilan turli xildagi masalalarni hal etish usulidir",
+        "statistik yo'l bilan turli xildagi masalalarni hal etish usulidir",
         "zararsizlik nuqtasini topish uchun",
         "boshqaruv qarorlarini tahlil qilish uchun amalga oshiriladigan tahlil",
         "tushunarsiz"
@@ -431,17 +431,17 @@
       "correct": 0
     },
     {
-      "text": "Struktura o‘zgarishining asosiy sabablari noto‘g‘ri ko‘rsatilgan javobni aniqlang.",
+      "text": "Struktura o'zgarishining asosiy sabablari noto'g'ri ko'rsatilgan javobni aniqlang.",
       "options": [
-        "korxonani uskuna va moddiy resurslar bilan etarli ta’minlanmagani",
-        "korxona mahsulotlariga talabning oshishi, moliyaviy holatining sog‘lomligi",
+        "korxonani uskuna va moddiy resurslar bilan etarli ta'minlanmagani",
+        "korxona mahsulotlariga talabning oshishi, moliyaviy holatining sog'lomligi",
         "zarur malakali mutaxassislarning etishmasligi",
-        "har xil kategoriyadagi iste’molchilarning mahsulotga bo‘lgan talabining o‘zgarishi"
+        "har xil kategoriyadagi iste'molchilarning mahsulotga bo'lgan talabining o'zgarishi"
       ],
       "correct": 1
     },
     {
-      "text": "Qaysi manbalar tahlil etish jarayonida asosiy manba bo‘lib hisoblanadi?",
+      "text": "Qaysi manbalar tahlil etish jarayonida asosiy manba bo'lib hisoblanadi?",
       "options": [
         "iqtisodiy va ekologik",
         "buxgalteriya, statistika, operativ texnik hisob va hisobot, hisobdan tashqari manbalar",
@@ -451,7 +451,7 @@
       "correct": 1
     },
     {
-      "text": "Parchalab o‘rganilgan jarayonlarni umumlashtirish -",
+      "text": "Parchalab o'rganilgan jarayonlarni umumlashtirish -",
       "options": [
         "sintez",
         "analiz",
@@ -461,47 +461,47 @@
       "correct": 0
     },
     {
-      "text": "Ob’ektiv dunyoni bilishga qaratilgan nazariya -",
+      "text": "Ob'ektiv dunyoni bilishga qaratilgan nazariya -",
       "options": [
         "dialektik nazariya",
         "bilish nazariyasi",
-        "o‘zaro bog‘liqlik nazariyasi",
+        "o'zaro bog'liqlik nazariyasi",
         "dialektika"
       ],
       "correct": 1
     },
     {
-      "text": "Qaysi omillar firma faoliyatining samaradorligini oshirishning muhim omillari bo‘lib hisoblanadi?",
+      "text": "Qaysi omillar firma faoliyatining samaradorligini oshirishning muhim omillari bo'lib hisoblanadi?",
       "options": [
         "ichki va tashqi omillar",
-        "asosiy va qo‘shimcha omillar",
+        "asosiy va qo'shimcha omillar",
         "iqtisodiy va ijtimoiy omillar",
         "ishlabchiqarishva noishlabchiqarish omillari"
       ],
       "correct": 0
     },
     {
-      "text": "“Balans” atamasining ma’nosi nimadan iborat?",
+      "text": "“Balans” atamasining ma'nosi nimadan iborat?",
       "options": [
-        "inglizcha bis – ikki marta, banx – tarozi pallasi so‘zlaridan tarkib topib, tom ma’noda ikki palla degan ma’noni anglatadi",
-        "lotincha bis – ikki marta, banx – tarozi pallasi so‘zlaridan tarkib topib, tom ma’noda ikki palla degan ma’noni anglatadi",
-        "nemischada kitob yurituvchi degan ma’noni anglatadi",
-        "arabcha so‘zdan olingan tarkib topgan degan manoni anglatadi"
+        "inglizcha bis – ikki marta, banx – tarozi pallasi so'zlaridan tarkib topib, tom ma'noda ikki palla degan ma'noni anglatadi",
+        "lotincha bis – ikki marta, banx – tarozi pallasi so'zlaridan tarkib topib, tom ma'noda ikki palla degan ma'noni anglatadi",
+        "nemischada kitob yurituvchi degan ma'noni anglatadi",
+        "arabcha so'zdan olingan tarkib topgan degan manoni anglatadi"
       ],
       "correct": 1
     },
     {
-      "text": "Balans aktiv qismining 1 bo‘limida aks ettiriladi?",
+      "text": "Balans aktiv qismining 1 bo'limida aks ettiriladi?",
       "options": [
         "tayyor mahsulot",
-        "pul mablag‘lari",
+        "pul mablag'lari",
         "asosiy vositalarning qoldiq qiymati",
-        "qisqa muddatli moliyaviy qo‘yilmalar"
+        "qisqa muddatli moliyaviy qo'yilmalar"
       ],
       "correct": 2
     },
     {
-      "text": "Balans aktivining 2-bo‘limida aks ettiriladi-",
+      "text": "Balans aktivining 2-bo'limida aks ettiriladi-",
       "options": [
         "asosiy vositalar",
         "ustav kapitali",
@@ -511,27 +511,27 @@
       "correct": 2
     },
     {
-      "text": "Balans aktiv qismining 1 bo‘limida aks ettiriladi -",
+      "text": "Balans aktiv qismining 1 bo'limida aks ettiriladi -",
       "options": [
         "tayyor mahsulot",
         "debitor qarzlar",
-        "qisqa muddatli moliyaviy qo‘yilmalar",
+        "qisqa muddatli moliyaviy qo'yilmalar",
         "nomoddiy aktivlarning qoldiq qiymati"
       ],
       "correct": 3
     },
     {
-      "text": "Balans aktiv qismining 1 bo‘limida aks ettiriladi ?",
+      "text": "Balans aktiv qismining 1 bo'limida aks ettiriladi ?",
       "options": [
         "uzoq muddatli investisiyalar",
         "tovarlar",
         "debitor qarzlar",
-        "pul mablag‘lari"
+        "pul mablag'lari"
       ],
       "correct": 0
     },
     {
-      "text": "Balans aktiv qismining 2 bo‘limida aks ettiriladi -",
+      "text": "Balans aktiv qismining 2 bo'limida aks ettiriladi -",
       "options": [
         "uzoq muddatli investisiyalar",
         "tovarlar",
@@ -541,7 +541,7 @@
       "correct": 1
     },
     {
-      "text": "Balans aktiv qismining 2 bo‘limida aks ettiriladi -",
+      "text": "Balans aktiv qismining 2 bo'limida aks ettiriladi -",
       "options": [
         "asosiy vositalarning qoldiq qiymati",
         "uzoq muddatli investisiyalar",
@@ -551,11 +551,11 @@
       "correct": 2
     },
     {
-      "text": "Balans aktiv qismining 2 bo‘limida aks ettiriladi -",
+      "text": "Balans aktiv qismining 2 bo'limida aks ettiriladi -",
       "options": [
         "asosiy vositalarning qoldiq qiymati",
         "uzoq muddatli investisiyalar",
-        "pul mablag‘lari",
+        "pul mablag'lari",
         "nomoddiy aktivlarning qoldiq qiymati"
       ],
       "correct": 2
@@ -563,9 +563,9 @@
     {
       "text": "Uzoq muddatli aktivlar -Bu…",
       "options": [
-        "uzoqmuddatliinvestitsiyalarva kapitalqo‘yilmalari, ustavkapitali",
-        "o‘rnatilgan asbob-uskunalar, ustavkapitali, qo‘shilgankapitalva rezervkapitali",
-        "asosiyvositalarva nomoddiy aktivlar, uzoqmuddatliinvestitsiyalar, kapitalqo‘yilmalar, uzoq muddatli debitorlik qarzlari va uzoqmuddatli kechiktirilgan xarajatlar",
+        "uzoqmuddatliinvestitsiyalarva kapitalqo'yilmalari, ustavkapitali",
+        "o'rnatilgan asbob-uskunalar, ustavkapitali, qo'shilgankapitalva rezervkapitali",
+        "asosiyvositalarva nomoddiy aktivlar, uzoqmuddatliinvestitsiyalar, kapitalqo'yilmalar, uzoq muddatli debitorlik qarzlari va uzoqmuddatli kechiktirilgan xarajatlar",
         "asosiyvositalarva nomoddiy aktivlarningqoldikqiymativa uzoqmuddatlibankkreditlarir"
       ],
       "correct": 2
@@ -573,55 +573,55 @@
     {
       "text": "Uzoq muddatli passivlar-Bu…",
       "options": [
-        "ustav kapitali, qo‘shilgan kapital va rezerv kapitali",
+        "ustav kapitali, qo'shilgan kapital va rezerv kapitali",
         "uzoq muddatli aktivlar",
         "uzoq muddatli bank kreditlari va uzoq muddatli qarzlar",
-        "qo‘shilgan kapital va rezerv kapitali"
+        "qo'shilgan kapital va rezerv kapitali"
       ],
       "correct": 2
     },
     {
-      "text": "Uzoq muddatli majburiyatlarni tahlil qilish  uchun ma’lumotlarni  qaysi shakldan olinadi?",
+      "text": "Uzoq muddatli majburiyatlarni tahlil qilish  uchun ma'lumotlarni  qaysi shakldan olinadi?",
       "options": [
-        "5-shakl “Xususiykapitalto‘g‘risidagihisobot”",
+        "5-shakl “Xususiykapitalto'g'risidagihisobot”",
         "1-shakl “Buxgalteriya balansi”",
-        "4-shakl “Puloqimlarito‘g‘risidagihisobot”",
-        "2-shakl  «Moliyaviy natijalar to‘g‘risidagi hisobot»"
+        "4-shakl “Puloqimlarito'g'risidagihisobot”",
+        "2-shakl  «Moliyaviy natijalar to'g'risidagi hisobot»"
       ],
       "correct": 1
     },
     {
-      "text": "Uzoq muddatli aktivlar balansning qaysi bo‘limida ko‘rsatiladi?",
+      "text": "Uzoq muddatli aktivlar balansning qaysi bo'limida ko'rsatiladi?",
       "options": [
-        "passiv tomon 1-bo‘lim",
-        "passiv tomon 2-bo‘lim",
-        "aktiv tomon 1-bo‘lim",
-        "aktiv tomon 2-bo‘lim"
+        "passiv tomon 1-bo'lim",
+        "passiv tomon 2-bo'lim",
+        "aktiv tomon 1-bo'lim",
+        "aktiv tomon 2-bo'lim"
       ],
       "correct": 2
     },
     {
-      "text": "Ustav kapitali balansning qaysi bo‘limida ko‘rsatiladi?",
+      "text": "Ustav kapitali balansning qaysi bo'limida ko'rsatiladi?",
       "options": [
-        "aktiv tomon – 1-bo‘limda",
-        "passiv tomon – 1-bo‘limda",
-        "passiv tomon – 2-bo‘limda",
-        "aktiv tomon – 2-bo‘limda"
+        "aktiv tomon – 1-bo'limda",
+        "passiv tomon – 1-bo'limda",
+        "passiv tomon – 2-bo'limda",
+        "aktiv tomon – 2-bo'limda"
       ],
       "correct": 1
     },
     {
-      "text": "Qaysi javobda iqtisodiy tahlilning oddiy-an’anaviy usullari tarkibiga kiruvchi usul to‘g‘ri ko‘rsatib o‘tilgan?",
+      "text": "Qaysi javobda iqtisodiy tahlilning oddiy-an'anaviy usullari tarkibiga kiruvchi usul to'g'ri ko'rsatib o'tilgan?",
       "options": [
         "grafik usuli",
         "nazariy uyin usuli",
-        "zanjirli bog‘lanish usuli",
+        "zanjirli bog'lanish usuli",
         "chiziqli programmalashtirish usuli"
       ],
       "correct": 2
     },
     {
-      "text": "Quyida berilgan aylanma mablag‘larning qaysi biri sekin sotiladigan aktiv hisoblanmaydi?",
+      "text": "Quyida berilgan aylanma mablag'larning qaysi biri sekin sotiladigan aktiv hisoblanmaydi?",
       "options": [
         "qisqa muddatli debitorlik qarzlari",
         "kelgusi davr xarajatlari",
@@ -635,7 +635,7 @@
       "options": [
         "nomoddiy aktivlar",
         "uzoq muddatli bank kreditlari",
-        "qo‘shilgan capital",
+        "qo'shilgan capital",
         "kreditorlik majburiyatlari"
       ],
       "correct": 2
@@ -644,24 +644,24 @@
       "text": "Qisqa muddatli passivlar-bu…",
       "options": [
         "Joriy kreditorlik karzlari va qisqa muddatli bankk reditlari",
-        "qisqa muddatli bank kreditlariva olingan bo‘naklar",
+        "qisqa muddatli bank kreditlariva olingan bo'naklar",
         "Kreditorlik qarzlari qisqa muddatli kreditlar va qarzlar",
-        "qisqa muddatli kreditlar va qarz mablag‘lari"
+        "qisqa muddatli kreditlar va qarz mablag'lari"
       ],
       "correct": 0
     },
     {
-      "text": "Qisqa muddatli majburiyatlar balans passivining qaysi bo‘limida va nechanchi satrda ko‘rsatiladi?",
+      "text": "Qisqa muddatli majburiyatlar balans passivining qaysi bo'limida va nechanchi satrda ko'rsatiladi?",
       "options": [
-        "balansning 2-bo‘limi 600-satrda",
-        "balansning 1-bo‘limi 480-satrda",
-        "balansning 1-bo‘limi 400-satrda",
-        "balansning 2-bo‘limi 770-satrda"
+        "balansning 2-bo'limi 600-satrda",
+        "balansning 1-bo'limi 480-satrda",
+        "balansning 1-bo'limi 400-satrda",
+        "balansning 2-bo'limi 770-satrda"
       ],
       "correct": 3
     },
     {
-      "text": "O‘zbekiston Respublikasidagi xo‘jalik sub’yektlarida tozalash usuli bo‘yicha qanday balans tuzadi?",
+      "text": "O'zbekiston Respublikasidagi xo'jalik sub'yektlarida tozalash usuli bo'yicha qanday balans tuzadi?",
       "options": [
         "balans brutto tuzadi",
         "balans-netto tuzadi",
@@ -671,27 +671,27 @@
       "correct": 1
     },
     {
-      "text": "O‘zbekiston Respublikasida yillik moliyaviy hisobot shakllariga qaysi shakllar kiritilgan?",
+      "text": "O'zbekiston Respublikasida yillik moliyaviy hisobot shakllariga qaysi shakllar kiritilgan?",
       "options": [
-        "Buxgalteriya balansi, Moliyaviy natijalar to‘g‘risidagi hisobot,  Pul oqimlari to‘g‘risidagi hisobot, Xususiy kapital to‘g‘risidagi hisobot",
-        "Buxgalteriya balansi, Moliyaviy natijalar to‘g‘risidagi hisobot, Xususiy kapital to‘g‘risidagi hisobot, ishlab chiqarish qarorlari to‘g‘risidagi hisobot",
-        "Buxgalteriya balansi, Moliyaviy natijalar to‘g‘risidagi hisobot, Debitorlik va kreditorlik qarzlar to‘g‘risidagi ma’lumotnoma, Asosiy vositalar harakati to‘g‘risidagi hisobot, Xususiy kapital to‘g‘risidagi hisobot",
-        "Buxgalteriya balansi, Asosiy vositalar harakati to‘g‘risidagi hisobot, Pul oqimlari to‘g‘risidagi hisobot, Xususiy kapital to‘g‘risidagi hisobot, Mehnat hisoboti"
+        "Buxgalteriya balansi, Moliyaviy natijalar to'g'risidagi hisobot,  Pul oqimlari to'g'risidagi hisobot, Xususiy kapital to'g'risidagi hisobot",
+        "Buxgalteriya balansi, Moliyaviy natijalar to'g'risidagi hisobot, Xususiy kapital to'g'risidagi hisobot, ishlab chiqarish qarorlari to'g'risidagi hisobot",
+        "Buxgalteriya balansi, Moliyaviy natijalar to'g'risidagi hisobot, Debitorlik va kreditorlik qarzlar to'g'risidagi ma'lumotnoma, Asosiy vositalar harakati to'g'risidagi hisobot, Xususiy kapital to'g'risidagi hisobot",
+        "Buxgalteriya balansi, Asosiy vositalar harakati to'g'risidagi hisobot, Pul oqimlari to'g'risidagi hisobot, Xususiy kapital to'g'risidagi hisobot, Mehnat hisoboti"
       ],
       "correct": 0
     },
     {
-      "text": "O‘rganadigan davriga qarab iqtisodiy tahlilning turlari qaysi javobda to‘g‘ri aks ettirilgan?",
+      "text": "O'rganadigan davriga qarab iqtisodiy tahlilning turlari qaysi javobda to'g'ri aks ettirilgan?",
       "options": [
         "joriy tahlil, boshqaruv tahlili, moliyaviy tahlil",
         "tezkor tahlil, ichki tahlil, tashqi tahlil",
         "tezkor tahlil, joriy tahlil, istiqbolli tahlil",
-        "tezkor tahlil, joriy tahlil, funktsional qiymatli tahlil, xo‘jaliklararo tahlil"
+        "tezkor tahlil, joriy tahlil, funktsional qiymatli tahlil, xo'jaliklararo tahlil"
       ],
       "correct": 2
     },
     {
-      "text": "Natijaga omillar ta’sirini hisoblashda omillarning ketma-ketligiga rioya qilmasdan hisoblash mumkin bo‘lgan usul qanday usul?",
+      "text": "Natijaga omillar ta'sirini hisoblashda omillarning ketma-ketligiga rioya qilmasdan hisoblash mumkin bo'lgan usul qanday usul?",
       "options": [
         "integral",
         "indeks",
@@ -701,7 +701,7 @@
       "correct": 0
     },
     {
-      "text": "Natija o‘zgarishiga uchta va undan ko‘p omillar ta’sir qilsa, ular o‘rtasidagi bog‘liqlik funktsional bo‘lsa, qaysi usuldan foydalanilmaydi?",
+      "text": "Natija o'zgarishiga uchta va undan ko'p omillar ta'sir qilsa, ular o'rtasidagi bog'liqlik funktsional bo'lsa, qaysi usuldan foydalanilmaydi?",
       "options": [
         "korrelyatsion va regression tahlil",
         "qayta hisoblash hamda muvozanat",
@@ -711,7 +711,7 @@
       "correct": 0
     },
     {
-      "text": "Natija ko‘rsatkichiga omillar ta’sirini aniqlash uchun hisoblanayotgan omilning farqi, qolgan omillarning asos yoki hisobot davri miqdorlari olinib hisoblansa, qaysi usulga kiradi?",
+      "text": "Natija ko'rsatkichiga omillar ta'sirini aniqlash uchun hisoblanayotgan omilning farqi, qolgan omillarning asos yoki hisobot davri miqdorlari olinib hisoblansa, qaysi usulga kiradi?",
       "options": [
         "indeks",
         "farqli",
@@ -735,15 +735,15 @@
       "options": [
         "qisqa muddatli aktivlar va kreditorlik qarzlari",
         "uzoq muddatli va qisqa muddatli aktivlar",
-        "o‘z va qarz mablag‘lari",
-        "qarz mablag‘lari va taqsimlanmagan foyda"
+        "o'z va qarz mablag'lari",
+        "qarz mablag'lari va taqsimlanmagan foyda"
       ],
       "correct": 2
     },
     {
       "text": "Doimiy harakatdagi aktiv bu?",
       "options": [
-        "pul mablag‘lari",
+        "pul mablag'lari",
         "tayyor mahsulot",
         "nomoddiy aktivlar",
         "asosiy vositalar"
@@ -753,10 +753,10 @@
     {
       "text": "Doimiy harakatdagi aktivlar tarkibiga nimalar kiradi?",
       "options": [
-        "pul mablag‘lari, valyuta mablag‘lari, qisqa muddatli investitsiyalar",
-        "debitorlik qarzlari, pul mablag‘lari, valyuta mablag‘lari",
-        "pul mablag‘lari, debitorlik qarzlari, qisqa muddatli investitsiyalar",
-        "valyuta mablag‘lari, debitorlik qarzlari, qisqa muddatli investitsiyalar"
+        "pul mablag'lari, valyuta mablag'lari, qisqa muddatli investitsiyalar",
+        "debitorlik qarzlari, pul mablag'lari, valyuta mablag'lari",
+        "pul mablag'lari, debitorlik qarzlari, qisqa muddatli investitsiyalar",
+        "valyuta mablag'lari, debitorlik qarzlari, qisqa muddatli investitsiyalar"
       ],
       "correct": 2
     },
@@ -764,29 +764,29 @@
       "text": "Doimiy passivlar-Bu…?",
       "options": [
         "Ustav kapitali va taqsimlanmagan foyda",
-        "Ustav kapitali, maqsadli tushumlar, kelgusi davr xarajatlari va to‘lovlari uchun zahiralar",
-        "Balans passiv qismi 2 bo‘limi «O‘z mablag‘lari manbalari» moddalari",
+        "Ustav kapitali, maqsadli tushumlar, kelgusi davr xarajatlari va to'lovlari uchun zahiralar",
+        "Balans passiv qismi 2 bo'limi «O'z mablag'lari manbalari» moddalari",
         "Uzoq muddatli bank kreditlari va qarzlar"
       ],
       "correct": 0
     },
     {
-      "text": "Eng oson pul bo‘ladigan (likvidlanadigan) aktivlar – Bu…?",
+      "text": "Eng oson pul bo'ladigan (likvidlanadigan) aktivlar – Bu…?",
       "options": [
-        "pul mablag‘lari va qisqa muddatli moliyaviy qo‘yilmalar",
-        "pul mablag‘lari va sof debitorlik qarzlari",
+        "pul mablag'lari va qisqa muddatli moliyaviy qo'yilmalar",
+        "pul mablag'lari va sof debitorlik qarzlari",
         "debitorlik qarzlari va uzoq muddatli moliyaviy qo'yilmalar",
-        "pul mablag‘lari"
+        "pul mablag'lari"
       ],
       "correct": 0
     },
     {
-      "text": "Hisobot yili korxonaning joriy likvidligi oshgani holda muddatli likvidligi kamaygan. Quyida berilganlarga ko‘ra ushbu vaziyatni baholang?",
+      "text": "Hisobot yili korxonaning joriy likvidligi oshgani holda muddatli likvidligi kamaygan. Quyida berilganlarga ko'ra ushbu vaziyatni baholang?",
       "options": [
-        "mol yetkazib beruvchilarga qarzlarni ko‘payishi",
+        "mol yetkazib beruvchilarga qarzlarni ko'payishi",
         "debitorlik karzlarini kamayishi",
-        "tovar-moddiy zahiralarni ko‘payishi",
-        "qisqa muddatli qimmatli qog‘ozlarni sotish qisqa muddatli qimmatli qog‘ozlarni sotish"
+        "tovar-moddiy zahiralarni ko'payishi",
+        "qisqa muddatli qimmatli qog'ozlarni sotish qisqa muddatli qimmatli qog'ozlarni sotish"
       ],
       "correct": 1
     },
@@ -801,7 +801,7 @@
       "correct": 2
     },
     {
-      "text": "Iqtisodiy tahlil ....ga bo‘linadi.",
+      "text": "Iqtisodiy tahlil ....ga bo'linadi.",
       "options": [
         "maxsus va iqtisodiy",
         "umumiy va iqtisodiy",
@@ -811,17 +811,17 @@
       "correct": 2
     },
     {
-      "text": "Iqtisodiy tahlil fani metodining o‘ziga xos jihati -",
+      "text": "Iqtisodiy tahlil fani metodining o'ziga xos jihati -",
       "options": [
         "umumlashtirish hamda taqqoslash",
         "dunyoqarashni shakllantirish hamda baholash",
-        "ko‘rsatkichlar tizimidan foydalanish",
+        "ko'rsatkichlar tizimidan foydalanish",
         "modellashtirish"
       ],
       "correct": 2
     },
     {
-      "text": "Iqtisodiy tahlil fani qaysi fan bilan ko‘proq chambarchas bog‘liq?",
+      "text": "Iqtisodiy tahlil fani qaysi fan bilan ko'proq chambarchas bog'liq?",
       "options": [
         "buxgalteriya hisobi va audit",
         "makro hamda mikro iqtisodiyot",
@@ -831,7 +831,7 @@
       "correct": 0
     },
     {
-      "text": "Korxonaning uzoq muddatli aktivlari 100 mln so’m, joriy aktivlari 500 mln so’m, xususiy kapitali 400 mln so’mga teng bo’lsa korxonaning moliyaviy mustaqillik koeffisentini aniqlang?",
+      "text": "Korxonaning uzoq muddatli aktivlari 100 mln so'm, joriy aktivlari 500 mln so'm, xususiy kapitali 400 mln so'mga teng bo'lsa korxonaning moliyaviy mustaqillik koeffisentini aniqlang?",
       "options": [
         "0.54",
         "0.48",
@@ -841,7 +841,7 @@
       "correct": 2
     },
     {
-      "text": "Korxonaning uzoq muddatli aktivlari 100 mln so’m, joriy aktivlari 500 mln so’m, xususiy kapitali 400 mln so’mga teng bo’lsa korxonaning moliyaviy qaramlik koeffisentini aniqlang?",
+      "text": "Korxonaning uzoq muddatli aktivlari 100 mln so'm, joriy aktivlari 500 mln so'm, xususiy kapitali 400 mln so'mga teng bo'lsa korxonaning moliyaviy qaramlik koeffisentini aniqlang?",
       "options": [
         "0.33",
         "0.67",
@@ -851,7 +851,7 @@
       "correct": 0
     },
     {
-      "text": "Korxonaning uzoq muddatli aktivlari 100 mln so’m, joriy aktivlari 500 mln so’m, xususiy kapitali 400 mln so’mga teng bo’lsa korxonaning moliyaviy barqarorlik koeffisentini aniqlang?",
+      "text": "Korxonaning uzoq muddatli aktivlari 100 mln so'm, joriy aktivlari 500 mln so'm, xususiy kapitali 400 mln so'mga teng bo'lsa korxonaning moliyaviy barqarorlik koeffisentini aniqlang?",
       "options": [
         "0.42",
         "3.0",
@@ -861,7 +861,7 @@
       "correct": 2
     },
     {
-      "text": "Korxonaning uzoq muddatli aktivlari 100 mln so’m, joriy aktivlari 500 mln so’m, xususiy kapitali 400 mln so’mga teng bo’lsa korxonaning o’z mablag’lari naqdligini aniqlang?",
+      "text": "Korxonaning uzoq muddatli aktivlari 100 mln so'm, joriy aktivlari 500 mln so'm, xususiy kapitali 400 mln so'mga teng bo'lsa korxonaning o'z mablag'lari naqdligini aniqlang?",
       "options": [
         "100 mln",
         "200 mln",
@@ -871,7 +871,7 @@
       "correct": 1
     },
     {
-      "text": "Korxonaning uzoq muddatli aktivlari 200 mln so’m, joriy aktivlari 900 mln so’m, kreditorlik qarzi 800 mln so’mga teng bo’lsa korxonaning xususiy capital summasini aniqlang?",
+      "text": "Korxonaning uzoq muddatli aktivlari 200 mln so'm, joriy aktivlari 900 mln so'm, kreditorlik qarzi 800 mln so'mga teng bo'lsa korxonaning xususiy capital summasini aniqlang?",
       "options": [
         "500 mln",
         "100 mln",
@@ -881,7 +881,7 @@
       "correct": 2
     },
     {
-      "text": "Korxonaning uzoq muddatli aktivlari 300 mln so’m, joriy aktivlari 700 mln so’m, xususiy kapitali 600 mln so’mga teng bo’lsa korxonaning moliyaviy mustaqillik koeffisentini aniqlang?",
+      "text": "Korxonaning uzoq muddatli aktivlari 300 mln so'm, joriy aktivlari 700 mln so'm, xususiy kapitali 600 mln so'mga teng bo'lsa korxonaning moliyaviy mustaqillik koeffisentini aniqlang?",
       "options": [
         "0.5",
         "0.4",
@@ -891,7 +891,7 @@
       "correct": 3
     },
     {
-      "text": "Korxonaning uzoq muddatli aktivlari 700 mln so’m, joriy aktivlari 500 mln so’m, xususiy kapitali 700 mln so’mga teng bo’lsa korxonaning moliyaviy qaramlik koeffisentini aniqlang?",
+      "text": "Korxonaning uzoq muddatli aktivlari 700 mln so'm, joriy aktivlari 500 mln so'm, xususiy kapitali 700 mln so'mga teng bo'lsa korxonaning moliyaviy qaramlik koeffisentini aniqlang?",
       "options": [
         "0.41",
         "0.48",
@@ -901,7 +901,7 @@
       "correct": 2
     },
     {
-      "text": "Korxonaning uzoq muddatli aktivlari 900 mln so’m, joriy aktivlari 1 100 mln so’m, xususiy kapitali 900 mln so’mga teng bo’lsa korxonaning moliyaviy barqarorlik koeffisentini aniqlang?",
+      "text": "Korxonaning uzoq muddatli aktivlari 900 mln so'm, joriy aktivlari 1 100 mln so'm, xususiy kapitali 900 mln so'mga teng bo'lsa korxonaning moliyaviy barqarorlik koeffisentini aniqlang?",
       "options": [
         "0.52",
         "0.45",
@@ -911,7 +911,7 @@
       "correct": 1
     },
     {
-      "text": "Korxonaning uzoq muddatli aktivlari 500 mln so’m, joriy aktivlari 1 500 mln so’m, xususiy kapitali 1 200 mln so’mga teng bo’lsa korxonaning o’z mablag’lari naqdligini aniqlang?",
+      "text": "Korxonaning uzoq muddatli aktivlari 500 mln so'm, joriy aktivlari 1 500 mln so'm, xususiy kapitali 1 200 mln so'mga teng bo'lsa korxonaning o'z mablag'lari naqdligini aniqlang?",
       "options": [
         "100 mln",
         "300 mln",
@@ -921,7 +921,7 @@
       "correct": 0
     },
     {
-      "text": "Korxonaning uzoq muddatli aktivlari 800 mln so’m, joriy aktivlari 1 500 mln so’m, xususiy kapitali 1 600 mln so’mga teng bo’lsa korxonaning kreditorlik qarzlarini aniqlang?",
+      "text": "Korxonaning uzoq muddatli aktivlari 800 mln so'm, joriy aktivlari 1 500 mln so'm, xususiy kapitali 1 600 mln so'mga teng bo'lsa korxonaning kreditorlik qarzlarini aniqlang?",
       "options": [
         "1 300 mln",
         "1 100 mln",
@@ -931,7 +931,7 @@
       "correct": 0
     },
     {
-      "text": "Korxonaning uzoq muddatli aktivlari 1 100 mln so’m, joriy aktivlari 1 500 mln so’m, xususiy kapitali 1 400 mln so’mga teng bo’lsa korxonaning moliyaviy mustaqillik koeffisentini aniqlang?",
+      "text": "Korxonaning uzoq muddatli aktivlari 1 100 mln so'm, joriy aktivlari 1 500 mln so'm, xususiy kapitali 1 400 mln so'mga teng bo'lsa korxonaning moliyaviy mustaqillik koeffisentini aniqlang?",
       "options": [
         "0.52",
         "0.48",
@@ -941,11 +941,11 @@
       "correct": 2
     },
     {
-      "text": "Kapital qo‘yilmalar - bu",
+      "text": "Kapital qo'yilmalar - bu",
       "options": [
         "uzoq muddatli aktiv",
         "doimiy passiv",
-        "ta’sischilarning maqsadli badali",
+        "ta'sischilarning maqsadli badali",
         "majbiriyat"
       ],
       "correct": 0
@@ -955,33 +955,33 @@
       "options": [
         "1-sonli shakl, 2-sonli shakl",
         "1-sonli shakl, 2-sonli shakl, 4-sonli shakl",
-        "2-sonlishakl «Moliyaviy natijalar to‘g‘risidagi hisobot», 5-sonlishakl «Xususiy kapital to‘g‘rsidagi hisobot»",
-        "1-sonli shakl, 2-sonli shaklva 3-sonli shakl «Asosiy vositalar harakati to‘g‘risida hisobot»"
+        "2-sonlishakl «Moliyaviy natijalar to'g'risidagi hisobot», 5-sonlishakl «Xususiy kapital to'g'rsidagi hisobot»",
+        "1-sonli shakl, 2-sonli shaklva 3-sonli shakl «Asosiy vositalar harakati to'g'risida hisobot»"
       ],
       "correct": 0
     },
     {
-      "text": "Ko‘rsatkichlardan qaysi biri korxonaning moliyaviy barqarorligini aniqroq ifodalaydi?",
+      "text": "Ko'rsatkichlardan qaysi biri korxonaning moliyaviy barqarorligini aniqroq ifodalaydi?",
       "options": [
-        "o‘ziga qarashli aylanma mablag‘ bilan jami o‘ziga qarashli mablag‘ o‘rtasidagi nisbat",
-        "majburiyatlar bilan o‘z mablag‘i o‘rtasidagi nisbat",
-        "ajburiyatlar bilan jami mablag‘ o‘rtasidagi nisbat",
-        "jami mablag‘ tarkibidagi korxonaning o‘ziga qarashli mablag‘ ulushi"
+        "o'ziga qarashli aylanma mablag' bilan jami o'ziga qarashli mablag' o'rtasidagi nisbat",
+        "majburiyatlar bilan o'z mablag'i o'rtasidagi nisbat",
+        "ajburiyatlar bilan jami mablag' o'rtasidagi nisbat",
+        "jami mablag' tarkibidagi korxonaning o'ziga qarashli mablag' ulushi"
       ],
       "correct": 3
     },
     {
-      "text": "Mahsulot hajmiga qanday mehnat omillari ta’sir etadi?",
+      "text": "Mahsulot hajmiga qanday mehnat omillari ta'sir etadi?",
       "options": [
         "ishchilar soni, mehnat unumdorligi",
         "ish haqi",
-        "moliyaviy resurslar bilan ta’minlanganlik",
-        "moddiy resurslar bilan ta’minlanganlik"
+        "moliyaviy resurslar bilan ta'minlanganlik",
+        "moddiy resurslar bilan ta'minlanganlik"
       ],
       "correct": 0
     },
     {
-      "text": "Korxona rahbariyati, uning egasi va mutaxassislari tomonidan ichki imkoniyatlarni ishga solish va samaradorlikni oshirish maqsadida o‘tkaziladigan tahlil qanday tahlil?",
+      "text": "Korxona rahbariyati, uning egasi va mutaxassislari tomonidan ichki imkoniyatlarni ishga solish va samaradorlikni oshirish maqsadida o'tkaziladigan tahlil qanday tahlil?",
       "options": [
         "moliyaviy",
         "boshqaruv",
@@ -995,25 +995,25 @@
       "options": [
         "mahsulot ishlab chiqarishning eng yuqori hajmi",
         "mahsulot ishlab chiqarishning optimal hajmi",
-        "mahsulot ishlab chiqarishning eng kam hajmi bo‘lib, faqat ishlab chiqarishdagi o‘zgaruvchan xarajatlarni qoplaydi",
-        "mahsulot ishlab chiqarishning o‘zgaruvchan va o‘zgarmas xarajatlarni qoplaydigan hajmi"
+        "mahsulot ishlab chiqarishning eng kam hajmi bo'lib, faqat ishlab chiqarishdagi o'zgaruvchan xarajatlarni qoplaydi",
+        "mahsulot ishlab chiqarishning o'zgaruvchan va o'zgarmas xarajatlarni qoplaydigan hajmi"
       ],
       "correct": 3
     },
     {
-      "text": "Kritik hajm darajasidagi mahsulot hajmi o‘zgarishiga qanday omillar ta’sir qiladi?",
+      "text": "Kritik hajm darajasidagi mahsulot hajmi o'zgarishiga qanday omillar ta'sir qiladi?",
       "options": [
-        "hajm o‘zgarishi, baho o‘zgarishi, doimiy va o‘zgaruvchan xarajatlar o‘zgarishi",
-        "hajm o‘zgarishi, baho o‘zgarishi",
-        "mahsulot birligi bahosini o‘zgarishi;bir birlikka o‘zgaruvchan xarajatlarni o‘zgarishi; doimiy xarajatlarni o‘zgarishi",
-        "hajm o‘zgarishi, baho o‘zgarishi, doimiy va o‘zgaruvchan xarajatlar,soliqlar o‘zgarishi hamda korxonada xodimlar sonining o'zgarishi"
+        "hajm o'zgarishi, baho o'zgarishi, doimiy va o'zgaruvchan xarajatlar o'zgarishi",
+        "hajm o'zgarishi, baho o'zgarishi",
+        "mahsulot birligi bahosini o'zgarishi;bir birlikka o'zgaruvchan xarajatlarni o'zgarishi; doimiy xarajatlarni o'zgarishi",
+        "hajm o'zgarishi, baho o'zgarishi, doimiy va o'zgaruvchan xarajatlar,soliqlar o'zgarishi hamda korxonada xodimlar sonining o'zgarishi"
       ],
       "correct": 2
     },
     {
       "text": "Ish haqini nisbiy farqi qanday aniqlanadi?",
       "options": [
-        "hisobot davrida sarflangan ish haqi bazis davridagi ish haqi fondini mahsulot ishlab chiqarish indeksiga ko‘paytmasidan hosil bo‘lgan ko‘rsatkich bilan taqqoslash orqali aniqlanadi",
+        "hisobot davrida sarflangan ish haqi bazis davridagi ish haqi fondini mahsulot ishlab chiqarish indeksiga ko'paytmasidan hosil bo'lgan ko'rsatkich bilan taqqoslash orqali aniqlanadi",
         "ishchi va xizmatchilarga sarflangan ish haqi bazis davridagi ish haqi fondi bilan taqqoslanadi",
         "hisobot davrida sarflangan ish haqidan bazis davridagi ish haqi fondini ayirish orqali aniqlanadi",
         "ish haqining bazis davridan mutloq farqini foizda ifodalanishidir"
@@ -1021,7 +1021,7 @@
       "correct": 0
     },
     {
-      "text": "Ish kuni davomiyligi ko‘rsatkichiga qanday omillar ta’sir etadi?",
+      "text": "Ish kuni davomiyligi ko'rsatkichiga qanday omillar ta'sir etadi?",
       "options": [
         "ishchilar soni hamda yangi kelgan ishchilarning ish sosati",
         "ish haqi",
@@ -1041,21 +1041,21 @@
       "correct": 2
     },
     {
-      "text": "Ishchilarning yillik ish haqi fondiga qanday omillar ta’sir etadi?",
+      "text": "Ishchilarning yillik ish haqi fondiga qanday omillar ta'sir etadi?",
       "options": [
-        "mahsulot ishlab chiqarish hajmi, ishchilarni nisbiy farqi, bir ishchiga to‘g‘ri keladigan o‘rtacha yillik ish haqi",
-        "mahsulot ishlab chiqarish hajmi, xodimlar soni, xodimlarning o‘rtacha yillik ish haqi hamda xomashyo miqdori",
-        "mahsulot ishlab chiqarish hajmi, ishchilar soni, ishchini o‘rtacha yillik ish haqi, tasischilar tomonidan kiritilgan mablag'",
-        "mahsulot sotish hajmi, ishchilar soni, ishchini o‘rtacha yillik ish haqi"
+        "mahsulot ishlab chiqarish hajmi, ishchilarni nisbiy farqi, bir ishchiga to'g'ri keladigan o'rtacha yillik ish haqi",
+        "mahsulot ishlab chiqarish hajmi, xodimlar soni, xodimlarning o'rtacha yillik ish haqi hamda xomashyo miqdori",
+        "mahsulot ishlab chiqarish hajmi, ishchilar soni, ishchini o'rtacha yillik ish haqi, tasischilar tomonidan kiritilgan mablag'",
+        "mahsulot sotish hajmi, ishchilar soni, ishchini o'rtacha yillik ish haqi"
       ],
       "correct": 3
     },
     {
-      "text": "Ishlab chiqarish fondlari bo‘yicha rentabellik qanday aniqlanadi?",
+      "text": "Ishlab chiqarish fondlari bo'yicha rentabellik qanday aniqlanadi?",
       "options": [
         "(foyda x 100) / (aktiv fondlar + passiv fondlar)",
-        "(foyda x 100) / (balans aktivi 1-bo‘lim + 2-bo‘lim jami)",
-        "(foyda x 100) / (asosiy vositalar + aylanma mablag‘lar)",
+        "(foyda x 100) / (balans aktivi 1-bo'lim + 2-bo'lim jami)",
+        "(foyda x 100) / (asosiy vositalar + aylanma mablag'lar)",
         "(foyda x 100) / aktiv fondlar"
       ],
       "correct": 2
@@ -1071,17 +1071,17 @@
       "correct": 2
     },
     {
-      "text": "Ishlab chiqarish maromiyligini baholashda qo‘llaniladigan egri ko‘rsatkichlarga nimalar kiradi?",
+      "text": "Ishlab chiqarish maromiyligini baholashda qo'llaniladigan egri ko'rsatkichlarga nimalar kiradi?",
       "options": [
         "maromiylik koeffitsenti",
         "variatsiya koeffitsenti",
         "oylik mahsulotning jami yillik mahsulotda tutgan ulushi",
-        "brakdan yo‘qotishlar, shartnoma buzilishi tufayli to‘langan jarimalar"
+        "brakdan yo'qotishlar, shartnoma buzilishi tufayli to'langan jarimalar"
       ],
       "correct": 0
     },
     {
-      "text": "Iqtisodiyot sub’ektlarni tashqi iqtisodiy faoliyatini tahlil etishda taqqoslanuvchi qanday ko‘rsatkichlardan foydalanishimiz mumkin?",
+      "text": "Iqtisodiyot sub'ektlarni tashqi iqtisodiy faoliyatini tahlil etishda taqqoslanuvchi qanday ko'rsatkichlardan foydalanishimiz mumkin?",
       "options": [
         "import hajmi",
         "eksport hajmi, import hajmi",
@@ -1091,17 +1091,17 @@
       "correct": 1
     },
     {
-      "text": "Boshqaruv ob’ektlarining bir-biriga bog‘liqligi bo‘yicha iqtisodiy tahlil quyidagi qanday turlarga ajratiladi?",
+      "text": "Boshqaruv ob'ektlarining bir-biriga bog'liqligi bo'yicha iqtisodiy tahlil quyidagi qanday turlarga ajratiladi?",
       "options": [
         "funktsional – iqtisodiy (funktsional – qiymatli ) tahlil; texnik – iqtisodiy tahlil; ijtimoiy – iqtisodiy tahlil; iqtisodiy – ekologik tahlil",
         "texnik – iqtisodiy tahlil; ijtimoiy – iqtisodiy tahlil",
-        "ichki xo‘jalik tahlili",
+        "ichki xo'jalik tahlili",
         "iqtisodiy – ekologik tahlil"
       ],
       "correct": 0
     },
     {
-      "text": "«Xarajatlar tarkibi to‘g‘risidagi…» Nizomga asosan korxonaning daromadi qaysi javobda to‘g‘ri va to‘liq ko‘rsatilgan?",
+      "text": "«Xarajatlar tarkibi to'g'risidagi…» Nizomga asosan korxonaning daromadi qaysi javobda to'g'ri va to'liq ko'rsatilgan?",
       "options": [
         "mahsulotni sotishdan kelgan sof tushum,korxonaning asosiy faoliyatidan kelgan boshqa daromadlar",
         "asosiy faoliyatidan kelgan boshqa daromadlar, moliyaviy faoliyatdan kelgan daromad",
@@ -1111,17 +1111,17 @@
       "correct": 2
     },
     {
-      "text": "Bir ishchiga to‘g‘ri keluvchi o‘rtacha yillik ish unumining o‘zgarishiga qaysi omillar ta’sir ko‘rsatadi?",
+      "text": "Bir ishchiga to'g'ri keluvchi o'rtacha yillik ish unumining o'zgarishiga qaysi omillar ta'sir ko'rsatadi?",
       "options": [
-        "ishchilar soni, bir ishchi tomonidan bir yilda o‘rtacha ishlangan kishi soatlari, bir ishchiga to‘g‘ri keluvchi o‘rtacha kunlik ish unumi",
+        "ishchilar soni, bir ishchi tomonidan bir yilda o'rtacha ishlangan kishi soatlari, bir ishchiga to'g'ri keluvchi o'rtacha kunlik ish unumi",
         "hamma ishchilar tomonidan bir yilda ishlangan kishi-kunlari,  hamma ishchilar tomonidan bir yilda ishlangan kishi-soatlik ish unumi",
-        "ish kunidan yo‘qotishlar, ish kuni davomiyliginig o‘zgarishi, bir ishchiga to‘g‘ri keluvchi o‘rtacha soatlik ish unumining o‘zgarishi",
-        "o‘rtacha ishchilarning tarkibi, bir yilda hamma ishchilar tomonidan ishlangan kishi-kunlari, ish kunining o‘rtacha uzunligi"
+        "ish kunidan yo'qotishlar, ish kuni davomiyliginig o'zgarishi, bir ishchiga to'g'ri keluvchi o'rtacha soatlik ish unumining o'zgarishi",
+        "o'rtacha ishchilarning tarkibi, bir yilda hamma ishchilar tomonidan ishlangan kishi-kunlari, ish kunining o'rtacha uzunligi"
       ],
       "correct": 2
     },
     {
-      "text": "Bir ishchini ishlagan kishi-soatlarini hisoblovchi ko‘rsatkich -",
+      "text": "Bir ishchini ishlagan kishi-soatlarini hisoblovchi ko'rsatkich -",
       "options": [
         "jami xodimlarning haqiqatda ishlagan kishi-soatlari / jami kalendar ish vaqti fondi",
         "jami ishlangan kishi-soatlari / ishchilar soni",
@@ -1131,7 +1131,7 @@
       "correct": 1
     },
     {
-      "text": "Bir so‘mlik mahsulotga to‘g‘ri keladigan xarajatlar qanday aniqlanadi?",
+      "text": "Bir so'mlik mahsulotga to'g'ri keladigan xarajatlar qanday aniqlanadi?",
       "options": [
         "mahsulot qiymati / mahsulot miqdori",
         "mahsulot qiymati / jami xarajatlar",
@@ -1141,22 +1141,22 @@
       "correct": 3
     },
     {
-      "text": "Bir xodimga to‘g‘ri keluvchi o‘rtacha yillik ish unumini aniqlang.",
+      "text": "Bir xodimga to'g'ri keluvchi o'rtacha yillik ish unumini aniqlang.",
       "options": [
         "tovar mahsulotini xamma ishchilar tomonidan bir yilda ishlangan kishi-kunlariga nisbati",
-        "tovar mahsulotini sanoat ishlab chiqarish xodimlarining o‘rtacha ruyxatdagi soniga nisbati",
+        "tovar mahsulotini sanoat ishlab chiqarish xodimlarining o'rtacha ruyxatdagi soniga nisbati",
         "tovar mahsulotini xamma ishchilar tomonidan bir yilda ishlangan kishi-soatlariga nisbati",
-        "tovar mahsulotini ishchilarning ruyxatdagi o‘rtacha soniga nisbati"
+        "tovar mahsulotini ishchilarning ruyxatdagi o'rtacha soniga nisbati"
       ],
       "correct": 1
     },
     {
       "text": "Xarajatlar – bu...",
       "options": [
-        "Daromadlar va xarajatlar farqlanishidagi yuqori o‘zgaruvchanlikdir",
-        "O‘tgan davrda iqtisodiyfoydaning aktivlarning oqimi yoki ko‘payishi shaklida o‘sishi yoki passivlarning qatnashchilarning kapitalidagi omonatlardan farq etuvchi o‘sishiga olib keluvchi kamayishdir",
-        "Hisobot davrida iqtisodiy foydaning aktivlarning chiqib ketishi yoki ulardan foydalanish shaklida kamayishi, shuningdek, qatnashchilar o‘rtasida kapitalning kamayishiga olib keluvchi majburiyatlarning yuzaga kelishidir",
-        "Daromadlar va xarajatlar farqlanishidagi quyi o‘zgaruvchanlik"
+        "Daromadlar va xarajatlar farqlanishidagi yuqori o'zgaruvchanlikdir",
+        "O'tgan davrda iqtisodiyfoydaning aktivlarning oqimi yoki ko'payishi shaklida o'sishi yoki passivlarning qatnashchilarning kapitalidagi omonatlardan farq etuvchi o'sishiga olib keluvchi kamayishdir",
+        "Hisobot davrida iqtisodiy foydaning aktivlarning chiqib ketishi yoki ulardan foydalanish shaklida kamayishi, shuningdek, qatnashchilar o'rtasida kapitalning kamayishiga olib keluvchi majburiyatlarning yuzaga kelishidir",
+        "Daromadlar va xarajatlar farqlanishidagi quyi o'zgaruvchanlik"
       ],
       "correct": 2
     },
@@ -1164,19 +1164,19 @@
       "text": "Xarajatlar nima?",
       "options": [
         "aktivlarning ishlatilishi shaklida kamayishi",
-        "hisobot davrida aktivlarning kamayishi, yoxud majburiyatlarning ko‘payishidir",
+        "hisobot davrida aktivlarning kamayishi, yoxud majburiyatlarning ko'payishidir",
         "aktivlarning foydalanishi shaklida kamayishi",
-        "majburiyatlarning tan olinishi shaklida o‘sishi"
+        "majburiyatlarning tan olinishi shaklida o'sishi"
       ],
       "correct": 0
     },
     {
       "text": "Umumiy hajmda mahsulot sotish rejasining bajarilishi qanday aniqlanadi",
       "options": [
-        "umumiy sotilgan mahsulotlar qiymati rejadagi ishlab chiqarish hajmiga bo‘linib, yuzga ko‘paytiriladi",
-        "umumiy ishlab chiqarilgan mahsulotlar qiymati rejadagi mahsulot qiymatiga bo‘linib, yuzga ko‘paytiriladi",
-        "shartnoma majburiyatlari bo‘yicha sotilgan mahsulotlar qiymati rejadagi sotish hajmiga bo‘linib, yuzga ko‘paytiriladi",
-        "umumiy sotilgan mahsulotlar qiymati rejadagi sotish hajmiga bo‘linib, yuzga ko‘paytiriladi"
+        "umumiy sotilgan mahsulotlar qiymati rejadagi ishlab chiqarish hajmiga bo'linib, yuzga ko'paytiriladi",
+        "umumiy ishlab chiqarilgan mahsulotlar qiymati rejadagi mahsulot qiymatiga bo'linib, yuzga ko'paytiriladi",
+        "shartnoma majburiyatlari bo'yicha sotilgan mahsulotlar qiymati rejadagi sotish hajmiga bo'linib, yuzga ko'paytiriladi",
+        "umumiy sotilgan mahsulotlar qiymati rejadagi sotish hajmiga bo'linib, yuzga ko'paytiriladi"
       ],
       "correct": 3
     },
@@ -1196,17 +1196,17 @@
         "uzoq muddatli aktiv",
         "joriy aktiv",
         "uzoq muddatli investitsiya",
-        "kapital qo‘yilma"
+        "kapital qo'yilma"
       ],
       "correct": 1
     },
     {
-      "text": "Tovar xaridor talabiga javob berishi uchun qanday parametrlarga ega bo‘lishi kerak?",
+      "text": "Tovar xaridor talabiga javob berishi uchun qanday parametrlarga ega bo'lishi kerak?",
       "options": [
-        "me’yoriy parametrlarga, iqtisodiy parametrlarga, estetik parametrlarga",
-        "iqtisodiy parametrlarga, estetik parametrlarga, me’yoriy parametrlarga",
-        "texnik parametrlarga, ergonomik parametrlarga, estetik parametrlarga, me’yoriy parametrlarga, iqtisodiy parametrlarga",
-        "estetik parametrlarga, me’yoriy parametrlarga, iqtisodiy parametrlarga"
+        "me'yoriy parametrlarga, iqtisodiy parametrlarga, estetik parametrlarga",
+        "iqtisodiy parametrlarga, estetik parametrlarga, me'yoriy parametrlarga",
+        "texnik parametrlarga, ergonomik parametrlarga, estetik parametrlarga, me'yoriy parametrlarga, iqtisodiy parametrlarga",
+        "estetik parametrlarga, me'yoriy parametrlarga, iqtisodiy parametrlarga"
       ],
       "correct": 2
     },
@@ -1214,7 +1214,7 @@
       "text": "Tayyor mahsulotni aylanuvchanlik koeffitsenti teng…",
       "options": [
         "sof foyda / tovar-moddiy zahiralar",
-        "mahsulotlar sotishdan olingan sof tushum/ tayyor mahsulotlar qoldig‘i",
+        "mahsulotlar sotishdan olingan sof tushum/ tayyor mahsulotlar qoldig'i",
         "mahsulotlar sotishdan sof tushum/ tovar-moddiy zahiralar",
         "sof foyda/ qisqa muddatli debitorlik qarzlar hamda qisqa muddatli investitsiyalar"
       ],
@@ -1225,26 +1225,26 @@
       "options": [
         "asosiy vositalar sotib olish hamda ularni tashib keltirish, tushurish hamda joylashtirish uchun qilingan xarajatlar",
         "xom ashyo sotib olish uchun qilingan xarajatlar",
-        "mahsulotlarni xaridor va buyurtmachilarga ortib jo‘natish va sotish bilan bog‘liq bo‘lgan xarajatlar",
-        "korxona boshqaruvi bilan bog‘liq boshqaruv xodimlariga qilinadigan ish haqi, ijtimoiy soliq bo'yicha bo‘lgan xarajatlar"
+        "mahsulotlarni xaridor va buyurtmachilarga ortib jo'natish va sotish bilan bog'liq bo'lgan xarajatlar",
+        "korxona boshqaruvi bilan bog'liq boshqaruv xodimlariga qilinadigan ish haqi, ijtimoiy soliq bo'yicha bo'lgan xarajatlar"
       ],
       "correct": 3
     },
     {
-      "text": "Sotilgan mahsulot hajmi to‘g‘riisdagi ma’lumotlar moliyaviy hisobotning qaysi shaklidan olinadi?",
+      "text": "Sotilgan mahsulot hajmi to'g'riisdagi ma'lumotlar moliyaviy hisobotning qaysi shaklidan olinadi?",
       "options": [
         "1-shakl “Buxgalteriya balansi”",
-        "2-shakl «Moliyaviy natijalar to‘g‘risidagi hisobot»",
-        "4-shakl “Pul oqimlari to‘g‘risidagi hisobot”",
-        "5-shakl “Xususiy kapital to‘g‘risidagi hisobot”"
+        "2-shakl «Moliyaviy natijalar to'g'risidagi hisobot»",
+        "4-shakl “Pul oqimlari to'g'risidagi hisobot”",
+        "5-shakl “Xususiy kapital to'g'risidagi hisobot”"
       ],
       "correct": 1
     },
     {
       "text": "Savdo reklamasi xarajatlari qaysi xarajat tarkibiga kiradi?",
       "options": [
-        "ma’muriy~xarajatlari",
-        "foizlar bo‘yicha xarajatlar",
+        "ma'muriy~xarajatlari",
+        "foizlar bo'yicha xarajatlar",
         "operasion xarajatlar",
         "sotish xarajatlari"
       ],
@@ -1253,67 +1253,67 @@
     {
       "text": "Sifat omillar – bu...?",
       "options": [
-        "Pirovard natijaga salbiy ta’sir qiladi",
-        "Pirovard natijaga ijobiy ta’sir qiladi",
-        "Natija sifati bilan bog‘liq bo‘lgan omillar",
-        "Natija miqdorini o‘sishi bilan bog‘liq bo‘lgan omillar"
+        "Pirovard natijaga salbiy ta'sir qiladi",
+        "Pirovard natijaga ijobiy ta'sir qiladi",
+        "Natija sifati bilan bog'liq bo'lgan omillar",
+        "Natija miqdorini o'sishi bilan bog'liq bo'lgan omillar"
       ],
       "correct": 2
     },
     {
-      "text": "Sifatni ifodalovchi egri ko‘rsatkichlar",
+      "text": "Sifatni ifodalovchi egri ko'rsatkichlar",
       "options": [
         "jami ishlab chiqarishdagi yangi mahsulot ulushi",
         "mahsulotning nafliligi",
-        "sifatsiz mahsulot uchun to‘langan jarimalar",
+        "sifatsiz mahsulot uchun to'langan jarimalar",
         "mahsulotning foydaliligi"
       ],
       "correct": 0
     },
     {
-      "text": "Shartnoma majburiyatlari bo‘yicha sotish rejasining bajarilishi qanday aniqlanadi?",
+      "text": "Shartnoma majburiyatlari bo'yicha sotish rejasining bajarilishi qanday aniqlanadi?",
       "options": [
-        "umumiy sotilgan mahsulotlar qiymati rejadagi ishlab chiqarish hajmiga bo‘linib, yuzga ko‘paytiriladi",
-        "umumiy sotilgan mahsulotlar qiymati shartnoma bo‘yicha sotish hajmiga bo‘linib, yuzga ko‘paytiriladi",
-        "umumiy ishlab chiqarilgan mahsulotlar qiymati rejadagi belgilab berilgan mahsulot qiymatiga bo‘linib, yuzga ko‘paytiriladi",
-        "shartnoma majburiyatlari bo‘yicha sotilgan mahsulotlar qiymati rejadagi sotish hajmiga bo‘linib, yuzga ko‘paytiriladi"
+        "umumiy sotilgan mahsulotlar qiymati rejadagi ishlab chiqarish hajmiga bo'linib, yuzga ko'paytiriladi",
+        "umumiy sotilgan mahsulotlar qiymati shartnoma bo'yicha sotish hajmiga bo'linib, yuzga ko'paytiriladi",
+        "umumiy ishlab chiqarilgan mahsulotlar qiymati rejadagi belgilab berilgan mahsulot qiymatiga bo'linib, yuzga ko'paytiriladi",
+        "shartnoma majburiyatlari bo'yicha sotilgan mahsulotlar qiymati rejadagi sotish hajmiga bo'linib, yuzga ko'paytiriladi"
       ],
       "correct": 3
     },
     {
       "text": "Raqobat…?",
       "options": [
-        "fransuzcha so‘zdan olinganbo‘lib, maqsadga erishish uchun kurash, korxonalar o‘rtasidagi sof kurash",
-        "nemischa so‘zdan olinganbo‘lib, maqsadga erishish uchun kurash, korxonalar o‘rtasidagi sof kurash",
-        "lotincha so‘zdan olinganbo‘lib, maqsadga erishish uchun kurash, korxonalar o‘rtasidagi sof kurash",
-        "inglizcha so‘zdan olinganbo‘lib, maqsadga erishish uchun kurash, korxonalar o‘rtasidagi sof kurash"
+        "fransuzcha so'zdan olinganbo'lib, maqsadga erishish uchun kurash, korxonalar o'rtasidagi sof kurash",
+        "nemischa so'zdan olinganbo'lib, maqsadga erishish uchun kurash, korxonalar o'rtasidagi sof kurash",
+        "lotincha so'zdan olinganbo'lib, maqsadga erishish uchun kurash, korxonalar o'rtasidagi sof kurash",
+        "inglizcha so'zdan olinganbo'lib, maqsadga erishish uchun kurash, korxonalar o'rtasidagi sof kurash"
       ],
       "correct": 2
     },
     {
-      "text": "Qaysi javobda tovar-moddiy zahiralar tarkibiga kiruvchi ko‘rsatkich to‘g‘ri ko‘rsatilgan?",
+      "text": "Qaysi javobda tovar-moddiy zahiralar tarkibiga kiruvchi ko'rsatkich to'g'ri ko'rsatilgan?",
       "options": [
         "tugallanmagan ishlab chiqarish",
-        "kapital qo‘yilmalar",
+        "kapital qo'yilmalar",
         "ustav kapitali",
         "qisqa muddatli bank kreditlari"
       ],
       "correct": 0
     },
     {
-      "text": "Quyidagilardan qaysi biri talabning o‘zgaruvchanligiga ta’sir etuvchi omil hisoblanmaydi?",
+      "text": "Quyidagilardan qaysi biri talabning o'zgaruvchanligiga ta'sir etuvchi omil hisoblanmaydi?",
       "options": [
-        "to‘g‘ri soliqlarning oshishi",
+        "to'g'ri soliqlarning oshishi",
         "xaridorlarning didi va istagi",
         "xaridorlarning soni, xarid etish imkoniyatlari",
-        "baho o‘zgarishi va holati"
+        "baho o'zgarishi va holati"
       ],
       "correct": 0
     },
     {
-      "text": "Quyidagilardan qaysi biri taklifning o‘zgaruvchanligiga ta’sir etuvchi omil hisoblanadi?",
+      "text": "Quyidagilardan qaysi biri taklifning o'zgaruvchanligiga ta'sir etuvchi omil hisoblanadi?",
       "options": [
-        "baho o‘zgarishi va holati",
+        "baho o'zgarishi va holati",
         "xaridorlarning didi va istagi",
         "soliqlarning oshishi",
         "xaridorlarning soni, xarid etish imkoniyatlari"
@@ -1321,19 +1321,19 @@
       "correct": 0
     },
     {
-      "text": "Qaysi ko‘rsatkich materiallardan samarali foydalanish ko‘rsatkichlariga kirmaydi?",
+      "text": "Qaysi ko'rsatkich materiallardan samarali foydalanish ko'rsatkichlariga kirmaydi?",
       "options": [
-        "korxonaning moddiy resurslar bilan ta’minlanish darajasi",
-        "materiallar xarajatini har so‘miga to‘g‘ri keladigan foyda",
+        "korxonaning moddiy resurslar bilan ta'minlanish darajasi",
+        "materiallar xarajatini har so'miga to'g'ri keladigan foyda",
         "material qaytimi",
-        "material sig‘imi"
+        "material sig'imi"
       ],
       "correct": 0
     },
     {
-      "text": "Qaysi javobda mahsulot sifatini ifodalovchi ko‘rsatkich to‘g‘ri ko‘rsatib o‘tilgan?",
+      "text": "Qaysi javobda mahsulot sifatini ifodalovchi ko'rsatkich to'g'ri ko'rsatib o'tilgan?",
       "options": [
-        "sifatsiz mahsulot uchun to‘langan jarimalar",
+        "sifatsiz mahsulot uchun to'langan jarimalar",
         "texnologiya shartlariga mos kelishi",
         "oliy nav mahsulot hajmi",
         "tovarning kafolat muddati"
@@ -1341,37 +1341,37 @@
       "correct": 3
     },
     {
-      "text": "Qaysi javobda ishlab chiqarish maromini ifodalovchi ko‘rsatkich to‘g‘ri ko‘rsatilgan.",
+      "text": "Qaysi javobda ishlab chiqarish maromini ifodalovchi ko'rsatkich to'g'ri ko'rsatilgan.",
       "options": [
-        "brakdan yo‘qotish, mahsulot sotish hajmini o‘sishi, variatsiya koeffitsenti",
-        "maromiylik koeffitsenti, variatsiya koeffitsenti, mahsulot ishlab chiqarish hajmini o‘sish sur’ati",
-        "har oyda ishlab chiqarilgan mahsulotni jami yillik mahsulotdagi ulushi, variatsiya koeffitsenti, mahsulot hajmini o‘sish sur’ati",
+        "brakdan yo'qotish, mahsulot sotish hajmini o'sishi, variatsiya koeffitsenti",
+        "maromiylik koeffitsenti, variatsiya koeffitsenti, mahsulot ishlab chiqarish hajmini o'sish sur'ati",
+        "har oyda ishlab chiqarilgan mahsulotni jami yillik mahsulotdagi ulushi, variatsiya koeffitsenti, mahsulot hajmini o'sish sur'ati",
         "maromiylik koeffitsenti, variatsiya koeffitsenti, oylik mahsulotning jami yillik mahsulotda tutgan ulushi"
       ],
       "correct": 3
     },
     {
-      "text": "Qaysi javobda ishlab chiqarish maromini ifodalovchi ko‘rsatkich noto‘g‘ri ko‘rsatilgan?",
+      "text": "Qaysi javobda ishlab chiqarish maromini ifodalovchi ko'rsatkich noto'g'ri ko'rsatilgan?",
       "options": [
-        "moliyaviy mustaqillik koeffitsenti, o‘rtacha navlilik koeffitsenti",
+        "moliyaviy mustaqillik koeffitsenti, o'rtacha navlilik koeffitsenti",
         "variatsiya koeffitsenti",
-        "har oyda ishlab chiqarilgan mahsulotni jami yillik mahsulotdagi ulushi, variatsiya koeffitsenti, mahsulot hajmining o‘sish sur’ati",
+        "har oyda ishlab chiqarilgan mahsulotni jami yillik mahsulotdagi ulushi, variatsiya koeffitsenti, mahsulot hajmining o'sish sur'ati",
         "maromiylik koeffitsenti, oylik mahsulotning jami yillik mahsulotda tutgan ulushi"
       ],
       "correct": 0
     },
     {
-      "text": "O‘zgaruvchan xarajatlar deb qanday xarajatlarga aytiladi",
+      "text": "O'zgaruvchan xarajatlar deb qanday xarajatlarga aytiladi",
       "options": [
-        "to‘g‘ri va egri xarajatlarga aytiladi",
+        "to'g'ri va egri xarajatlarga aytiladi",
         "bevosita va bilvosita xarajatlarga aytiladi",
-        "mahsulot hajmi o‘zgarishiga bog‘liq tarzda o‘zgaruvchi xarajatlarga aytiladi",
+        "mahsulot hajmi o'zgarishiga bog'liq tarzda o'zgaruvchi xarajatlarga aytiladi",
         "kelgusi davrda soliq bazasidan chegiriladigan hamda foyda solig'i bazasini oshiradigan xarajatlariga aytiladi"
       ],
       "correct": 2
     },
     {
-      "text": "Noto‘g‘ri javobni aniqlang. Yuqori sifatga erishish uchun tovar qanday xususiyatlarga ega bo‘lishi kerak?",
+      "text": "Noto'g'ri javobni aniqlang. Yuqori sifatga erishish uchun tovar qanday xususiyatlarga ega bo'lishi kerak?",
       "options": [
         "tabiiy parametrlar",
         "texnik parametrlar",
@@ -1381,72 +1381,72 @@
       "correct": 0
     },
     {
-      "text": "Boshqaruv tahliliga ta’rif bering.",
+      "text": "Boshqaruv tahliliga ta'rif bering.",
       "options": [
-        "xo‘jalik yurituvchi sub’yekt faoliyatini makon va zamon nuqtai nazaridan barcha tuzilmalari bilan birga batafsil tahlil qilishdir",
-        "xo‘jalik faoliyati natijasiga ta’sir qiluvchi omillarni aniqlashva ularning ta’sirini hisoblash usullarini majmuasini o‘zida aks ettiradigan tahlildir",
+        "xo'jalik yurituvchi sub'yekt faoliyatini makon va zamon nuqtai nazaridan barcha tuzilmalari bilan birga batafsil tahlil qilishdir",
+        "xo'jalik faoliyati natijasiga ta'sir qiluvchi omillarni aniqlashva ularning ta'sirini hisoblash usullarini majmuasini o'zida aks ettiradigan tahlildir",
         "korxona rahbariyati, egasiva mutaxassislari tomonidan ichki imkoniyatlarni ishga solish va samaradorlikni oshirish maqsadida qilinadigan tahlildir",
-        "xo‘jalik faoliyatida natija va omillar o‘rtasidagi bog‘liqlik funksional bog‘liq bo‘lmagan sharoitda, ularning bog‘liqligini o‘rganishga qaratilgan tahlildir"
+        "xo'jalik faoliyatida natija va omillar o'rtasidagi bog'liqlik funksional bog'liq bo'lmagan sharoitda, ularning bog'liqligini o'rganishga qaratilgan tahlildir"
       ],
       "correct": 2
     },
     {
-      "text": "Favqulodda zararlar to‘g‘risidagi ma’lumotlar qaysi hisobot shaklidan olinadi?",
+      "text": "Favqulodda zararlar to'g'risidagi ma'lumotlar qaysi hisobot shaklidan olinadi?",
       "options": [
         "balans 1-shakldan",
-        "pul oqimito‘g‘risidagihisobot (4-shakl), balans (1-shakl) va qo‘shimcha ma’lumotlardan",
-        "moliyaviy natijalar to‘g‘risidagi hisobot (2-shakl)",
-        "pul mablag‘lari harakati to‘g‘risida 2-jurnal order va buxgalteriya hisobining schyotlaridan"
+        "pul oqimito'g'risidagihisobot (4-shakl), balans (1-shakl) va qo'shimcha ma'lumotlardan",
+        "moliyaviy natijalar to'g'risidagi hisobot (2-shakl)",
+        "pul mablag'lari harakati to'g'risida 2-jurnal order va buxgalteriya hisobining schyotlaridan"
       ],
       "correct": 2
     },
     {
       "text": "Hisobot davridagi korxonaning sof foydasi qanday maqsadlarga sarflanmaydi?",
       "options": [
-        "ishlab chiqarish xarakteridagi qurilish ob’ektlariga",
-        "o‘tgan yilga tegishili zararni qoplashga",
+        "ishlab chiqarish xarakteridagi qurilish ob'ektlariga",
+        "o'tgan yilga tegishili zararni qoplashga",
         "kelgusi davr daromadlarini shakllanishiga",
         "yangi texnikani sotib olishga"
       ],
       "correct": 0
     },
     {
-      "text": "Hisobot yilida aniqlangan o‘tgan yillardagi foyda qaysi daromad tarkibiga kiradi?",
+      "text": "Hisobot yilida aniqlangan o'tgan yillardagi foyda qaysi daromad tarkibiga kiradi?",
       "options": [
         "favqulodda foyda",
-        "moliyaviy faoliyat bo‘yicha olingan boshqa daromadlar",
+        "moliyaviy faoliyat bo'yicha olingan boshqa daromadlar",
         "asosiy faoliyatidan olinadigan boshqa daromadlar",
-        "dividendlar bo‘yicha daromadlar"
+        "dividendlar bo'yicha daromadlar"
       ],
       "correct": 0
     },
     {
-      "text": "Uzoq muddatli ijara bo‘yicha daromad – bu...",
+      "text": "Uzoq muddatli ijara bo'yicha daromad – bu...",
       "options": [
-        "asosiy faoliyat bo‘yicha boshqa daromad",
+        "asosiy faoliyat bo'yicha boshqa daromad",
         "favqulotda foyda",
         "marjinal foyda",
-        "moliyaviy faoliyat bo‘yicha daromad"
+        "moliyaviy faoliyat bo'yicha daromad"
       ],
       "correct": 0
     },
     {
       "text": "Jami aktivlarni  aylanish koeffitsienti qanday aniqlanadi?",
       "options": [
-        "jami aktivlarning o‘rtacha yillik qiymati /mahsulotlar sotishdan tushgan sof tushum",
-        "sof foyda / aylanma mablag‘larning o‘rtacha yillik qiymati",
-        "mahsulotlar sotishdan tushgan sof tushum / aylanma mablag‘larning o‘rtacha yillik qiymati",
-        "asosiy faoliyatdan olingan foyda / aylanma mablag‘larning o‘rtacha yillik qiymati"
+        "jami aktivlarning o'rtacha yillik qiymati /mahsulotlar sotishdan tushgan sof tushum",
+        "sof foyda / aylanma mablag'larning o'rtacha yillik qiymati",
+        "mahsulotlar sotishdan tushgan sof tushum / aylanma mablag'larning o'rtacha yillik qiymati",
+        "asosiy faoliyatdan olingan foyda / aylanma mablag'larning o'rtacha yillik qiymati"
       ],
       "correct": 2
     },
     {
-      "text": "Investitsiya» so‘zining lug‘aviy ma’nosi nima?",
+      "text": "Investitsiya» so'zining lug'aviy ma'nosi nima?",
       "options": [
-        "lotincha «invest» so‘zidan olingan bo‘lib, «sarmoya» degan ma’noni bildiradi",
-        "grekcha «invest» so‘zidan olingan» bo‘lib, «mablag‘» degan ma’noni bildiradi",
-        "nemischa «invest» so‘zidan olingan» bo‘lib, «mablag‘» degan ma’noni bildiradi",
-        "fransuzcha «invest» so‘zidan olingan» bo‘lib, «sarmoya» degan ma’noni bildiradi"
+        "lotincha «invest» so'zidan olingan bo'lib, «sarmoya» degan ma'noni bildiradi",
+        "grekcha «invest» so'zidan olingan» bo'lib, «mablag'» degan ma'noni bildiradi",
+        "nemischa «invest» so'zidan olingan» bo'lib, «mablag'» degan ma'noni bildiradi",
+        "fransuzcha «invest» so'zidan olingan» bo'lib, «sarmoya» degan ma'noni bildiradi"
       ],
       "correct": 0
     },
@@ -1463,20 +1463,20 @@
     {
       "text": "Davr xarajatlariga qanday xarajatlar kiradi?",
       "options": [
-        "sotish xarajatlari, ma’muriy boshqaruv xarajatlari, ishlab chiqarish tannarxi hamda moliyaviy faoliyat bo'yicha xarajatlar",
+        "sotish xarajatlari, ma'muriy boshqaruv xarajatlari, ishlab chiqarish tannarxi hamda moliyaviy faoliyat bo'yicha xarajatlar",
         "umumtsex va umumkorxona xarajatlari",
-        "sotish xarajatlari, ma’muriy-boshqaruv xarajatlari, muomala xarajatlari, tijorat va boshqa umumxujalik xarajatlari",
-        "amortizatsiya, telefon uchun to‘lov, ijara haqi, materil sarfi hamda xodimlarga to'lanadigan ish haqi hamda ijtimoiy soliq xarajatlari"
+        "sotish xarajatlari, ma'muriy-boshqaruv xarajatlari, muomala xarajatlari, tijorat va boshqa umumxujalik xarajatlari",
+        "amortizatsiya, telefon uchun to'lov, ijara haqi, materil sarfi hamda xodimlarga to'lanadigan ish haqi hamda ijtimoiy soliq xarajatlari"
       ],
       "correct": 2
     },
     {
-      "text": "O‘z mablag‘lari deganda nimani tushunasiz?",
+      "text": "O'z mablag'lari deganda nimani tushunasiz?",
       "options": [
-        "qarzga olingan (uzoqmuddatga) mablag‘lar",
+        "qarzga olingan (uzoqmuddatga) mablag'lar",
         "mahsulot sotishdan olingan daromadlar",
-        "korxonaning o‘ziga tegishli mablag‘lari",
-        "majburiyatlar qoplanishidagi ortiqcha mablag‘lar"
+        "korxonaning o'ziga tegishli mablag'lari",
+        "majburiyatlar qoplanishidagi ortiqcha mablag'lar"
       ],
       "correct": 2
     },
@@ -1485,13 +1485,13 @@
       "options": [
         "ustav kapitali",
         "taqsimlanmagan foyda hamda maqsadli tushumlar",
-        "dargumon qarzlar bo‘yicha rezerv, ishchi capital",
+        "dargumon qarzlar bo'yicha rezerv, ishchi capital",
         "rezerv kapitali"
       ],
       "correct": 2
     },
     {
-      "text": "Qaysi ko‘rsatkich debitorlik qarzlari tarkibiga kirmaydi?",
+      "text": "Qaysi ko'rsatkich debitorlik qarzlari tarkibiga kirmaydi?",
       "options": [
         "xaridor va buyurtmachilarning qarzi",
         "byudjet bilan hisoblashishlar",
@@ -1503,15 +1503,15 @@
     {
       "text": "Pul ekvivalentlari deganda nimani tushunasiz?",
       "options": [
-        "pul mablag‘lari chiqimini",
-        "pul mablag‘lari kirimini",
-        "pul mablag‘lariga erkin almashtiriladigan qisqa muddatli likvidlanadigan, qiymati o‘zgarishi xatariga kamroq moyil bo‘lgan investitsiyalar",
+        "pul mablag'lari chiqimini",
+        "pul mablag'lari kirimini",
+        "pul mablag'lariga erkin almashtiriladigan qisqa muddatli likvidlanadigan, qiymati o'zgarishi xatariga kamroq moyil bo'lgan investitsiyalar",
         "pul balansini"
       ],
       "correct": 2
     },
     {
-      "text": "Noto‘g‘ri javobni aniqlang. Asosiy vositalardan samarali foydalanish natijasida ...",
+      "text": "Noto'g'ri javobni aniqlang. Asosiy vositalardan samarali foydalanish natijasida ...",
       "options": [
         "ishlab chiqarish samaradorligi oshadi",
         "mahsulot ishlab chiqarish hajmini oshadi",
@@ -1521,22 +1521,22 @@
       "correct": 2
     },
     {
-      "text": "Mol-mulkni uzoq muddatli ijaraga olish (lizing) bo‘yicha foizlarni to‘lash xarajatlari qaysi xarajat tarkibiga kiradi?",
+      "text": "Mol-mulkni uzoq muddatli ijaraga olish (lizing) bo'yicha foizlarni to'lash xarajatlari qaysi xarajat tarkibiga kiradi?",
       "options": [
         "sotish xarajatlari",
-        "moliyaviy faoliyat bo‘yicha xarajatlar",
-        "ma’muriy xarajatlari",
+        "moliyaviy faoliyat bo'yicha xarajatlar",
+        "ma'muriy xarajatlari",
         "boshqa operatsion va ko'zda tutilmagan xarajatlar"
       ],
       "correct": 1
     },
     {
-      "text": "Davr xarajatlari to‘g‘riisdagi ma’lumotlar qaysi hisobot shaklida ko‘rsatiladi",
+      "text": "Davr xarajatlari to'g'riisdagi ma'lumotlar qaysi hisobot shaklida ko'rsatiladi",
       "options": [
-        "4-shakl “Pul oqimlari harakati to‘g‘risidagi hisobot”",
-        "2-shakl  «Moliyaviy natijalar to‘g‘risidagi hisobot»",
+        "4-shakl “Pul oqimlari harakati to'g'risidagi hisobot”",
+        "2-shakl  «Moliyaviy natijalar to'g'risidagi hisobot»",
         "1-shakl “Buxgalteriya balansi”",
-        "5-shakl “Xususiy kapital harakati to‘g‘risidagi hisobot”"
+        "5-shakl “Xususiy kapital harakati to'g'risidagi hisobot”"
       ],
       "correct": 1
     },
@@ -1553,15 +1553,15 @@
     {
       "text": "Doimiy xarajatlar deb qanday xarajatlarga aytiladi?",
       "options": [
-        "mahsulot ishlab chiqarish bilan bog‘liq bo‘lmagan davr xarajatlariga aytiladi",
-        "ma’muriy va boshqaruv xarajatlarga aytiladi",
-        "mahsulot hajmining o‘zgarishiga bog‘liq bo‘lmagan xarajatlarga aytiladi",
+        "mahsulot ishlab chiqarish bilan bog'liq bo'lmagan davr xarajatlariga aytiladi",
+        "ma'muriy va boshqaruv xarajatlarga aytiladi",
+        "mahsulot hajmining o'zgarishiga bog'liq bo'lmagan xarajatlarga aytiladi",
         "barcha turdagi ish haqi xarajatlariga aytiladi"
       ],
       "correct": 2
     },
     {
-      "text": "Iqtisodiy tahlil fani ob’ekti bo‘lib nima hisoblanadi?",
+      "text": "Iqtisodiy tahlil fani ob'ekti bo'lib nima hisoblanadi?",
       "options": [
         "iqtisodiy tumanlar",
         "milliy iqtisodiyotning barcha tarmoqlari hamda davlat korxonalari faoliyati",
@@ -1573,7 +1573,7 @@
     {
       "text": "Iqtisodiy tahlil fanini pirovard maqsadi nima?",
       "options": [
-        "xo‘jalik rezervini topish va ulardan to‘la-to‘kis foydalanish",
+        "xo'jalik rezervini topish va ulardan to'la-to'kis foydalanish",
         "mahsulot tannarxini hisoblash hamda korxoning tayyor mahsuloti kalkulyatsiyasi",
         "mehnat unumdorligini aniqlash",
         "asosiy vositalardan samarali foydalanish hamda asosiy vositalarni ko'paytirish"
@@ -1584,18 +1584,18 @@
       "text": "Iqtisodiy tahlilda qanday usullardan foydalaniladi?",
       "options": [
         "baholash, kalkulatsiya qilish, ikkiyoqlama yozuv",
-        "taqqoslash, guruhlash, balansli bog‘lanish, zanjirli bog‘lanish",
+        "taqqoslash, guruhlash, balansli bog'lanish, zanjirli bog'lanish",
         "hujjatlashtirish, ikkiyoqlama yozuv hamda mazmunninh shakldan ustunligi",
         "inventarizatsiya, kalkulatsiya qilish"
       ],
       "correct": 1
     },
     {
-      "text": "Iqtisodiy tahlilda qo‘llaniladigan usullar qanday guruhlarga bo‘linadi?",
+      "text": "Iqtisodiy tahlilda qo'llaniladigan usullar qanday guruhlarga bo'linadi?",
       "options": [
         "oddiy va murakkab",
         "ichki va tashqi",
-        "an’anaviy va matematik",
+        "an'anaviy va matematik",
         "additiv va multiplikativ"
       ],
       "correct": 2
@@ -1603,10 +1603,10 @@
     {
       "text": "Iqtisodiy tahlil fanining predmeti nimaga asoslanadi?",
       "options": [
-        "xo‘jalik mablag‘i va uning manbalariga",
+        "xo'jalik mablag'i va uning manbalariga",
         "buxgalteriya xujjatlariga",
-        "korxonani xo‘jalik faoliyatiga",
-        "ma’lumotlar va normativlarga"
+        "korxonani xo'jalik faoliyatiga",
+        "ma'lumotlar va normativlarga"
       ],
       "correct": 2
     },
@@ -1623,19 +1623,19 @@
     {
       "text": "Istiqbolli tahlil deganda nimani tushunasiz?",
       "options": [
-        "oy, chorak va yil yakuni bo‘yicha o‘tkaziladigan tahlilni",
-        "milliy iqtisodiyotning tarmoqlari bo‘yicha o‘tkaziladigan tahlilni",
-        "kelgusi davr uchun o‘tkaziladigan tahlilni",
-        "milliy iqtisodiyot bo‘yicha o‘tkaziladigan tahlilni"
+        "oy, chorak va yil yakuni bo'yicha o'tkaziladigan tahlilni",
+        "milliy iqtisodiyotning tarmoqlari bo'yicha o'tkaziladigan tahlilni",
+        "kelgusi davr uchun o'tkaziladigan tahlilni",
+        "milliy iqtisodiyot bo'yicha o'tkaziladigan tahlilni"
       ],
       "correct": 2
     },
     {
       "text": "Joriy tahlil deganda nimani tushunasiz?",
       "options": [
-        "kunlik, smenalik va o‘n kunlik bo‘yicha o‘tkaziladigan tahlilni",
-        "oy, chorak va yil yakuni bo‘yicha o‘tkaziladigan tahlilni",
-        "yig‘ma hisobotlar bo‘yicha o‘tkaziladigan tahlilni",
+        "kunlik, smenalik va o'n kunlik bo'yicha o'tkaziladigan tahlilni",
+        "oy, chorak va yil yakuni bo'yicha o'tkaziladigan tahlilni",
+        "yig'ma hisobotlar bo'yicha o'tkaziladigan tahlilni",
         "korxonalararo taqqoslama tahlilni"
       ],
       "correct": 1
@@ -1661,7 +1661,7 @@
       "correct": 2
     },
     {
-      "text": "Korxonada bo‘lib o‘tgan, bo‘layotgan va endi bo‘ladigan jarayonlarni sabab-oqibat bog‘lanishida ichki va tashqi omillarga bog‘liq holda ma’lumotlar bazasiga tayanib faoliyatini o‘rganish -bu …?",
+      "text": "Korxonada bo'lib o'tgan, bo'layotgan va endi bo'ladigan jarayonlarni sabab-oqibat bog'lanishida ichki va tashqi omillarga bog'liq holda ma'lumotlar bazasiga tayanib faoliyatini o'rganish -bu …?",
       "options": [
         "Iqtisodiy tahlilining mazmuni",
         "iqtisodiy tahlilining predmeti",
@@ -1671,17 +1671,17 @@
       "correct": 0
     },
     {
-      "text": "Kapital qo‘yilmalar balansning qaysi qismida ko‘rsatiladi?",
+      "text": "Kapital qo'yilmalar balansning qaysi qismida ko'rsatiladi?",
       "options": [
-        "balansning aktiv qismi 1-bo‘limida",
-        "balansning passiv qismi 1-bo‘limida",
-        "balansning aktiv qismi 2-bo‘limida",
-        "balansning passiv qismi 2-bo‘limida"
+        "balansning aktiv qismi 1-bo'limida",
+        "balansning passiv qismi 1-bo'limida",
+        "balansning aktiv qismi 2-bo'limida",
+        "balansning passiv qismi 2-bo'limida"
       ],
       "correct": 0
     },
     {
-      "text": "Sub’ektiv omillar bu ....",
+      "text": "Sub'ektiv omillar bu ....",
       "options": [
         "tashqi omillar",
         "ijobiy omillar",
@@ -1691,7 +1691,7 @@
       "correct": 2
     },
     {
-      "text": "Ob’ektiv omillar bu ...",
+      "text": "Ob'ektiv omillar bu ...",
       "options": [
         "ichki omillar",
         "tashqi omillar",
@@ -1701,7 +1701,7 @@
       "correct": 0
     },
     {
-      "text": "Ko’rsatkichlarni  bir  qator  yillar  mobaynida  nisbiy  mikdorlarda o’sish va qo’shimcha o’sish sur’atlarini o’rganishda qo’llanadigan usul bu …..",
+      "text": "Ko'rsatkichlarni  bir  qator  yillar  mobaynida  nisbiy  mikdorlarda o'sish va qo'shimcha o'sish sur'atlarini o'rganishda qo'llanadigan usul bu …..",
       "options": [
         "vertical tahlil",
         "gorisontal tahlil",
@@ -1711,7 +1711,7 @@
       "correct": 2
     },
     {
-      "text": "O’zaro  bog’langan  va  tenglashtirilgan  ikki  guruh  iqtisodiy ko’rsatkichlar  tengliklarini  aks  ettirish  usul bu …..",
+      "text": "O'zaro  bog'langan  va  tenglashtirilgan  ikki  guruh  iqtisodiy ko'rsatkichlar  tengliklarini  aks  ettirish  usul bu …..",
       "options": [
         "indeks usuli",
         "integral usuli",
@@ -1721,7 +1721,7 @@
       "correct": 2
     },
     {
-      "text": "Qaysi tahlil usulida  natijaviy  ko’rsatkichning  o’zgarishi  va  uning o’zgarishiga ta’sir etuvchi omillar tizimli almashtirishlar orqali hisob qitob qilinadi?",
+      "text": "Qaysi tahlil usulida  natijaviy  ko'rsatkichning  o'zgarishi  va  uning o'zgarishiga ta'sir etuvchi omillar tizimli almashtirishlar orqali hisob qitob qilinadi?",
       "options": [
         "indeks usuli",
         "integral usuli",
@@ -1731,7 +1731,7 @@
       "correct": 2
     },
     {
-      "text": "Qaysi tahlil usulida natijaviy  ko’rsatkichga  ta’sir  etuvchi  birlikning  farqi  qolgan  omillarning  reja, xaqiqatdagi (uzviy ketma ketlikda) ko’rsatkichlarga ko’payrilgan holda aniqlanadi?",
+      "text": "Qaysi tahlil usulida natijaviy  ko'rsatkichga  ta'sir  etuvchi  birlikning  farqi  qolgan  omillarning  reja, xaqiqatdagi (uzviy ketma ketlikda) ko'rsatkichlarga ko'payrilgan holda aniqlanadi?",
       "options": [
         "indeks usuli",
         "integral usuli",
