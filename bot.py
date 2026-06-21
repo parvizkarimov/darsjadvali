@@ -6,7 +6,7 @@ import csv
 import io
 import threading
 from datetime import datetime, timedelta, time
-from flask import Flask, request, session, redirect, url_for, render_template_string, Response
+from flask import Flask, request, session, redirect, url_for, render_template_string, Response, jsonify
 import urllib.request
 
 import pytz
@@ -1717,7 +1717,12 @@ EXAM_HTML_TEMPLATE = """
 </head>
 <body>
 
-    <div id="homeScreen" class="screen active">
+    <div id="subjectScreen" class="screen active">
+        <h1>Fanni tanlang</h1>
+        <button class="btn-large" onclick="selectSubject('ECONOMIC ANALYSIS')">📊 ECONOMIC ANALYSIS</button>
+    </div>
+
+    <div id="homeScreen" class="screen">
         <h1>Imtihonga Tayyorgarlik</h1>
         <button class="btn-large" onclick="startStudyMode()">📚 Savol-Javoblar (O'qish)</button>
         <button class="btn-large" style="background: linear-gradient(135deg, #10b981, #059669);" onclick="startTestMode()">📝 Test Topshirish</button>
@@ -1761,21 +1766,8 @@ EXAM_HTML_TEMPLATE = """
         const tg = window.Telegram.WebApp;
         tg.expand();
         
-        // Bular hozircha namunaviy savollar. Buni keyin haqiqiy savollar bazasi (JSON) bilan almashtirasiz.
-        // 20 ta savol shablonini avtomatik yaratamiz. 
-        // Haqiqiy savollarni qo'shish uchun mana shu qatorlarni o'zingizning savollaringiz bilan to'ldirishingiz mumkin.
-        const dbQuestions = Array.from({ length: 20 }, (_, i) => ({
-            id: i + 1,
-            text: `${i + 1}-Savolning matni shu yerda bo'ladi?`,
-            options: [
-                "a. Birinchi variant",
-                "b. Ikkinchi variant",
-                "c. Uchinchi variant",
-                "d. To'rtinchi variant"
-            ],
-            correct: 0 // to'g'ri javob indeksi (0 dan boshlanadi, ya'ni 0=a, 1=b, 2=c, 3=d)
-        }));
-
+        let allQuestions = [];
+        let dbQuestions = [];
         let questions = [];
         let questionState = [];
         let currentQueue = [];
@@ -1790,6 +1782,30 @@ EXAM_HTML_TEMPLATE = """
         function showScreen(id) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
+        }
+
+        function selectSubject(subjectName) {
+            // Fetch questions from API
+            fetch('/api/questions')
+                .then(res => res.json())
+                .then(data => {
+                    if(data[subjectName]) {
+                        allQuestions = data[subjectName].map((q, idx) => ({
+                            id: idx + 1,
+                            text: q.text,
+                            options: q.options,
+                            correct: q.correct
+                        }));
+                        dbQuestions = allQuestions;
+                        showScreen('homeScreen');
+                    } else {
+                        alert("Bu fan bo'yicha savollar topilmadi!");
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("Savollarni yuklashda xatolik yuz berdi!");
+                });
         }
 
         function goHome() {
@@ -1815,7 +1831,7 @@ EXAM_HTML_TEMPLATE = """
         function startTestMode() {
             let shuffled = JSON.parse(JSON.stringify(dbQuestions));
             shuffled.sort(() => Math.random() - 0.5); // Savollarni aralashtirish
-            questions = shuffled;
+            questions = shuffled.slice(0, 20); // Test uchun faqat 20 tasini tasodifiy olamiz
             questionState = new Array(questions.length).fill('gray');
             currentQueue = questions.map((_, i) => i);
             score = 0;
@@ -1975,6 +1991,17 @@ EXAM_HTML_TEMPLATE = """
 @app_web.route('/')
 def exam_app():
     return render_template_string(EXAM_HTML_TEMPLATE)
+
+@app_web.route('/api/questions')
+def api_questions():
+    try:
+        q_path = os.path.join(os.path.dirname(__file__), 'data', 'questions.json')
+        with open(q_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        return jsonify(data)
+    except Exception as e:
+        logger.error(f"Error loading questions: {e}")
+        return jsonify({"error": "No questions found"}), 404
 
 @app_web.route('/save-test-result', methods=['POST'])
 def save_test_result():
