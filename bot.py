@@ -2011,45 +2011,57 @@ EXAM_HTML_TEMPLATE = """
         }
 
         function startStudyMode() {
-            const list = document.getElementById('studyList');
-            list.innerHTML = '';
             document.getElementById('studySearch').value = ''; // Qidiruvni tozalash
-            
-            dbQuestions.forEach((q, idx) => {
-                const card = document.createElement('div');
-                card.className = 'glass qa-card';
-                let optsHTML = q.options.map((opt, i) => {
-                    let isCorrect = (i === q.correct);
-                    let letter = String.fromCharCode(65 + i);
-                    let color = isCorrect ? 'color: var(--green); font-weight: bold;' : 'color: var(--text-color);';
-                    let icon = isCorrect ? '✅' : '⚪️';
-                    let border = (i < q.options.length - 1) ? 'border-bottom: 1px solid var(--border-color);' : '';
-                    return `<div style="padding: 10px 0; ${border} ${color}">${icon} <b>${letter})</b> ${opt}</div>`;
-                }).join('');
-                
-                card.innerHTML = `
-                    <div class="q-text">${idx + 1}. ${q.text}</div>
-                    <div style="margin-top: 12px;">${optsHTML}</div>
-                `;
-                list.appendChild(card);
-            });
+            renderStudyList('');
             showScreen('studyScreen');
             updateBottomNav('nav-study');
         }
 
         function filterStudyQuestions() {
-            const input = document.getElementById('studySearch').value.toLowerCase();
+            const input = document.getElementById('studySearch').value.toLowerCase().trim();
+            renderStudyList(input);
+        }
+
+        function renderStudyList(filterText) {
             const list = document.getElementById('studyList');
-            const cards = list.getElementsByClassName('qa-card');
+            list.innerHTML = '';
             
-            for (let i = 0; i < cards.length; i++) {
-                const text = cards[i].innerText.toLowerCase();
-                if (text.includes(input)) {
-                    cards[i].style.display = "";
-                } else {
-                    cards[i].style.display = "none";
+            const highlight = (text) => {
+                if (!filterText) return text;
+                const escaped = filterText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                const regex = new RegExp(`(${escaped})`, 'gi');
+                return text.replace(regex, '<span style="background-color: yellow; color: black; border-radius: 2px;">$1</span>');
+            };
+            
+            dbQuestions.forEach((q, idx) => {
+                const qTextLower = q.text.toLowerCase();
+                const optsLower = q.options.map(o => o.toLowerCase());
+                
+                let matches = false;
+                if (!filterText || qTextLower.includes(filterText) || optsLower.some(o => o.includes(filterText))) {
+                    matches = true;
                 }
-            }
+                
+                if (matches) {
+                    const card = document.createElement('div');
+                    card.className = 'glass qa-card';
+                    
+                    let optsHTML = q.options.map((opt, i) => {
+                        let isCorrect = (i === q.correct);
+                        let letter = String.fromCharCode(65 + i);
+                        let color = isCorrect ? 'color: var(--green); font-weight: bold;' : 'color: var(--text-color);';
+                        let icon = isCorrect ? '✅' : '⚪️';
+                        let border = (i < q.options.length - 1) ? 'border-bottom: 1px solid var(--border-color);' : '';
+                        return `<div style="padding: 10px 0; ${border} ${color}">${icon} <b>${letter})</b> ${highlight(opt)}</div>`;
+                    }).join('');
+                    
+                    card.innerHTML = `
+                        <div class="q-text">${idx + 1}. ${highlight(q.text)}</div>
+                        <div style="margin-top: 12px;">${optsHTML}</div>
+                    `;
+                    list.appendChild(card);
+                }
+            });
         }
 
         function startTestMode() {

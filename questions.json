@@ -316,14 +316,19 @@
         "moliyaviy hisobot asosida tahlil",
         "operativma’lumotlar  asosida o‘tkaziladigan tahlil",
         "moliyaviy hisobot elementlari va ko‘rsatkichlarini joriy davrga bo‘lgan holatini bazis yili yoki asosiy yili ko‘rsatkichi bilan o‘rganish",
-        "tarkibiy tahlil bo‘lib, tahlil qilinayotgan ob’ektni barcha qismlari bo‘yicha o‘rganish",
-        "Tezkor tahlil deganda nimani tushunasiz?",
+        "tarkibiy tahlil bo‘lib, tahlil qilinayotgan ob’ektni barcha qismlari bo‘yicha o‘rganish"
+      ],
+      "correct": 2
+    },
+    {
+      "text": "Tezkor tahlil deganda nimani tushunasiz?",
+      "options": [
         "milliy iqtisodiyotning tarmoqlari bo‘yicha bir butunlikda o‘tkaziladigan tahlilni",
         "milliy iqtisodiyot bo‘yicha o‘tkaziladigan qismlarga ajrtatgan holdagi tahlilni",
         "kunlik, smenalik va o‘n kunlik ish yakuni bo‘yicha o‘tkaziladigan tahlilni",
         "yillik ish yakuni bo‘yicha o‘tkaziladigan tahlilni"
       ],
-      "correct": 7
+      "correct": 2
     },
     {
       "text": "Tashqi iste’molchilar o‘tkazadigan tahlil qanday tahlil?",
@@ -461,14 +466,19 @@
         "dialektik nazariya",
         "bilish nazariyasi",
         "o‘zaro bog‘liqlik nazariyasi",
-        "dialektika",
-        "Qaysi omillar firma faoliyatining samaradorligini oshirishning muhim omillari bo‘lib hisoblanadi?",
+        "dialektika"
+      ],
+      "correct": 1
+    },
+    {
+      "text": "Qaysi omillar firma faoliyatining samaradorligini oshirishning muhim omillari bo‘lib hisoblanadi?",
+      "options": [
         "ichki va tashqi omillar",
         "asosiy va qo‘shimcha omillar",
         "iqtisodiy va ijtimoiy omillar",
         "ishlabchiqarishva noishlabchiqarish omillari"
       ],
-      "correct": 5
+      "correct": 0
     },
     {
       "text": "“Balans” atamasining ma’nosi nimadan iborat?",
