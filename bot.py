@@ -1704,14 +1704,13 @@ EXAM_HTML_TEMPLATE = """
         .nav-dot.yellow { background: var(--yellow); }
         .nav-dot.active-dot { box-shadow: 0 0 0 3px var(--bg-color), 0 0 0 5px var(--button-color); transform: scale(1.1); }
         
-        .option-btn { background: var(--card-bg); border: none; color: var(--text-color); padding: 16px; border-radius: 12px; font-size: 16px; text-align: left; transition: all 0.2s; width: 100%; cursor: pointer; }
+        .option-btn { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 16px; border-radius: 12px; font-size: 16px; text-align: left; transition: all 0.2s; width: 100%; cursor: pointer; margin-bottom: 12px; }
         .option-btn:active { transform: scale(0.98); }
-        .option-btn.correct { background: var(--green); color: white; }
-        .option-btn.wrong { background: var(--red); color: white; }
-        .option-divider { height: 1px; background: var(--border-color); margin: 4px 16px; }
+        .option-btn.correct { background: var(--green); color: white; border-color: var(--green); }
+        .option-btn.wrong { background: var(--red); color: white; border-color: var(--red); }
         
-        .skip-btn { background: var(--yellow); color: #000; font-weight: 600; margin-top: 16px; padding: 12px 20px; font-size: 14px; border-radius: 8px; width: auto; display: inline-block; }
-        .next-btn { background: var(--button-color); color: var(--button-text-color); font-weight: 600; margin-top: 16px; padding: 12px 20px; font-size: 14px; border-radius: 8px; width: auto; display: none; float: right; border: none; cursor: pointer; }
+        .skip-btn { background: var(--yellow); color: #000; font-weight: 600; padding: 12px 20px; font-size: 14px; border-radius: 8px; width: auto; display: inline-block; }
+        .next-btn { background: var(--button-color); color: var(--button-text-color); font-weight: 600; padding: 12px 20px; font-size: 14px; border-radius: 8px; width: auto; display: none; border: none; cursor: pointer; }
         
         #resultsScreen h1 { font-size: 32px; margin-bottom: 8px; }
         .stat-row { display: flex; justify-content: space-between; font-size: 18px; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
@@ -1754,7 +1753,7 @@ EXAM_HTML_TEMPLATE = """
             <div class="q-text" id="testQuestionText">Savol matni...</div>
             <div id="optionsContainer" style="margin-top: 20px;"></div>
         </div>
-        <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; justify-content: center; align-items: center; gap: 16px; margin-top: 16px;">
             <button class="btn-large skip-btn" id="skipBtn" onclick="skipQuestion()">⏭ O'tkazib yuborish</button>
             <button class="btn-large next-btn" id="nextBtn" onclick="goToNextAfterAnswer()">Keyingi savol ➡</button>
         </div>
@@ -1939,12 +1938,6 @@ EXAM_HTML_TEMPLATE = """
                 btn.innerHTML = `<b>${letter})</b> ${optText}`;
                 btn.onclick = () => selectOption(optIdx, btn);
                 optsContainer.appendChild(btn);
-                
-                if (optIdx < q.options.length - 1) {
-                    const divider = document.createElement('div');
-                    divider.className = 'option-divider';
-                    optsContainer.appendChild(divider);
-                }
             });
             
             document.getElementById('skipBtn').style.display = 'inline-block';
