@@ -1986,7 +1986,7 @@ EXAM_HTML_TEMPLATE = """
                                     <div style="font-size: 12px; color: var(--text-muted);">Umumiy to'g'ri javoblar: ${item.correct} ta</div>
                                 </div>
                             </div>
-                            <div style="font-weight: bold; font-size: 18px;">${item.score} <span style="font-size: 12px; font-weight: normal; color: var(--text-muted);">/ 1000 ball</span></div>
+                            <div style="font-weight: bold; font-size: 18px;">${item.score} <span style="font-size: 12px; font-weight: normal; color: var(--text-muted);">ball</span></div>
                         `;
                         
                         if(isMe) {
