@@ -41,6 +41,29 @@ user_rate_limits = {}
 # Suhbat xotirasi: {user_id: [{"role": "user", "content": "..."}, {"role": "assistant", "content": "..."}]}
 chat_history = {}
 
+# ===== AI XOTIRASIGA SAVOLLARNI YUKLASH =====
+EXAM_QUESTIONS_TEXT = ""
+
+def load_exam_questions_text():
+    global EXAM_QUESTIONS_TEXT
+    try:
+        q_path = os.path.join(os.path.dirname(__file__), 'questions.json')
+        if os.path.exists(q_path):
+            with open(q_path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            
+            if "ECONOMIC ANALYSIS" in data:
+                text_lines = ["ECONOMIC ANALYSIS imtihon savollari va TO'G'RI javoblari:"]
+                for idx, q in enumerate(data["ECONOMIC ANALYSIS"], 1):
+                    correct_ans = q["options"][q["correct"]]
+                    text_lines.append(f"{idx}. {q['text']} -> Javob: {correct_ans}")
+                EXAM_QUESTIONS_TEXT = "\n".join(text_lines)
+                logger.info(f"Loaded {len(data['ECONOMIC ANALYSIS'])} questions into AI prompt memory.")
+    except Exception as e:
+        logger.error(f"Error loading exam questions for AI: {e}")
+
+load_exam_questions_text()
+
 # ===== TAQDIMOT REJIMI HOLATLARI =====
 STATE_NONE = 0
 STATE_AWAITING_AUTHOR = 1
@@ -534,9 +557,56 @@ async def handle_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def handle_ai_chat(update: Update, context: ContextTypes.DEFAULT_TYPE, log_id: int = None):
     text = update.message.text
     user_id = str(update.effective_user.id)
-    
+    await process_ai_chat(update, context, user_id, text, log_id)
+
+async def handle_voice(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = str(update.effective_user.id)
     if not groq_client:
         await update.message.reply_text("Kechirasiz, sun'iy intellekt hozircha ulanmagan.", reply_markup=main_menu_keyboard())
+        return
+
+    # Rate limit check for voice as well
+    now = datetime.now(TZ)
+    if user_id not in user_rate_limits:
+        user_rate_limits[user_id] = []
+    user_rate_limits[user_id] = [t for t in user_rate_limits[user_id] if (now - t).total_seconds() < 60]
+    if len(user_rate_limits[user_id]) >= 5:
+        await update.message.reply_text("⏳ Juda tez-tez yozyapsiz. Iltimos, 1 daqiqa kutib turing.", reply_markup=main_menu_keyboard())
+        return
+
+    msg = await update.message.reply_text("🎙 Ovozli xabar qabul qilindi, tushunishga harakat qilyapman...")
+    await context.bot.send_chat_action(chat_id=update.effective_chat.id, action='typing')
+    
+    try:
+        voice_file = await update.message.voice.get_file()
+        file_bytes = await voice_file.download_as_bytearray()
+        
+        transcription = groq_client.audio.transcriptions.create(
+            file=("voice.ogg", bytes(file_bytes)),
+            model="whisper-large-v3",
+            language="uz"
+        )
+        user_text = transcription.text
+        
+        if not user_text.strip():
+            await msg.edit_text("Ovozli xabaringizda so'zlar aniqlanmadi. Iltimos, qaytadan yuboring.")
+            return
+            
+        await msg.edit_text(f"🗣 Siz dedingiz: _{user_text}_\n\n🤖 O'ylayapman...", parse_mode="Markdown")
+        
+        # Log action manually since it's not a button or plain text
+        log_id = log_action(update.effective_user, "VOICE", user_text)
+        
+        # Use common logic
+        await process_ai_chat(update, context, user_id, user_text, log_id)
+        
+    except Exception as e:
+        logger.error(f"Ovozli xabarni ishlashda xatolik: {e}")
+        await msg.edit_text("Kechirasiz, ovozli xabarni ishlashda xatolik yuz berdi. Iltimos, matn orqali yozing.")
+
+async def process_ai_chat(update: Update, context: ContextTypes.DEFAULT_TYPE, user_id: str, text: str, log_id: int = None):
+    if not groq_client:
+        await context.bot.send_message(chat_id=update.effective_chat.id, text="Kechirasiz, sun'iy intellekt hozircha ulanmagan.", reply_markup=main_menu_keyboard())
         return
 
     # Rate limit: har foydalanuvchiga daqiqada 5 ta so'rov
@@ -571,6 +641,14 @@ async def handle_ai_chat(update: Update, context: ContextTypes.DEFAULT_TYPE, log
         "Agar talaba shu narsalarni so'rasa, HALOL javob ber: 'Kechirasiz, men buni qila olmayman' de va sababini tushuntir.\n\n"
         "QOIDALAR: Javobda yulduzcha (*, **), tire (-), raqamlangan ro'yxat ishlatma. Faqat oddiy matn yoz."
     )
+    
+    if EXAM_QUESTIONS_TEXT:
+        system_prompt += (
+            "\n\nMUHIM: Quyida oraliq/yakuniy imtihon savollari va ularning aniq TO'G'RI javoblari keltirilgan. "
+            "Agar foydalanuvchi imtihon savolidan parcha yo'llasa yoki imtihon haqida so'rasa, faqatgina quyidagi bazadan to'g'ri javobni yoz va tushuntirib ber.\n\n"
+            f"{EXAM_QUESTIONS_TEXT}\n"
+        )
+        
     try:
         # Suhbat tarixini olish
         if user_id not in chat_history:
@@ -607,7 +685,7 @@ async def handle_ai_chat(update: Update, context: ContextTypes.DEFAULT_TYPE, log
             err_text = "API kalit noto'g'ri yoki yaroqsiz bo'lishi mumkin."
         else:
             err_text = "Kechirasiz, xatolik yuz berdi. Keyinroq urinib ko'ring."
-        await update.message.reply_text(err_text, reply_markup=main_menu_keyboard())
+        await context.bot.send_message(chat_id=update.effective_chat.id, text=err_text, reply_markup=main_menu_keyboard())
 
 async def cmd_ertaga(update: Update, context: ContextTypes.DEFAULT_TYPE):
     now = datetime.now(TZ)
@@ -2173,6 +2251,7 @@ def main():
     app.add_handler(CommandHandler("send", cmd_send))
     app.add_handler(MessageHandler(filters.CONTACT, handle_contact))
     app.add_handler(CallbackQueryHandler(callback_handler))
+    app.add_handler(MessageHandler(filters.VOICE, handle_voice))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_menu))
 
     async def post_init(application):
