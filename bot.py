@@ -1658,19 +1658,19 @@ EXAM_HTML_TEMPLATE = """
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: var(--tg-theme-bg-color, #0f172a);
-            --text-color: var(--tg-theme-text-color, #f8fafc);
-            --button-color: var(--tg-theme-button-color, #3b82f6);
-            --button-text-color: var(--tg-theme-button-text-color, #ffffff);
-            --card-bg: var(--tg-theme-secondary-bg-color, rgba(128, 128, 128, 0.08));
-            --border-color: rgba(128, 128, 128, 0.3);
-            --green: #10b981;
-            --red: #ef4444;
+            --bg-color: #1a2232;
+            --text-color: #ffffff;
+            --button-color: #3b82f6;
+            --button-text-color: #ffffff;
+            --card-bg: #222b3c;
+            --border-color: #384256;
+            --green: #20c978;
+            --red: #f15249;
             --yellow: #f59e0b;
             --gray: #6b7280;
         }
         * { box-sizing: border-box; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
-        body { background-color: var(--bg-color); color: var(--text-color); padding: 16px; overflow-x: hidden; }
+        body { background-color: var(--bg-color) !important; color: var(--text-color) !important; padding: 16px; overflow-x: hidden; }
         .glass { background: var(--card-bg); backdrop-filter: blur(10px); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         
         .screen { display: none; animation: fadeIn 0.3s ease-in-out; }
