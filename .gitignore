@@ -1,7 +1,8 @@
 __pycache__/
 *.pyc
 *.pyo
-data/
+data/*
+!data/questions.json
 bot_database.db
 darsjadvali.db
 chat_id.txt
