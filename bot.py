@@ -31,6 +31,7 @@ CHAT_ID = None
 TZ = pytz.timezone("Asia/Tashkent")
 DB_PATH = os.environ.get("DB_PATH", "data/bot_database.db")
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
+WEBAPP_URL = os.environ.get("WEBAPP_URL", "https://darsjadvali-production.up.railway.app") # Railway app domen yoki o'zingizning domen (https bilan)
 
 groq_client = Groq(api_key=GROQ_API_KEY) if GROQ_API_KEY else None
 
@@ -808,9 +809,15 @@ async def cmd_imtihon(update: Update, context: ContextTypes.DEFAULT_TYPE):
         text += f"📚 {subject}\n"
         text += f"🚪 Xona: *{room}*\n"
         
-    await update.message.reply_text(
-        text, parse_mode="Markdown", reply_markup=main_menu_keyboard()
-    )
+    from telegram import WebAppInfo
+    reply_markup = None
+    if WEBAPP_URL:
+        # Agar WEBAPP_URL kiritilgan bo'lsa, inline tugma ham qo'shamiz
+        ik = InlineKeyboardMarkup([[InlineKeyboardButton("📱 Imtihon Tayyorgarlik (Web App)", web_app=WebAppInfo(url=f"{WEBAPP_URL}/exam-app"))]])
+        await update.message.reply_text(text, parse_mode="Markdown", reply_markup=main_menu_keyboard())
+        await update.message.reply_text("👇 Test ishlash va savol-javoblarni ko'rish uchun quyidagi Web App ni oching:", reply_markup=ik)
+    else:
+        await update.message.reply_text(text, parse_mode="Markdown", reply_markup=main_menu_keyboard())
 
 async def cmd_yordam(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
@@ -1583,6 +1590,316 @@ def download_presentation(pres_id):
     except Exception as e:
         logger.error(f"Download error: {e}")
         return "Yuklab olishda xatolik", 500
+
+EXAM_HTML_TEMPLATE = """
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Imtihonga Tayyorgarlik</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: var(--tg-theme-bg-color, #0f172a);
+            --text-color: var(--tg-theme-text-color, #f8fafc);
+            --button-color: var(--tg-theme-button-color, #3b82f6);
+            --button-text-color: var(--tg-theme-button-text-color, #ffffff);
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --green: #10b981;
+            --red: #ef4444;
+            --yellow: #f59e0b;
+            --gray: #4b5563;
+        }
+        * { box-sizing: border-box; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
+        body { background-color: var(--bg-color); color: var(--text-color); padding: 16px; overflow-x: hidden; }
+        .glass { background: var(--card-bg); backdrop-filter: blur(10px); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        
+        .screen { display: none; animation: fadeIn 0.3s ease-in-out; }
+        .screen.active { display: flex; flex-direction: column; gap: 16px; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        
+        h1 { font-size: 24px; text-align: center; margin-bottom: 24px; font-weight: 700; }
+        h2 { font-size: 20px; font-weight: 600; margin-bottom: 16px; }
+        
+        /* Home Screen */
+        .btn-large { background: var(--button-color); color: var(--button-text-color); border: none; padding: 20px; border-radius: 16px; font-size: 18px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 12px; cursor: pointer; transition: transform 0.1s; width: 100%; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); }
+        .btn-large:active { transform: scale(0.97); }
+        .btn-secondary { background: var(--card-bg); color: var(--text-color); border: 1px solid var(--border-color); }
+        
+        /* Study Mode */
+        .qa-card { margin-bottom: 16px; }
+        .q-text { font-weight: 600; margin-bottom: 8px; font-size: 16px; }
+        .a-text { color: var(--green); font-size: 15px; }
+        
+        /* Test Mode */
+        .top-bar { display: flex; justify-content: space-between; align-items: center; background: var(--card-bg); padding: 12px 16px; border-radius: 12px; border: 1px solid var(--border-color); }
+        .timer { font-size: 18px; font-weight: 700; color: var(--button-color); }
+        .score { font-size: 16px; font-weight: 600; }
+        
+        .navigator { display: flex; overflow-x: auto; gap: 8px; padding-bottom: 8px; scroll-behavior: smooth; }
+        .navigator::-webkit-scrollbar { height: 4px; }
+        .navigator::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+        .nav-dot { width: 32px; height: 32px; flex-shrink: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; background: var(--gray); color: white; transition: all 0.3s; }
+        .nav-dot.green { background: var(--green); }
+        .nav-dot.red { background: var(--red); }
+        .nav-dot.yellow { background: var(--yellow); }
+        .nav-dot.active-dot { box-shadow: 0 0 0 3px var(--bg-color), 0 0 0 5px var(--button-color); transform: scale(1.1); }
+        
+        .option-btn { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 16px; border-radius: 12px; font-size: 16px; text-align: left; margin-bottom: 12px; transition: all 0.2s; width: 100%; cursor: pointer; }
+        .option-btn:active { transform: scale(0.98); }
+        .option-btn.correct { background: var(--green); color: white; border-color: var(--green); }
+        .option-btn.wrong { background: var(--red); color: white; border-color: var(--red); }
+        
+        .skip-btn { background: var(--yellow); color: #000; font-weight: 600; margin-top: 16px; }
+        
+        #resultsScreen h1 { font-size: 32px; margin-bottom: 8px; }
+        .stat-row { display: flex; justify-content: space-between; font-size: 18px; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
+    </style>
+</head>
+<body>
+
+    <div id="homeScreen" class="screen active">
+        <h1>Imtihonga Tayyorgarlik</h1>
+        <button class="btn-large" onclick="startStudyMode()">📚 Savol-Javoblar (O'qish)</button>
+        <button class="btn-large" style="background: linear-gradient(135deg, #10b981, #059669);" onclick="startTestMode()">📝 Test Topshirish</button>
+    </div>
+
+    <div id="studyScreen" class="screen">
+        <button class="btn-large btn-secondary" style="padding: 12px; margin-bottom: 16px;" onclick="goHome()">🔙 Asosiy Menyu</button>
+        <h2>Barcha Savollar</h2>
+        <div id="studyList"></div>
+    </div>
+
+    <div id="testScreen" class="screen">
+        <div class="top-bar">
+            <div class="timer" id="timerDisplay">20:00</div>
+            <div class="score">Ball: <span id="scoreDisplay">0</span></div>
+        </div>
+        
+        <div class="navigator" id="navigatorContainer"></div>
+        
+        <div class="glass" id="questionCard">
+            <div class="q-text" id="testQuestionText">Savol matni...</div>
+            <div id="optionsContainer" style="margin-top: 20px;"></div>
+        </div>
+        
+        <button class="btn-large skip-btn" id="skipBtn" onclick="skipQuestion()">⏭ O'tkazib yuborish</button>
+    </div>
+
+    <div id="resultsScreen" class="screen">
+        <div class="glass" style="text-align: center;">
+            <div style="font-size: 48px; margin-bottom: 16px;">🏆</div>
+            <h2>Test Yakunlandi!</h2>
+            <div class="stat-row"><span>To'plangan ball:</span> <strong id="resScore">0</strong></div>
+            <div class="stat-row"><span>To'g'ri javoblar:</span> <strong id="resCorrect" style="color: var(--green);">0</strong></div>
+            <div class="stat-row"><span>Xato javoblar:</span> <strong id="resWrong" style="color: var(--red);">0</strong></div>
+            <div class="stat-row" style="border:none;"><span>O'tkazib yuborilgan:</span> <strong id="resSkipped" style="color: var(--yellow);">0</strong></div>
+            <button class="btn-large" style="margin-top: 24px;" onclick="goHome()">🏠 Asosiy menyu</button>
+        </div>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        
+        // Bular hozircha namunaviy savollar. Buni keyin haqiqiy savollar bazasi (JSON) bilan almashtirasiz.
+        // 20 ta savol shablonini avtomatik yaratamiz. 
+        // Haqiqiy savollarni qo'shish uchun mana shu qatorlarni o'zingizning savollaringiz bilan to'ldirishingiz mumkin.
+        const dbQuestions = Array.from({ length: 20 }, (_, i) => ({
+            id: i + 1,
+            text: `${i + 1}-Savolning matni shu yerda bo'ladi?`,
+            options: [
+                "a. Birinchi variant",
+                "b. Ikkinchi variant",
+                "c. Uchinchi variant",
+                "d. To'rtinchi variant"
+            ],
+            correct: 0 // to'g'ri javob indeksi (0 dan boshlanadi, ya'ni 0=a, 1=b, 2=c, 3=d)
+        }));
+
+        let questions = [];
+        let questionState = [];
+        let currentQueue = [];
+        let currentIndex = 0;
+        let score = 0;
+        let correctCount = 0;
+        let wrongCount = 0;
+        let skippedCount = 0;
+        let timerInterval = null;
+        let timeLeft = 1200; 
+
+        function showScreen(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        function goHome() {
+            clearInterval(timerInterval);
+            showScreen('homeScreen');
+        }
+
+        function startStudyMode() {
+            const list = document.getElementById('studyList');
+            list.innerHTML = '';
+            dbQuestions.forEach((q, idx) => {
+                const card = document.createElement('div');
+                card.className = 'glass qa-card';
+                card.innerHTML = `
+                    <div class="q-text">${idx + 1}. ${q.text}</div>
+                    <div class="a-text">✅ ${q.options[q.correct]}</div>
+                `;
+                list.appendChild(card);
+            });
+            showScreen('studyScreen');
+        }
+
+        function startTestMode() {
+            let shuffled = JSON.parse(JSON.stringify(dbQuestions));
+            shuffled.sort(() => Math.random() - 0.5); // Savollarni aralashtirish
+            questions = shuffled;
+            questionState = new Array(questions.length).fill('gray');
+            currentQueue = questions.map((_, i) => i);
+            score = 0;
+            correctCount = 0;
+            wrongCount = 0;
+            skippedCount = 0;
+            timeLeft = 1200;
+            document.getElementById('scoreDisplay').innerText = score;
+            
+            buildNavigator();
+            startTimer();
+            loadNextQuestion();
+            showScreen('testScreen');
+        }
+
+        function buildNavigator() {
+            const nav = document.getElementById('navigatorContainer');
+            nav.innerHTML = '';
+            questions.forEach((_, i) => {
+                const dot = document.createElement('div');
+                dot.className = `nav-dot ${questionState[i]}`;
+                dot.id = `nav-dot-${i}`;
+                dot.innerText = i + 1;
+                nav.appendChild(dot);
+            });
+        }
+
+        function updateNavigatorDot(index) {
+            const dot = document.getElementById(`nav-dot-${index}`);
+            dot.className = `nav-dot ${questionState[index]}`;
+        }
+
+        function setActiveNavigatorDot(index) {
+            document.querySelectorAll('.nav-dot').forEach(d => d.classList.remove('active-dot'));
+            if(index !== null) {
+                const dot = document.getElementById(`nav-dot-${index}`);
+                if(dot) {
+                    dot.classList.add('active-dot');
+                    dot.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+            }
+        }
+
+        function loadNextQuestion() {
+            if (currentQueue.length === 0) {
+                endTest();
+                return;
+            }
+            currentIndex = currentQueue[0];
+            const q = questions[currentIndex];
+            
+            setActiveNavigatorDot(currentIndex);
+            document.getElementById('testQuestionText').innerText = `${currentIndex + 1}. ${q.text}`;
+            
+            const optsContainer = document.getElementById('optionsContainer');
+            optsContainer.innerHTML = '';
+            
+            q.options.forEach((optText, optIdx) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = optText;
+                btn.onclick = () => selectOption(optIdx, btn);
+                optsContainer.appendChild(btn);
+            });
+            
+            document.getElementById('skipBtn').style.display = 'block';
+        }
+
+        function selectOption(selectedIdx, btnElement) {
+            const btns = document.querySelectorAll('.option-btn');
+            btns.forEach(b => b.onclick = null); 
+            document.getElementById('skipBtn').style.display = 'none';
+
+            const q = questions[currentIndex];
+            if (selectedIdx === q.correct) {
+                btnElement.classList.add('correct');
+                score += 3.5;
+                correctCount++;
+                questionState[currentIndex] = 'green';
+                document.getElementById('scoreDisplay').innerText = score;
+            } else {
+                btnElement.classList.add('wrong');
+                btns[q.correct].classList.add('correct');
+                wrongCount++;
+                questionState[currentIndex] = 'red';
+            }
+            
+            updateNavigatorDot(currentIndex);
+            currentQueue.shift();
+            
+            setTimeout(() => {
+                loadNextQuestion();
+            }, 1000);
+        }
+
+        function skipQuestion() {
+            questionState[currentIndex] = 'yellow';
+            updateNavigatorDot(currentIndex);
+            skippedCount++;
+            
+            const skippedIdx = currentQueue.shift();
+            currentQueue.push(skippedIdx); 
+            
+            loadNextQuestion();
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            updateTimerDisplay();
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                if (timeLeft <= 0) {
+                    endTest();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            const s = (timeLeft % 60).toString().padStart(2, '0');
+            document.getElementById('timerDisplay').innerText = `${m}:${s}`;
+        }
+
+        function endTest() {
+            clearInterval(timerInterval);
+            document.getElementById('resScore').innerText = score;
+            document.getElementById('resCorrect').innerText = correctCount;
+            document.getElementById('resWrong').innerText = wrongCount;
+            document.getElementById('resSkipped').innerText = currentQueue.length;
+            showScreen('resultsScreen');
+        }
+    </script>
+</body>
+</html>
+"""
+
+@app_web.route('/exam-app')
+def exam_app():
+    return render_template_string(EXAM_HTML_TEMPLATE)
 
 def run_flask():
     port = int(os.environ.get("PORT", 8080))
