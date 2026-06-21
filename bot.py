@@ -660,7 +660,7 @@ async def process_ai_chat(update: Update, context: ContextTypes.DEFAULT_TYPE, us
         messages.append({"role": "user", "content": text})
         
         response = groq_client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
+            model="llama-3.1-8b-instant",
             messages=messages,
             temperature=0.7,
             max_tokens=1024
@@ -1816,6 +1816,7 @@ EXAM_HTML_TEMPLATE = """
     <div id="studyScreen" class="screen">
         <button class="btn-large btn-secondary" style="padding: 12px; margin-bottom: 16px;" onclick="goHome()">🔙 Asosiy Menyu</button>
         <h2>Barcha Savollar</h2>
+        <input type="text" id="studySearch" placeholder="🔍 Savollardan qidirish..." onkeyup="filterStudyQuestions()" style="width: 100%; padding: 12px; margin-bottom: 16px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-color); font-size: 16px;">
         <div id="studyList"></div>
     </div>
 
@@ -2012,6 +2013,8 @@ EXAM_HTML_TEMPLATE = """
         function startStudyMode() {
             const list = document.getElementById('studyList');
             list.innerHTML = '';
+            document.getElementById('studySearch').value = ''; // Qidiruvni tozalash
+            
             dbQuestions.forEach((q, idx) => {
                 const card = document.createElement('div');
                 card.className = 'glass qa-card';
@@ -2032,6 +2035,21 @@ EXAM_HTML_TEMPLATE = """
             });
             showScreen('studyScreen');
             updateBottomNav('nav-study');
+        }
+
+        function filterStudyQuestions() {
+            const input = document.getElementById('studySearch').value.toLowerCase();
+            const list = document.getElementById('studyList');
+            const cards = list.getElementsByClassName('qa-card');
+            
+            for (let i = 0; i < cards.length; i++) {
+                const text = cards[i].innerText.toLowerCase();
+                if (text.includes(input)) {
+                    cards[i].style.display = "";
+                } else {
+                    cards[i].style.display = "none";
+                }
+            }
         }
 
         function startTestMode() {
