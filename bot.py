@@ -1995,7 +1995,7 @@ def exam_app():
 @app_web.route('/api/questions')
 def api_questions():
     try:
-        q_path = os.path.join(os.path.dirname(__file__), 'data', 'questions.json')
+        q_path = os.path.join(os.path.dirname(__file__), 'questions.json')
         with open(q_path, 'r', encoding='utf-8') as f:
             data = json.load(f)
         return jsonify(data)
