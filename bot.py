@@ -42,10 +42,10 @@ user_rate_limits = {}
 chat_history = {}
 
 # ===== AI XOTIRASIGA SAVOLLARNI YUKLASH =====
-EXAM_QUESTIONS_TEXT = ""
+EXAM_QUESTIONS_LIST = []
 
-def load_exam_questions_text():
-    global EXAM_QUESTIONS_TEXT
+def load_exam_questions():
+    global EXAM_QUESTIONS_LIST
     try:
         q_path = os.path.join(os.path.dirname(__file__), 'questions.json')
         if os.path.exists(q_path):
@@ -53,16 +53,19 @@ def load_exam_questions_text():
                 data = json.load(f)
             
             if "ECONOMIC ANALYSIS" in data:
-                text_lines = ["ECONOMIC ANALYSIS imtihon savollari va TO'G'RI javoblari:"]
-                for idx, q in enumerate(data["ECONOMIC ANALYSIS"], 1):
-                    correct_ans = q["options"][q["correct"]]
-                    text_lines.append(f"{idx}. {q['text']} -> Javob: {correct_ans}")
-                EXAM_QUESTIONS_TEXT = "\n".join(text_lines)
-                logger.info(f"Loaded {len(data['ECONOMIC ANALYSIS'])} questions into AI prompt memory.")
+                for q in data["ECONOMIC ANALYSIS"]:
+                    correct_idx = int(q["correct"])
+                    if correct_idx < len(q["options"]):
+                        correct_ans = q["options"][correct_idx]
+                        EXAM_QUESTIONS_LIST.append({
+                            "question": q['text'],
+                            "answer": correct_ans
+                        })
+                logger.info(f"Loaded {len(EXAM_QUESTIONS_LIST)} questions into AI prompt memory.")
     except Exception as e:
         logger.error(f"Error loading exam questions for AI: {e}")
 
-load_exam_questions_text()
+load_exam_questions()
 
 # ===== TAQDIMOT REJIMI HOLATLARI =====
 STATE_NONE = 0
@@ -642,12 +645,23 @@ async def process_ai_chat(update: Update, context: ContextTypes.DEFAULT_TYPE, us
         "QOIDALAR: Javobda yulduzcha (*, **), tire (-), raqamlangan ro'yxat ishlatma. Faqat oddiy matn yoz."
     )
     
-    if EXAM_QUESTIONS_TEXT:
-        system_prompt += (
-            "\n\nMUHIM: Quyida oraliq/yakuniy imtihon savollari va ularning aniq TO'G'RI javoblari keltirilgan. "
-            "Agar foydalanuvchi imtihon savolidan parcha yo'llasa yoki imtihon haqida so'rasa, faqatgina quyidagi bazadan to'g'ri javobni yoz va tushuntirib ber.\n\n"
-            f"{EXAM_QUESTIONS_TEXT}\n"
-        )
+    if EXAM_QUESTIONS_LIST:
+        user_words = set(w.lower() for w in text.split() if len(w) > 3)
+        relevant_qs = []
+        for q in EXAM_QUESTIONS_LIST:
+            q_text = q['question'].lower()
+            overlap = sum(1 for w in user_words if w in q_text)
+            if overlap >= 2 or text.lower() in q_text:
+                relevant_qs.append((overlap, f"Savol: {q['question']} -> Javob: {q['answer']}"))
+        
+        if relevant_qs:
+            relevant_qs.sort(reverse=True, key=lambda x: x[0])
+            top_qs = [r[1] for r in relevant_qs[:3]]
+            system_prompt += (
+                "\n\nMUHIM: Foydalanuvchi so'rovi imtihon savoliga o'xshash bo'lishi mumkin. Quyida bazamizdagi topilgan eng o'xshash savollar va ularning TO'G'RI javoblari keltirilgan:\n"
+                + "\n".join(top_qs) +
+                "\nAgar foydalanuvchi shu savollardan birini so'ragan bo'lsa, aniq va to'g'ri javobni aytib, tushuntirib ber.\n"
+            )
         
     try:
         # Suhbat tarixini olish
