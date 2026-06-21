@@ -2028,7 +2028,15 @@ EXAM_HTML_TEMPLATE = """
             
             const highlight = (text) => {
                 if (!filterText) return text;
-                const escaped = filterText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                let escaped = "";
+                const specialChars = ".*+?^${}()|[]" + String.fromCharCode(92);
+                for (let i = 0; i < filterText.length; i++) {
+                    if (specialChars.indexOf(filterText[i]) !== -1) {
+                        escaped += String.fromCharCode(92) + filterText[i];
+                    } else {
+                        escaped += filterText[i];
+                    }
+                }
                 const regex = new RegExp(`(${escaped})`, 'gi');
                 return text.replace(regex, '<span style="background-color: yellow; color: black; border-radius: 2px;">$1</span>');
             };
