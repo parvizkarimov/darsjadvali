@@ -1271,19 +1271,20 @@ async def send_start_reminder(context: ContextTypes.DEFAULT_TYPE):
     await send_to_all_users(context.bot, text)
 
 async def send_daily_schedule(context: ContextTypes.DEFAULT_TYPE):
-    logger.info("Yuborilmoqda: Kundalik darslar jadvali (9:00)")
-    lessons = get_today_schedule()
+    logger.info("Yuborilmoqda: Kundalik imtihonlar jadvali (9:00)")
     now = datetime.now(TZ)
     today = now.strftime("%d.%m.%Y")
     
-    if not lessons:
-        start_date = TZ.localize(datetime(2026, 6, 15))
-        if now < start_date:
-            text = "⏳ *Darslar 15-iyundan boshlanadi!*"
-        else:
-            text = f"📭 *{today}* kuni dars yo'q."
-    else:
-        text = f"📋 *Bugungi darslar ({today}):*\n" + format_schedule_by_date(lessons)
+    exams_today = [e for e in EXAMS if e[0] == today]
+    
+    if not exams_today:
+        logger.info("Bugun imtihon yo'q, xabar yuborilmaydi.")
+        return
+        
+    text = f"📅 *Bugungi Imtihonlar ({today}):*\n"
+    for date, hour, minute, subject, room in exams_today:
+        start_time = f"{hour:02d}:{minute:02d}"
+        text += f"\n🕐 {start_time}\n📚 {subject} | 🚪 Xona: {room}\n"
         
     await send_to_all_users(context.bot, text)
 
