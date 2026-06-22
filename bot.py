@@ -159,9 +159,14 @@ def init_db():
                 correct_count INTEGER,
                 wrong_count INTEGER,
                 skipped_count INTEGER,
+                subject TEXT DEFAULT 'ECONOMIC ANALYSIS',
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP
             )
         ''')
+        try:
+            cursor.execute("ALTER TABLE test_results ADD COLUMN subject TEXT DEFAULT 'ECONOMIC ANALYSIS'")
+        except:
+            pass
             
         conn.commit()
 
@@ -1872,7 +1877,7 @@ EXAM_HTML_TEMPLATE = """
     </div>
 
     <div id="allResultsScreen" class="screen">
-        <h2 style="margin-bottom: 16px; text-align: center;">🏆 Reyting</h2>
+        <h2 id="resultsTitle" style="margin-bottom: 16px; text-align: center; font-size: 20px;">🏆 Reyting</h2>
         
         <div id="myResultContainer" style="margin-bottom: 24px;"></div>
         
@@ -1905,6 +1910,7 @@ EXAM_HTML_TEMPLATE = """
         let questionState = [];
         let currentQueue = [];
         let currentIndex = 0;
+        let currentSubject = '';
         let score = 0;
         let correctCount = 0;
         let wrongCount = 0;
@@ -1928,6 +1934,7 @@ EXAM_HTML_TEMPLATE = """
         }
 
         function selectSubject(subjectName) {
+            currentSubject = subjectName;
             // Fetch questions from API
             fetch('/api/questions')
                 .then(res => res.json())
@@ -1968,7 +1975,9 @@ EXAM_HTML_TEMPLATE = """
             myContainer.innerHTML = '<div style="text-align:center;">Yuklanmoqda...</div>';
             otherContainer.innerHTML = '';
             
-            fetch('/api/results')
+            document.getElementById('resultsTitle').innerText = `🏆 Reyting (${currentSubject})`;
+            
+            fetch('/api/results?subject=' + encodeURIComponent(currentSubject))
                 .then(res => res.json())
                 .then(data => {
                     myContainer.innerHTML = '';
@@ -2250,6 +2259,7 @@ EXAM_HTML_TEMPLATE = """
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
+                        subject: currentSubject,
                         user_id: user.id,
                         first_name: user.first_name,
                         last_name: user.last_name,
@@ -2288,6 +2298,7 @@ def save_test_result():
     if not data:
         return {"status": "error", "message": "No data"}, 400
     try:
+        subject = data.get('subject', 'ECONOMIC ANALYSIS')
         user_id = str(data.get('user_id'))
         first_name = data.get('first_name', '')
         last_name = data.get('last_name', '')
@@ -2300,16 +2311,16 @@ def save_test_result():
         with sqlite3.connect(DB_PATH) as conn:
             cursor = conn.cursor()
             cursor.execute('''
-                INSERT INTO test_results (user_id, first_name, last_name, username, score, correct_count, wrong_count, skipped_count)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            ''', (user_id, first_name, last_name, username, score, correct_count, wrong_count, skipped_count))
+                INSERT INTO test_results (user_id, first_name, last_name, username, score, correct_count, wrong_count, skipped_count, subject)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ''', (user_id, first_name, last_name, username, score, correct_count, wrong_count, skipped_count, subject))
             conn.commit()
 
         import requests
         url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
         
         # User message
-        text_user = f"📊 *Sizning test natijangiz:*\n\n✅ To'g'ri: {correct_count}\n❌ Xato: {wrong_count}\n⏭ O'tkazib yuborilgan: {skipped_count}\n\n🏆 Umumiy ball: {score}"
+        text_user = f"📊 *{subject}*\n\n✅ To'g'ri: {correct_count}\n❌ Xato: {wrong_count}\n⏭ O'tkazib yuborilgan: {skipped_count}\n\n🏆 Umumiy ball: {score}"
         try:
             requests.post(url, json={"chat_id": user_id, "text": text_user, "parse_mode": "Markdown"}, timeout=3)
         except Exception as e:
@@ -2320,7 +2331,7 @@ def save_test_result():
             full_name = f"{first_name} {last_name}".strip()
             if username:
                 full_name += f" (@{username})"
-            text_admin = f"📝 *Yangi test natijasi*\n\n👤 O'quvchi: {full_name} (ID: {user_id})\n✅ To'g'ri: {correct_count}\n❌ Xato: {wrong_count}\n⏭ O'tkazib yuborilgan: {skipped_count}\n\n🏆 Ball: {score}"
+            text_admin = f"📝 *Yangi test natijasi ({subject})*\n\n👤 O'quvchi: {full_name} (ID: {user_id})\n✅ To'g'ri: {correct_count}\n❌ Xato: {wrong_count}\n⏭ O'tkazib yuborilgan: {skipped_count}\n\n🏆 Ball: {score}"
             try:
                 requests.post(url, json={"chat_id": ADMIN_ID, "text": text_admin, "parse_mode": "Markdown"}, timeout=3)
             except Exception as e:
@@ -2333,6 +2344,7 @@ def save_test_result():
 
 @app_web.route('/api/results')
 def api_results():
+    subject = request.args.get('subject', 'ECONOMIC ANALYSIS')
     try:
         with sqlite3.connect(DB_PATH) as conn:
             cursor = conn.cursor()
@@ -2340,9 +2352,10 @@ def api_results():
             cursor.execute('''
                 SELECT user_id, first_name, last_name, username, SUM(score) as total_score, SUM(correct_count) as total_correct, MAX(created_at) as last_attempt
                 FROM test_results
+                WHERE subject = ?
                 GROUP BY user_id
                 ORDER BY total_score DESC
-            ''')
+            ''', (subject,))
             rows = cursor.fetchall()
             
             results = []
