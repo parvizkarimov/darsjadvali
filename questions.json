@@ -1740,5 +1740,1437 @@
       ],
       "correct": 2
     }
+  ],
+  "FINANCIAL TECHNOLOGIES": [
+    {
+      "text": "FINTEX bu?",
+      "options": [
+        "Moliyaviy texnologiya",
+        "Yakuniy texnologiya",
+        "Moliyaviy texnika",
+        "Tezkor innovatsion texnologiyalar"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Qaysi mamlakat jahon miqyosida iste'molchi Fintexni qo'llash darajasi yuqori?",
+      "options": [
+        "Xitoy",
+        "Hindiston",
+        "Amerika Qo'shma Shtatlari",
+        "Buyuk Britaniya"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Kontaktsiz to'lovlarni amalga oshirish uchun smartfonlardan foydalanish atamasi qanday?",
+      "options": [
+        "NFC",
+        "QR kodi",
+        "POS-terminal",
+        "bankomat operatsiyalari"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Hindistonda birinchi internet-banking xizmati qaysi yilda paydo bo'lgan va qaysi bank taklif qildi?",
+      "options": [
+        "1996 yil, ICICI banki",
+        "2000 yil, HDFC banki",
+        "2002 yil, SBI",
+        "2005 yil, Citibank"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Fintech kontekstida API nimani anglatadi?",
+      "options": [
+        "Amaliy dasturlash interfeysi",
+        "Avtomatlashtirilgan platforma integratsiyasi",
+        "Sun'iy dasturlash interfeysi",
+        "Ilg'or to'lov infratuzilmasi"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Quyidagi banklardan qaysi biri Hindistonda birinchi bo‘lib bankomatni joriy qilgan?",
+      "options": [
+        "Gonkong va Shanxay bank korporatsiyasi (HSBC)",
+        "Hindiston davlat banki (SBI)",
+        "ICICI banki",
+        "Eksa banki"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Mobil banking Hindistonda qachon paydo bo'lgan?",
+      "options": [
+        "2002 yil",
+        "2000 yil",
+        "2005 yil",
+        "2008 yil"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Quyidagilarning qaysi biri asbob-uskunaning tahlil vazifalariga tegishli?",
+      "options": [
+        "Kompyuterlarning texnik ko’rsatkichlari",
+        "IP telefoniyaning mavjudligi",
+        "Bekapning mavjudligi",
+        "Fintex tizimining kuchli va kuchsiz tomonlarini aniqlash"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Quyidagilarning qaysi biri asbob-uskunaning tahlil vazifalariga tegishli?",
+      "options": [
+        "internet tezligini yuqoriligi",
+        "IP telefoniyaning mavjudligi",
+        "bekapning mavjudligi",
+        "Fintex tizimining kuchli va kuchsiz tomonlarini aniqlash"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Quyidagilarning qaysi biri tizim infratuzilmasining tahlil vazifalariga tegishli?",
+      "options": [
+        "IP telefoniyaning mavjudligi",
+        "internet tezligini yuqoriligi",
+        "kompyuterlarning texnik ko’rsatkichlari",
+        "internetning mavjudligi"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Quyidagilarning qaysi biri tizim infratuzilmasining tahlil vazifalariga tegishli?",
+      "options": [
+        "korporativ pochtaning mavjudligi",
+        "internet tezligini yuqoriligi",
+        "kompyuterlarning texnik ko’rsatkichlari",
+        "internetning mavjudligi"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Quyidagilarning qaysi biri dasturiy ta’minotining tahlil vazifalariga tegishli?",
+      "options": [
+        "antivirusning mavjudligi",
+        "korporativ pochtaning mavjudligi",
+        "IP telefoniyaning mavjudligi",
+        "kompyuterlarning texnik ko’rsatkichlari"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Quyidagilarning qaysi biri dasturiy ta’minotining tahlil vazifalariga tegishli?",
+      "options": [
+        "tarmoqaro kommunikasiyalarning mavjudligi",
+        "korporativ pochtaning mavjudligi",
+        "IP telefoniyaning mavjudligi",
+        "kompyuterlarning texnik ko’rsatkichlari"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Quyidagilarning qaysi biri dasturiy ta’minotining tahlil vazifalariga tegishli?",
+      "options": [
+        "bekapning mavjudligi",
+        "korporativ pochtaning mavjudligi",
+        "IP telefoniyaning mavjudligi",
+        "kompyuterlarning texnik ko’rsatkichlari"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Quyidagilarning qaysi biri dasturiy ta’minotining tahlil vazifalariga tegishli?",
+      "options": [
+        "Fintex tizimining kuchli va kuchsiz tomonlarini aniqlash",
+        "korporativ pochtaning mavjudligi",
+        "bekapning mavjudligi",
+        "kompyuterlarning texnik ko’rsatkichlari"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Quyidagilarning qaysi biri dasturiy ta’minotining tahlil vazifalariga tegishli?",
+      "options": [
+        "Fintex tizimining kuchli va kuchsiz tomonlarini aniqlash",
+        "korporativ pochtaning mavjudligi",
+        "bekapning mavjudligi",
+        "IP telefoniyaning mavjudligi"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Quyidagilarning qaysi biri fintexning to‘lov tizimlariga tegishli?",
+      "options": [
+        "PayPal",
+        "Bitcoin",
+        "Kickstarter",
+        "Lending Club"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Quyidagilarning qaysi biri fintexning to‘lov tizimlariga tegishli?",
+      "options": [
+        "Google Pay",
+        "Bitcoin",
+        "Kickstarter",
+        "Lending Club"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Quyidagilarning qaysi biri fintexning kriptovalyuta guruhiga tegishli?",
+      "options": [
+        "Bitcoin",
+        "Google Pay",
+        "Kickstarter",
+        "PayPal"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Quyidagilarning qaysi biri fintexning kriptovalyuta guruhiga tegishli?",
+      "options": [
+        "Ethereum",
+        "Google Pay",
+        "Kickstarter",
+        "PayPal"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Quyidagilarning qaysi biri fintexning kriptovalyuta guruhiga tegishli?",
+      "options": [
+        "Ripple",
+        "Google Pay",
+        "Kickstarter",
+        "PayPal"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Quyidagilarning qaysi biri fintexning kraudfanding guruhiga tegishli?",
+      "options": [
+        "Kickstarter",
+        "Google Pay",
+        "Ripple",
+        "PayPal"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Quyidagilarning qaysi biri fintexning kraudfanding guruhiga tegishli?",
+      "options": [
+        "Indiegogo",
+        "Google Pay",
+        "Ripple",
+        "PayPal"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Quyidagilarning qaysi biri fintexning kraudfanding guruhiga tegishli?",
+      "options": [
+        "GoFundMe",
+        "Google Pay",
+        "Ripple",
+        "PayPal"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Quyidagilarning qaysi biri fintexning P2P guruhiga tegishli?",
+      "options": [
+        "Prosper",
+        "Google Pay",
+        "GoFundMe",
+        "PayPal"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Quyidagilarning qaysi biri fintexning robo-maslahatchi guruhiga tegishli?",
+      "options": [
+        "Betterment",
+        "Prosper",
+        "GoFundMe",
+        "PayPal"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Quyidagilarning qaysi biri fintexning robo-maslahatchi guruhiga tegishli?",
+      "options": [
+        "Robinhood",
+        "Prosper",
+        "Indiegogo",
+        "PayPal"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Quyidagilarning qaysi biri fintexning robo-maslahatchi guruhiga tegishli?",
+      "options": [
+        "Welthfront",
+        "Prosper",
+        "Indiegogo",
+        "Ripple"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Quyidagilarning qaysi biri fintex industriyasiga ta’sir etuvchi omillar hisoblanadi?",
+      "options": [
+        "Moliyaviy xizmatlarga yanada yaqinlashuvi",
+        "Regulyator (huquqiy-me’yor)larni ishlab chiqish",
+        "Kiberxavfsizlikni ta’minlash",
+        "Yuqori texnologik innovatsiyalarni joriy etish"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Quyidagilarning qaysi biri fintex industriyasiga ta’sir etuvchi omillar hisoblanadi?",
+      "options": [
+        "Samaradorlik va shaffoflikning ta’minlanishi",
+        "Regulyator (huquqiy-me’yor)larni ishlab chiqish",
+        "Kiberxavfsizlikni ta’minlash",
+        "Yuqori texnologik innovatsiyalarni joriy etish"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Quyidagilarning qaysi biri fintex industriyasiga ta’sir etuvchi omillar hisoblanadi?",
+      "options": [
+        "Investisiyalar uchun yangi imkoniyatlarning berilishi",
+        "Regulyator (huquqiy-me’yor)larni ishlab chiqish",
+        "Kiberxavfsizlikni ta’minlash",
+        "Yuqori texnologik innovatsiyalarni joriy etish"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Quyidagilarning qaysi biri fintex industriyasiga ta’sir etuvchi omillar hisoblanadi?",
+      "options": [
+        "Mijoz tajribasining shakllanishi",
+        "Regulyator (huquqiy-me’yor)larni ishlab chiqish",
+        "Kiberxavfsizlikni ta’minlash",
+        "Yuqori texnologik innovatsiyalarni joriy etish"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Quyidagilarning qaysi biri fintex industriyasiga ta’sir etuvchi omillar hisoblanadi?",
+      "options": [
+        "Raqobat va innovatsiyalarning rag‘batlantirilishi",
+        "Regulyator (huquqiy-me’yor)larni ishlab chiqish",
+        "Kiberxavfsizlikni ta’minlash",
+        "Yuqori texnologik innovatsiyalarni joriy etish"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Quyidagilarning qaysi birini fintex kelajagi deb hisoblash mumkin?",
+      "options": [
+        "Regulyator (huquqiy-me’yor)larni ishlab chiqish",
+        "Raqobat va innovatsiyalarning rag‘batlantirilishi",
+        "Investisiyalar uchun yangi imkoniyatlarning berilishi",
+        "Samaradorlik va shaffoflikning ta’minlanishi"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Quyidagilarning qaysi birini fintex kelajagi deb hisoblash mumkin?",
+      "options": [
+        "Kiberxavfsizlikni ta’minlash",
+        "Raqobat va innovatsiyalarning rag‘batlantirilishi",
+        "Investisiyalar uchun yangi imkoniyatlarning berilishi",
+        "Samaradorlik va shaffoflikning ta’minlanishi"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Quyidagilarning qaysi birini fintex kelajagi deb hisoblash mumkin?",
+      "options": [
+        "Yuqori texnologik innovatsiyalarni joriy etish",
+        "Raqobat va innovatsiyalarning rag‘batlantirilishi",
+        "Investisiyalar uchun yangi imkoniyatlarning berilishi",
+        "Samaradorlik va shaffoflikning ta’minlanishi"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Quyidagilarning qaysi birini fintex kelajagi deb hisoblash mumkin?",
+      "options": [
+        "Yuqori texnologik innovatsiyalarni joriy etish",
+        "Raqobat va innovatsiyalarning rag‘batlantirilishi",
+        "Investisiyalar uchun yangi imkoniyatlarning berilishi",
+        "Samaradorlik va shaffoflikning ta’minlanishi"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Quyidagilarning qaysi birini fintex kelajagi deb hisoblash mumkin?",
+      "options": [
+        "Mijoz tajribasi va personallasuvining shakllanishi",
+        "Raqobat va innovatsiyalarning rag‘batlantirilishi",
+        "Investisiyalar uchun yangi imkoniyatlarning berilishi",
+        "Samaradorlik va shaffoflikning ta’minlanishi"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Quyidagilarning qaysi birini fintex kelajagi deb hisoblash mumkin?",
+      "options": [
+        "An’anaviy moliya institutlari bilan integrasiya",
+        "Raqobat va innovatsiyalarning rag‘batlantirilishi",
+        "Investisiyalar uchun yangi imkoniyatlarning berilishi",
+        "Samaradorlik va shaffoflikning ta’minlanishi"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Kompyuterlarning texnik ko’rsatkichlarini o‘rganish qaysi tahlil vazifasiga tegishli?",
+      "options": [
+        "asbob-uskunaning tahlili",
+        "tizim infratuzilmasining tahlili",
+        "dasturiy ta’minotining tahlil",
+        "raqamli iqtisodiyot tahlili"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Internet tezligi ko’rsatkichlarini o‘rganish qaysi tahlil vazifasiga tegishli?",
+      "options": [
+        "asbob-uskunaning tahlili",
+        "tizim infratuzilmasining tahlili",
+        "dasturiy ta’minotining tahlil",
+        "raqamli iqtisodiyot tahlili"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "IP telefoniyaning mavjudligini o‘rganish qaysi tahlil vazifasiga tegishli?",
+      "options": [
+        "tizim infratuzilmasining tahlili",
+        "asbob-uskunaning tahlili",
+        "dasturiy ta’minotining tahlil",
+        "raqamli iqtisodiyot tahlili"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Korporativ pochtaning mavjudligini o‘rganish qaysi tahlil vazifasiga tegishli?",
+      "options": [
+        "tizim infratuzilmasining tahlili",
+        "asbob-uskunaning tahlili",
+        "dasturiy ta’minotining tahlil",
+        "raqamli iqtisodiyot tahlili"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Antivirusning mavjudligini o‘rganish qaysi tahlil vazifasiga tegishli?",
+      "options": [
+        "dasturiy ta’minotining tahlil",
+        "tizim infratuzilmasining tahlili",
+        "asbob-uskunaning tahlili",
+        "raqamli iqtisodiyot tahlili"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Tarmoqaro kommunikasiyalarning mavjudligini o‘rganish qaysi tahlil vazifasiga tegishli?",
+      "options": [
+        "dasturiy ta’minotining tahlil",
+        "tizim infratuzilmasining tahlili",
+        "asbob-uskunaning tahlili",
+        "raqamli iqtisodiyot tahlili"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Bekapning mavjudligini o‘rganish qaysi tahlil vazifasiga tegishli?",
+      "options": [
+        "dasturiy ta’minotining tahlil",
+        "tizim infratuzilmasining tahlili",
+        "asbob-uskunaning tahlili",
+        "raqamli iqtisodiyot tahlili"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Fintex tizimining kuchli va kuchsiz tomonlarini aniqlash qaysi tahlil vazifasiga tegishli?",
+      "options": [
+        "dasturiy ta’minotining tahlil",
+        "tizim infratuzilmasining tahlili",
+        "asbob-uskunaning tahlili",
+        "raqamli iqtisodiyot tahlili"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "PayPal qaysi fintex mahsulotlari guruhiga tegishli?",
+      "options": [
+        "to‘lov tizimlari",
+        "kriptovalyuta",
+        "kraudfanding",
+        "P2P"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Google Pay qaysi fintex mahsulotlari guruhiga tegishli?",
+      "options": [
+        "to‘lov tizimlari",
+        "kriptovalyuta",
+        "kraudfanding",
+        "P2P"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Bitcoin qaysi fintex mahsulotlari guruhiga tegishli?",
+      "options": [
+        "kriptovalyuta",
+        "to‘lov tizimlari",
+        "kraudfanding",
+        "P2P"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Ethereum qaysi fintex mahsulotlari guruhiga tegishli?",
+      "options": [
+        "kriptovalyuta",
+        "to‘lov tizimlari",
+        "kraudfanding",
+        "P2P"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Ripple qaysi fintex mahsulotlari guruhiga tegishli?",
+      "options": [
+        "kriptovalyuta",
+        "to‘lov tizimlari",
+        "kraudfanding",
+        "P2P"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Kickstarter qaysi fintex mahsulotlari guruhiga tegishli?",
+      "options": [
+        "kraudfanding",
+        "kriptovalyuta",
+        "to‘lov tizimlari",
+        "P2P"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Indiegogo qaysi fintex mahsulotlari guruhiga tegishli?",
+      "options": [
+        "kraudfanding",
+        "kriptovalyuta",
+        "to‘lov tizimlari",
+        "P2P"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "GoFundMe qaysi fintex mahsulotlari guruhiga tegishli?",
+      "options": [
+        "kraudfanding",
+        "kriptovalyuta",
+        "to‘lov tizimlari",
+        "P2P"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Prosper qaysi fintex mahsulotlari guruhiga tegishli?",
+      "options": [
+        "P2P",
+        "kraudfanding",
+        "kriptovalyuta",
+        "to‘lov tizimlari"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Lending Club qaysi fintex mahsulotlari guruhiga tegishli?",
+      "options": [
+        "P2P",
+        "kraudfanding",
+        "kriptovalyuta",
+        "to‘lov tizimlari"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Betterment qaysi fintex mahsulotlari guruhiga tegishli?",
+      "options": [
+        "robo-maslahatchilar",
+        "kraudfanding",
+        "kriptovalyuta",
+        "to‘lov tizimlari"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Robinhood qaysi fintex mahsulotlari guruhiga tegishli?",
+      "options": [
+        "robo-maslahatchilar",
+        "kraudfanding",
+        "kriptovalyuta",
+        "to‘lov tizimlari"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Welthfront qaysi fintex mahsulotlari guruhiga tegishli?",
+      "options": [
+        "robo-maslahatchilar",
+        "kraudfanding",
+        "kriptovalyuta",
+        "to‘lov tizimlari"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Moliyaviy xizmatlarga yanada yaqinlashuvi fintexga ta’sir etuvchi omillarning qaysi guruhiga tegishli?",
+      "options": [
+        "fintex industriyasiga ta’sir etuvchi omillar guruhi",
+        "fintex kelajagiga ta’sir etuvchi omillar guruhi",
+        "fintex salohiyatiga ta’sir etuvchi omillar guruhi",
+        "fintex innovatsiyasiga ta’sir etuvchi omillar guruhi"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Samaradorlik va shaffoflikning ta’minlanishi fintexga ta’sir etuvchi omillarning qaysi guruhiga tegishli?",
+      "options": [
+        "fintex industriyasiga ta’sir etuvchi omillar guruhi",
+        "fintex kelajagiga ta’sir etuvchi omillar guruhi",
+        "fintex salohiyatiga ta’sir etuvchi omillar guruhi",
+        "fintex innovatsiyasiga ta’sir etuvchi omillar guruhi"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Investisiyalar uchun yangi imkoniyatlarning berilishi fintexga ta’sir etuvchi omillarning qaysi guruhiga tegishli?",
+      "options": [
+        "fintex industriyasiga ta’sir etuvchi omillar guruhi",
+        "fintex kelajagiga ta’sir etuvchi omillar guruhi",
+        "fintex salohiyatiga ta’sir etuvchi omillar guruhi",
+        "fintex innovatsiyasiga ta’sir etuvchi omillar guruhi"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Mijoz tajribasining shakllanishi fintexga ta’sir etuvchi omillarning qaysi guruhiga tegishli?",
+      "options": [
+        "fintex industriyasiga ta’sir etuvchi omillar guruhi",
+        "fintex kelajagiga ta’sir etuvchi omillar guruhi",
+        "fintex salohiyatiga ta’sir etuvchi omillar guruhi",
+        "fintex innovatsiyasiga ta’sir etuvchi omillar guruhi"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Raqobat va innovatsiyalarning rag‘batlantirilishi fintexga ta’sir etuvchi omillarning qaysi guruhiga tegishli?",
+      "options": [
+        "fintex industriyasiga ta’sir etuvchi omillar guruhi",
+        "fintex kelajagiga ta’sir etuvchi omillar guruhi",
+        "fintex salohiyatiga ta’sir etuvchi omillar guruhi",
+        "fintex innovatsiyasiga ta’sir etuvchi omillar guruhi"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Regulyator (huquqiy-me’yor)larni ishlab chiqish fintexga ta’sir etuvchi omillarning qaysi guruhiga tegishli?",
+      "options": [
+        "fintex kelajagiga ta’sir etuvchi omillar guruhi",
+        "fintex industriyasiga ta’sir etuvchi omillar guruhi",
+        "fintex salohiyatiga ta’sir etuvchi omillar guruhi",
+        "fintex innovatsiyasiga ta’sir etuvchi omillar guruhi"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Kiberxavfsizlikni ta’minlash fintexga ta’sir etuvchi omillarning qaysi guruhiga tegishli?",
+      "options": [
+        "fintex kelajagiga ta’sir etuvchi omillar guruhi",
+        "fintex industriyasiga ta’sir etuvchi omillar guruhi",
+        "fintex salohiyatiga ta’sir etuvchi omillar guruhi",
+        "fintex innovatsiyasiga ta’sir etuvchi omillar guruhi"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Yuqori texnologik innovatsiyalarni joriy etish fintexga ta’sir etuvchi omillarning qaysi guruhiga tegishli?",
+      "options": [
+        "fintex kelajagiga ta’sir etuvchi omillar guruhi",
+        "fintex industriyasiga ta’sir etuvchi omillar guruhi",
+        "fintex salohiyatiga ta’sir etuvchi omillar guruhi",
+        "fintex innovatsiyasiga ta’sir etuvchi omillar guruhi"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Investisiyalar uchun yangi imkoniyatlarning berilishi fintexga ta’sir etuvchi omillarning qaysi guruhiga tegishli?",
+      "options": [
+        "fintex kelajagiga ta’sir etuvchi omillar guruhi",
+        "fintex industriyasiga ta’sir etuvchi omillar guruhi",
+        "fintex salohiyatiga ta’sir etuvchi omillar guruhi",
+        "fintex innovatsiyasiga ta’sir etuvchi omillar guruhi"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Mijoz tajribasi va personallasuvining shakllanishi fintexga ta’sir etuvchi omillarning qaysi guruhiga tegishli?",
+      "options": [
+        "fintex kelajagiga ta’sir etuvchi omillar guruhi",
+        "fintex industriyasiga ta’sir etuvchi omillar guruhi",
+        "fintex salohiyatiga ta’sir etuvchi omillar guruhi",
+        "fintex innovatsiyasiga ta’sir etuvchi omillar guruhi"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "An’anaviy moliya institutlari bilan integrasiya fintexga ta’sir etuvchi omillarning qaysi guruhiga tegishli?",
+      "options": [
+        "fintex kelajagiga ta’sir etuvchi omillar guruhi",
+        "fintex industriyasiga ta’sir etuvchi omillar guruhi",
+        "fintex salohiyatiga ta’sir etuvchi omillar guruhi",
+        "fintex innovatsiyasiga ta’sir etuvchi omillar guruhi"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Raqamli texnologiyalar iqtisodiy faoliyat yuritishning an'anaviy formatlariga nisbatan qanday afzalliklarni beradi?",
+      "options": [
+        "raqamli texnologiyalar bilan ishlaydigan axborotning keng turlari (matn, media va boshqalar)",
+        "axborot uzatish tezligi past",
+        "sifatiga putur yetkazmagan holda axborotni deyarli cheksiz takrorlash imkoniyati",
+        "texnologik va tashkiliy innovatsiyalarning yuqori xavfsizligi"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Qaysi xususiyat raqamli iqtisodiyotni aniqlash imkonini beradi?",
+      "options": [
+        "ishlab chiqarish va iste'mol sohasidagi jismoniy va raqamli ob'ektlarni birlashtirish",
+        "boshqaruvni axborotlashtirish",
+        "internet aloqalarini axborot almashish vositasi sifatida rivojlantirish",
+        "iqtisodiy faoliyatning tarmoq modelini shakllantirish"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Iqtisodiy faoliyatni tashkil etishda qanday o'zgarishlarni raqamli texnologiyalar kamroq talab qiladi?",
+      "options": [
+        "axloqiy me'yorlarni o'zgartirish",
+        "biznes modellarining o'zgarishi",
+        "raqamli madaniyatni shakllantirish",
+        "tashkiliy tuzilmalarning o'zgarishi"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Asosiy ishlab chiqarish muammolarini hal qilishda iqtisodiy faoliyatning qaysi sohasi uchun narsalar +interneti (IoT) texnologiyalari eng kam qo'llanilishi mumkin?",
+      "options": [
+        "davlat boshqaruvi",
+        "sog'liqni saqlash",
+        "transport",
+        "uy-joy kommunal xo'jaligi"
+      ],
+      "correct": -1
+    },
+    {
+      "text": "Tuzilmaviy elementlardan qaysi biri sanoat Internet texnologiyasining (\"Sanoat 4.0\") drayverlariga tegishli +emas, bu esa o'z navbatida tegishli iqtisodiy tuzilishga ega bo'lgan to'rtinchi sanoat inqilobini tashkil qiladi?",
+      "options": [
+        "bulutli xizmatlari",
+        "\"aqlli\" sensorlar",
+        "kengaytirilgan haqiqat",
+        "simsiz tarmoqlar"
+      ],
+      "correct": -1
+    },
+    {
+      "text": "Raqamli iqtisodiyotda moddiy ishlab chiqarish sektorining o‘rni qanday?",
+      "options": [
+        "moddiy ishlab chiqarish sektori kontragentlar bilan aloqani ta'minlash uchun raqamli platformalarga muhtoj",
+        "moddiy ishlab chiqarish sektori raqamli platforma echimlarining o'limini ta'minlaydi",
+        "moddiy ishlab chiqarish sektori raqamli platformalar bilan almashtiriladi",
+        "moddiy ishlab chiqarish sektori va raqamli platformalar iqtisodiyotda avtonom tarzda mavjud"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Katta ma'lumotlar texnologiyasining bir qismi sifatida analitika yo'nalishi rivojlanmoqda. Facebookdagi \"Balki siz ularni bilasiz\" bo'limini uning qaysi bo'limlariga tasniflagan bo'lardingiz?",
+      "options": [
+        "bashoratli tahlillar",
+        "naqshni aniqlash bilan bog'liq tahlillar",
+        "tavsiflovchi tahlil",
+        "yozuvchi tahlil"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Biznes modeli sifatida platformalarning qaysi elementi muayyan faoliyat sifatida boshqaruv bilan bog'liq emas?",
+      "options": [
+        "texnologik yechim",
+        "aloqa",
+        "strategiyalar",
+        "xulq-atvor modellari"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Biznes ekotizimining qaysi elementi raqamli iqtisodiyotda platforma yechimidir?",
+      "options": [
+        "yadrolar",
+        "agent",
+        "cheklovlar",
+        "operator"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Raqamli iqtisodiyot texnologiyalaridan qaysi biri markazlashtirilmagan ma’lumotlar omborlarini shakllantirishga qaratilgan?",
+      "options": [
+        "blokcheyn texnologiyasi",
+        "big-data",
+        "hissiy",
+        "simsiz"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Zamonaviy sivilizatsiya uchinchi sanoat inqilobi dunyosida yashaydi. Shu bilan birga, to'rtinchisi tez orada sodir bo'lishi kerak. Qaysi texnologiya uning bir qismi hisoblanadi?",
+      "options": [
+        "narsalarning interneti",
+        "ishlab chiqarishdagi robotlar",
+        "ishlab chiqarishni mexanizatsiyalash",
+        "termoyadro sintezi"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Raqamli iqtisodiyotdagi tendentsiyalardan biri aqlli shartnomadan foydalanish bo'lib, u aslida \"aqlli\" emas va amalda shartnoma emas. Bu ob'ekt nimani ifodalaydi?",
+      "options": [
+        "ICO ga boradigan startapning mohiyatini tavsiflovchi hujjat",
+        "cryptocurrency o'lchov birligi",
+        "harflar va raqamlar ketma-ketligi, uni bilgan har bir kishi uning orqasida yashiringan hisob qaydnomasiga tokenlarni o'tkazish imkonini beradi",
+        "kompyuter algoritmi yoki tomonlarga aktivlarni almashish imkonini beruvchi shart"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Blokcheyn haqidagi qaysi fakt noto‘g‘ri?",
+      "options": [
+        "blokcheyn ishtirokchilari markaziy tugun orqali muloqot qiladilar",
+        "har bir foydalanuvchiga 30 dan ortiq belgidan iborat manzil beriladi",
+        "jamiyatning har bir a'zosi barcha ma'lumotlar va tarixga ega",
+        "operatsiya tugallangandan so'ng, bu haqdagi yozuvlarni qaytarib bo'lmaydi;"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Raqamli iqtisodiyotning hodisalaridan biri kriptovalyutadir. Bu ob'ekt nima?",
+      "options": [
+        "administratorga ega bo'lmagan elektron valyuta (uning qiymati hech qanday davlat tomonidan belgilanmagan yoki kafolatlanmagan)",
+        "bank tomonidan faqat elektron shaklda chiqarilgan valyuta",
+        "chiqarilish manbai sir bo'lgan valyuta",
+        "elektron valyuta, ular bilan barcha operatsiyalar yashirin tarzda amalga oshiriladi"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Bitcoinning so‘mga nisbatan qiymati 2023-2024 yilga nisbatan qanday ekvivalentda?",
+      "options": [
+        "826 mln so‘m",
+        "826 ming so‘m",
+        "826 so‘m",
+        "826 AQSh dollari"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "ROAS (Return on advertising spend) bu?",
+      "options": [
+        "Internet reklama xarajatining samaradorligi",
+        "Internet reklama foydasining samaradorligi",
+        "Internet xarajatining samaradorligi",
+        "Internet foydasining samaradorligi"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "CPC (Cost per click) bu?",
+      "options": [
+        "Klik narxi",
+        "Klik soni",
+        "Lid narxi",
+        "Lid soni"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "CPL (Cost per lead) bu?",
+      "options": [
+        "Lid narxi",
+        "Klik narxi",
+        "Klik soni",
+        "Lid soni"
+      ],
+      "correct": -1
+    },
+    {
+      "text": "CTR (Click through rate) bu?",
+      "options": [
+        "Klik koeffitsiyenti",
+        "Klik narxi",
+        "Klik soni",
+        "Lid soni"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "CPO (Cost per order) bu?",
+      "options": [
+        "Buyurtmaning o‘rtacha narxi",
+        "Klik narxi",
+        "Klik soni",
+        "Lid soni"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Internet reklama xarajatining samaradorligi bu?",
+      "options": [
+        "ROAS",
+        "CPC",
+        "CPL",
+        "CTR"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Klik narxi bu?",
+      "options": [
+        "CPC",
+        "ROAS",
+        "CPL",
+        "CTR"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Lid narxi bu?",
+      "options": [
+        "CPL",
+        "CPC",
+        "CTR",
+        "ROAS"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Klik koeffitsiyenti bu?",
+      "options": [
+        "CPL",
+        "CPC",
+        "CTR",
+        "ROAS"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Buyurtmaning o‘rtacha narxi bu?",
+      "options": [
+        "CPO",
+        "CPL",
+        "CPC",
+        "CTR"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Moliyaviy xizmatlarni ko‘rsatuvchi raqamli platformadan olingan tushumini aks ettiruvchi ko‘rsatkich bu?",
+      "options": [
+        "GMV",
+        "LTV",
+        "PU",
+        "AOV"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Moliyaviy xizmatlarni ko‘rsatuvchi raqamli platforma mijozi olib kelgan daromadini aks ettiruvchi ko‘rsatkich bu?",
+      "options": [
+        "LTV",
+        "AOV",
+        "GMV",
+        "PU"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Moliyaviy xizmatlarni ko‘rsatuvchi raqamli platforma jami daromadini olib kelgan mijozlar sonini aks ettiruvchi ko‘rsatkich bu?",
+      "options": [
+        "LTV",
+        "AOV",
+        "GMV",
+        "PU"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Moliyaviy xizmatlarni ko‘rsatuvchi raqamli platformada bitta mijozga to‘g‘ri kelgan o‘rtacha daromadini aks ettiruvchi ko‘rsatkich bu?",
+      "options": [
+        "LTV",
+        "AOV",
+        "GMV",
+        "PU"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "2022 yil O'zbekiston moliyaviy texnologiyalar bozorining tahlillari hisobotida qaysi ko'rsatkich bo'yicha oxirgi besh yildagi o'sish sur'ati 30% tashkil etdi?",
+      "options": [
+        "POS-terminallar orqali tranzaktsiyalar hajmi, mlrd. AQSh doll.",
+        "onlayn tranzaktsiyalarni amalga oshirgan aholi soni, mln kishi",
+        "QR-kod orqali tranzaktsiyalar hajmi, mlrd. AQSh doll.",
+        "QR-kod orqali tranzaktsiyalarni amalga oshirgan aholi soni, mln kishi"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "2022 yil O'zbekiston moliyaviy texnologiyalar bozorining tahlillari hisobotida qaysi ko'rsatkich bo'yicha o'tgan yilga nisbatan sur'ati 56% tashkil etdi?",
+      "options": [
+        "POS-terminallar orqali tranzaktsiyalar hajmi, mlrd. AQSh doll.",
+        "onlayn tranzaktsiyalarni amalga oshirgan aholi soni, mln kishi",
+        "QR-kod orqali tranzaktsiyalar hajmi, mlrd. AQSh doll.",
+        "QR-kod orqali tranzaktsiyalarni amalga oshirgan aholi soni, mln kishi"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "2022 yil O'zbekiston moliyaviy texnologiyalar bozorining tahlillari hisobotida qaysi ko'rsatkich bo'yicha oxirgi uch yildagi o'sish sur'ati 119% tashkil etdi?",
+      "options": [
+        "POS-terminallar orqali tranzaktsiyalar hajmi, mlrd. AQSh doll.",
+        "onlayn tranzaktsiyalarni amalga oshirgan aholi soni, mln kishi",
+        "QR-kod orqali tranzaktsiyalar hajmi, mlrd. AQSh doll.",
+        "QR-kod orqali tranzaktsiyalarni amalga oshirgan aholi soni, mln kishi"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "2022 yil O'zbekiston moliyaviy texnologiyalar bozorining tahlillari hisobotida qaysi ko'rsatkich bo'yicha o'tgan yilga nisbatan o'sish 1500% tashkil etdi?",
+      "options": [
+        "POS-terminallar orqali tranzaktsiyalar hajmi, mlrd. AQSh doll.",
+        "onlayn tranzaktsiyalarni amalga oshirgan aholi soni, mln kishi",
+        "QR-kod orqali tranzaktsiyalar hajmi, mlrd. AQSh doll.",
+        "QR-kod orqali tranzaktsiyalarni amalga oshirgan aholi soni, mln kishi"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "2022 yil O'zbekiston moliyaviy texnologiyalar bozorining tahlillari hisobotida POS-terminallar orqali tranzaktsiyalar hajmi qanday ko'rsatkichga erishildi?",
+      "options": [
+        "o'sish sur'ati 30%",
+        "o'sish sur'ati 56%",
+        "o'sish sur'ati 119%",
+        "o'sish sur'ati 1500%"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "2022 yil O'zbekiston moliyaviy texnologiyalar bozorining tahlillari hisobotida onlayn tranzaktsiyalarni amalga oshirgan aholi soni qanday ko'rsatkichga erishildi?",
+      "options": [
+        "o'sish sur'ati 56%",
+        "o'sish sur'ati 30%",
+        "o'sish sur'ati 119%",
+        "o'sish sur'ati 1500%"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "2022 yil O'zbekiston moliyaviy texnologiyalar bozorining tahlillari hisobotida QR-kod orqali tranzaktsiyalarni amalga oshirgan aholi soni qanday ko'rsatkichga erishildi?",
+      "options": [
+        "o'sish sur'ati 56%",
+        "o'sish sur'ati 30%",
+        "o'sish sur'ati 119%",
+        "o'sish sur'ati 1500%"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "2022 yil O'zbekiston moliyaviy texnologiyalar bozorining tahlillari hisobotida QR-kod orqali tranzaktsiyalar hajmi qanday ko'rsatkichga erishildi?",
+      "options": [
+        "o'sish sur'ati 56%",
+        "o'sish sur'ati 30%",
+        "o'sish sur'ati 119%",
+        "o'sish sur'ati 1500%"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "2004 yilda O'zbekistonda qaysi fintex mahsuloti kirib keldi?",
+      "options": [
+        "Oson to'lov tizimi",
+        "Payme to'lov tizimi",
+        "Click to'lov tizimi",
+        "Uzcard to'lov tizimi"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "2019 yilda O'zbekistonda qaysi fintex mahsuloti kirib keldi?",
+      "options": [
+        "Paynet to'lov tizimi",
+        "Humo to'lov tizimi",
+        "Click to'lov tizimi",
+        "Uzcard to'lov tizimi"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "2019 yilda O'zbekistonda qaysi fintex mahsuloti kirib keldi?",
+      "options": [
+        "Paynet to'lov tizimi",
+        "Apelsin to'lov tizimi",
+        "Click to'lov tizimi",
+        "Uzcard to'lov tizimi"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "2019 yilda O'zbekistonda qaysi fintex mahsuloti kirib keldi?",
+      "options": [
+        "Paynet to'lov tizimi",
+        "Zood to'lov tizimi",
+        "Click to'lov tizimi",
+        "Uzcard to'lov tizimi"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "2022 yilda O'zbekistonda qaysi fintex mahsuloti kirib keldi?",
+      "options": [
+        "Paynet to'lov tizimi",
+        "Uzum to'lov tizimi",
+        "Click to'lov tizimi",
+        "Uzcard to'lov tizimi"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "O'zbekiston fintex bozorining FinTech 1.0 bosqichiga qaysi mahsulotlarni kiritish mumkin?",
+      "options": [
+        "Oson",
+        "Uzcard; Click",
+        "Paynet",
+        "PayMe"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "O'zbekiston fintex bozorining FinTech 2.0 bosqichiga qaysi mahsulotlarni kiritish mumkin?",
+      "options": [
+        "Uzcard",
+        "Uzum",
+        "Click",
+        "PayMe; Oson; Paynet"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "O'zbekiston fintex bozorining FinTech 3.0 bosqichiga qaysi mahsulotlarni kiritish mumkin?",
+      "options": [
+        "Uzcard; Click",
+        "PayMe; Oson; Paynet",
+        "Click",
+        "Apelsin; Zood; Uzum; Anorbank; TBC"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "O'zbekiston fintex bozorining qaysi bosqichida Mobile-ID joriy etildi?",
+      "options": [
+        "FinTech 4.0",
+        "FinTech 1.0",
+        "FinTech 2.0",
+        "FinTech 3.0"
+      ],
+      "correct": -1
+    },
+    {
+      "text": "O'zbekiston fintex bozorining qaysi bosqichida My-ID joriy etildi?",
+      "options": [
+        "FinTech 4.0",
+        "FinTech 1.0",
+        "FinTech 2.0",
+        "FinTech 3.0"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "2023 yil yakuniga ko'ra raqamli hamyonlar bilan tranzaktsiyalarni olib borishda etakchilik qilayotgan fintex mahsuloti qaysi?",
+      "options": [
+        "Oson",
+        "Uzum",
+        "PayMe",
+        "Click"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "\"Raqamli O'zbekiston - 2030\" strategiyasini tasdiqlash va uni samarali amalga oshirish chora-tadbirlari to'g'risidagi O'zR Prezidentining Farmoni qachon qabul qilindi?",
+      "options": [
+        "05.10.2020 yil PF-6079 son",
+        "05.10.2023 yil PF-6079 son",
+        "05.10.2020 yil PQ-0079 son",
+        "05.10.2023 yil PQ-0079 son"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "05.10.2020 yil PF-6079 sonli \"raqamli O'zbekiston - 2030\" strategiyasini tasdiqlash va uni samarali amalga oshirish chora-tadbirlari to'g'risidagi O'zR Prezidentining Farmoni nechta bobdan iborat?",
+      "options": [
+        "3 ta",
+        "30 ta",
+        "300 ta",
+        "3000 ta"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Биринчи номарказлашган криптовалюта бу?",
+      "options": [
+        "Bitcion",
+        "GameFi",
+        "DAO",
+        "NFT"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Блокчейн ва нормаказлашган рақамли валюталарга асосланган ўйинлар?",
+      "options": [
+        "Bitcion",
+        "GameFi",
+        "DAO",
+        "NFT"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Нормарказлашган автоном ташкилотлар (инвестицион лойиҳаларни амалга оширишга қаратилган)?",
+      "options": [
+        "Bitcion",
+        "GameFi",
+        "DAO",
+        "NFT"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Рақамли токен бу?",
+      "options": [
+        "Bitcion",
+        "GameFi",
+        "DAO",
+        "NFT"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Bitcion бу?",
+      "options": [
+        "Биринчи номарказлашган криптовалюта",
+        "Блокчейн ва нормаказлашган рақамли валюталарга асосланган ўйинлар",
+        "Нормарказлашган автоном ташкилотлар (инвестицион лойиҳаларни амалга оширишга қаратилган)",
+        "Рақамли токен"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "GameFi бу?",
+      "options": [
+        "Биринчи номарказлашган криптовалюта",
+        "Блокчейн ва нормаказлашган рақамли валюталарга асосланган ўйинлар",
+        "Нормарказлашган автоном ташкилотлар (инвестицион лойиҳаларни амалга оширишга қаратилган)",
+        "Рақамли токен"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "NFT бу?",
+      "options": [
+        "Биринчи номарказлашган криптовалюта",
+        "Блокчейн ва нормаказлашган рақамли валюталарга асосланган ўйинлар",
+        "Нормарказлашган автоном ташкилотлар (инвестицион лойиҳаларни амалга оширишга қаратилган)",
+        "Рақамли токен"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "DAO бу?",
+      "options": [
+        "Биринчи номарказлашган криптовалюта",
+        "Блокчейн ва нормаказлашган рақамли валюталарга асосланган ўйинлар",
+        "Нормарказлашган автоном ташкилотлар (инвестицион лойиҳаларни амалга оширишга қаратилган)",
+        "Рақамли токен"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Дастлабки монеталар таклифи бу?",
+      "options": [
+        "ICO",
+        "IEO",
+        "IDO",
+        "IPO"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Дастлабки оммавий таклиф бу?",
+      "options": [
+        "ICO",
+        "IEO",
+        "IDO",
+        "IPO"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Дастлабки биржа таклифи бу?",
+      "options": [
+        "ICO",
+        "IEO",
+        "IDO",
+        "IPO"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Дастлабки нормарказлашган таклиф бу?",
+      "options": [
+        "ICO",
+        "IEO",
+        "IDO",
+        "IPO"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Kredit berish va shaxsiy mablag‘ni yig‘ish xizmatiga qaratilgan fintech masulotlari?",
+      "options": [
+        "PayPal, WePay, Alipay",
+        "Kickstarter, Indiegogo, StartTrack",
+        "P2P, robo-maslahat, turmush tarzi savdosi",
+        "Monzo, Revolut, Starling Bank"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Crowdfunding va businessni moliyaviylashtirish hizmatiga qaratilgan fintech masulotlari?",
+      "options": [
+        "PayPal, WePay, Alipay",
+        "Kickstarter, Indiegogo, StartTrack",
+        "P2P, robo-maslahat, hayot savdosi",
+        "Monzo, Revolut, Starling Bank"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Tolovlarni amalga oshirish va chakana transaction hizmatiga qaratilgan fintech mahsulotlari?",
+      "options": [
+        "PayPal, WePay, Alipay",
+        "Kickstarter, Indiegogo, StartTrack",
+        "P2P, robo-maslahat, hayot savdosi",
+        "Monzo, Revolut, Starling Bank"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Raqamli bank hizmatiga qaratilgan fintech masulotlari?",
+      "options": [
+        "PayPal, WePay, Alipay",
+        "Kickstarter, Indiegogo, StartTrack",
+        "P2P, robo-maslahat, hayot savdosi",
+        "Monzo, Revolut, Starling Bank"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "PayPal, WePay, Alipay qayisi sohaga qaratilgan fintech mahsulotlari bwlib hhisoblanaydi?",
+      "options": [
+        "Kredit berish va shaxsiy mablag'ni yig'ish xizmatiga qaratilgan fintech masulotlari",
+        "Crowdfunding va businessni moliyaviylashtirish hizmatiga qaratilgan fintech masulotlari",
+        "Tolovlarni amalga oshirish va chakana tranzaksiya hizmatiga qaratilgan fintech mahsulotlari",
+        "Raqamli bank hizmatiga qaratilgan fintech mahsulotlari"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "R2R, robo-advising, ijtimoiy traiding qaisi sohaga qaratilgan fintech mahsulotlari bwlib hhisoblanadi?",
+      "options": [
+        "Kredit berish va shaxsiy mablag'ni yig'ish xizmatiga qaratilgan fintech masulotlari",
+        "Crowdfunding va businessni moliyaviylashtirish hizmatiga qaratilgan fintech masulotlari",
+        "Tolovlarni amalga oshirish va chakana transaction hizmatiga qaratilgan fintech mahsulotlari",
+        "Raqamli bank hizmatiga qaratilgan fintech mahsulotlari"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Kickstarter, Indiegogo, StartTrack?",
+      "options": [
+        "Kredit berish va shaxsiy mablag'ni yig'ish xizmatiga qaratilgan fintech masulotlari",
+        "Crowdfunding va businessni moliyaviylashtirish hizmatiga qaratilgan fintech masulotlari",
+        "Tolovlarni amalga oshirish va chakana transaction hizmatiga qaratilgan fintech mahsulotlari",
+        "Raqamli bank hizmatiga qaratilgan fintech mahsulotlari"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Monzo, Revolut, Starling Bank kaisi sohaga qaratilgan fintech mahsulotlari bwlib hhisoblanadi?",
+      "options": [
+        "Kredit berish va shaxsiy mablag'ni yig'ish xizmatiga qaratilgan fintech masulotlari",
+        "Crowdfunding va businessni moliyaviylashtirish hizmatiga qaratilgan fintech masulotlari",
+        "Tolovlarni amalga oshirish va chakana transaction hizmatiga qaratilgan fintech mahsulotlari",
+        "Raqamli bank hizmatiga qaratilgan fintech masulotlari"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Tizim istirokchilari vosachisiz bir-biriga faollarini sifatli ishlab chiqaradigan texnologiya bu?",
+      "options": [
+        "Blokcheyn",
+        "Big data",
+        "DNS",
+        "IPO"
+      ],
+      "correct": 0
+    },
+    {
+      "text": "Bu kompaniya aksiyalarining fond birjasida birinchilishi?",
+      "options": [
+        "Blokcheyn",
+        "Big data",
+        "DNS",
+        "IPO"
+      ],
+      "correct": 0
+    }
   ]
 }

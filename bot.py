@@ -1818,7 +1818,14 @@ EXAM_HTML_TEMPLATE = """
 
     <div id="subjectScreen" class="screen active">
         <h1>Fanni tanlang</h1>
-        <button class="btn-large" onclick="selectSubject('ECONOMIC ANALYSIS')">📊 ECONOMIC ANALYSIS</button>
+        <button class="btn-large" style="flex-direction: column; align-items: flex-start; gap: 4px;" onclick="selectSubject('ECONOMIC ANALYSIS')">
+            <div style="display: flex; align-items: center; gap: 8px;"><span style="font-size: 24px;">📊</span> ECONOMIC ANALYSIS</div>
+            <div style="font-size: 13px; opacity: 0.8; font-weight: 400; margin-left: 32px;">Imtihon: 16.06.2026, 16:00</div>
+        </button>
+        <button class="btn-large" style="flex-direction: column; align-items: flex-start; gap: 4px; background: linear-gradient(135deg, #8b5cf6, #6d28d9);" onclick="selectSubject('FINANCIAL TECHNOLOGIES')">
+            <div style="display: flex; align-items: center; gap: 8px;"><span style="font-size: 24px;">💻</span> FINANCIAL TECHNOLOGIES</div>
+            <div style="font-size: 13px; opacity: 0.8; font-weight: 400; margin-left: 32px;">Imtihon: 16.06.2026, 13:00</div>
+        </button>
     </div>
 
     <div id="homeScreen" class="screen">
@@ -2090,6 +2097,15 @@ EXAM_HTML_TEMPLATE = """
             let shuffled = JSON.parse(JSON.stringify(dbQuestions));
             shuffled.sort(() => Math.random() - 0.5); // Savollarni aralashtirish
             questions = shuffled.slice(0, 20); // Test uchun faqat 20 tasini tasodifiy olamiz
+            
+            // Har bir savol uchun variantlarni tasodifiy aralashtirish (Real test uchun)
+            questions.forEach(q => {
+                let optionsWithIndex = q.options.map((opt, i) => ({text: opt, isCorrect: i === q.correct}));
+                optionsWithIndex.sort(() => Math.random() - 0.5);
+                q.options = optionsWithIndex.map(o => o.text);
+                q.correct = optionsWithIndex.findIndex(o => o.isCorrect);
+            });
+            
             questionState = new Array(questions.length).fill('gray');
             currentQueue = questions.map((_, i) => i);
             score = 0;
