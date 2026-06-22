@@ -1922,6 +1922,8 @@ EXAM_HTML_TEMPLATE = """
             document.getElementById(id).classList.add('active');
             if (id !== 'subjectScreen') {
                 document.getElementById('bottomNav').style.display = 'flex';
+            } else {
+                document.getElementById('bottomNav').style.display = 'none';
             }
         }
 
@@ -1952,8 +1954,7 @@ EXAM_HTML_TEMPLATE = """
 
         function goHome() {
             clearInterval(timerInterval);
-            showScreen('homeScreen');
-            updateBottomNav('nav-home');
+            showScreen('subjectScreen');
         }
 
         function showAllResults() {
