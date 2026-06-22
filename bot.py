@@ -1831,6 +1831,22 @@ EXAM_HTML_TEMPLATE = """
             <div style="display: flex; align-items: center; gap: 8px;"><span style="font-size: 24px;">💻</span> FINANCIAL TECHNOLOGIES</div>
             <div style="font-size: 13px; opacity: 0.8; font-weight: 400; margin-left: 32px;">Imtihon: 23.06.2026, 09:20 - 09:40</div>
         </button>
+        <button class="btn-large" style="flex-direction: column; align-items: flex-start; gap: 4px; background: linear-gradient(135deg, #f59e0b, #d97706);" onclick="selectSubject('PUBLIC FINANCE')">
+            <div style="display: flex; align-items: center; gap: 8px;"><span style="font-size: 24px;">🏛</span> PUBLIC FINANCE</div>
+            <div style="font-size: 13px; opacity: 0.8; font-weight: 400; margin-left: 32px;">Imtihon: 24.06.2026, 09:20 - 09:40</div>
+        </button>
+        <button class="btn-large" style="flex-direction: column; align-items: flex-start; gap: 4px; background: linear-gradient(135deg, #10b981, #059669);" onclick="selectSubject('INTERNATIONAL NEGOTIATION')">
+            <div style="display: flex; align-items: center; gap: 8px;"><span style="font-size: 24px;">🤝</span> INTERNATIONAL NEGOTIATION</div>
+            <div style="font-size: 13px; opacity: 0.8; font-weight: 400; margin-left: 32px;">Imtihon: 25.06.2026, 09:20 - 09:40</div>
+        </button>
+        <button class="btn-large" style="flex-direction: column; align-items: flex-start; gap: 4px; background: linear-gradient(135deg, #ef4444, #b91c1c);" onclick="selectSubject('INSURANCE')">
+            <div style="display: flex; align-items: center; gap: 8px;"><span style="font-size: 24px;">🛡</span> INSURANCE</div>
+            <div style="font-size: 13px; opacity: 0.8; font-weight: 400; margin-left: 32px;">Imtihon: 26.06.2026, 09:20 - 09:40</div>
+        </button>
+        <button class="btn-large" style="flex-direction: column; align-items: flex-start; gap: 4px; background: linear-gradient(135deg, #0ea5e9, #0369a1);" onclick="selectSubject('ISLAMIC FINANCE')">
+            <div style="display: flex; align-items: center; gap: 8px;"><span style="font-size: 24px;">☪️</span> ISLAMIC FINANCE</div>
+            <div style="font-size: 13px; opacity: 0.8; font-weight: 400; margin-left: 32px;">Imtihon: 27.06.2026, 09:20 - 09:40</div>
+        </button>
     </div>
 
     <div id="homeScreen" class="screen">
