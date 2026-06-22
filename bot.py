@@ -1820,11 +1820,11 @@ EXAM_HTML_TEMPLATE = """
         <h1>Fanni tanlang</h1>
         <button class="btn-large" style="flex-direction: column; align-items: flex-start; gap: 4px;" onclick="selectSubject('ECONOMIC ANALYSIS')">
             <div style="display: flex; align-items: center; gap: 8px;"><span style="font-size: 24px;">📊</span> ECONOMIC ANALYSIS</div>
-            <div style="font-size: 13px; opacity: 0.8; font-weight: 400; margin-left: 32px;">Imtihon: 16.06.2026, 16:00</div>
+            <div style="font-size: 13px; opacity: 0.8; font-weight: 400; margin-left: 32px;">Imtihon: 22.06.2026, 09:20 - 09:40</div>
         </button>
         <button class="btn-large" style="flex-direction: column; align-items: flex-start; gap: 4px; background: linear-gradient(135deg, #8b5cf6, #6d28d9);" onclick="selectSubject('FINANCIAL TECHNOLOGIES')">
             <div style="display: flex; align-items: center; gap: 8px;"><span style="font-size: 24px;">💻</span> FINANCIAL TECHNOLOGIES</div>
-            <div style="font-size: 13px; opacity: 0.8; font-weight: 400; margin-left: 32px;">Imtihon: 16.06.2026, 13:00</div>
+            <div style="font-size: 13px; opacity: 0.8; font-weight: 400; margin-left: 32px;">Imtihon: 23.06.2026, 09:20 - 09:40</div>
         </button>
     </div>
 
