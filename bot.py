@@ -2058,8 +2058,11 @@ EXAM_HTML_TEMPLATE = """
                 });
         }
 
+        let currentStudyLimit = 50;
+
         function startStudyMode() {
             document.getElementById('studySearch').value = ''; // Qidiruvni tozalash
+            currentStudyLimit = 50;
             renderStudyList('');
             showScreen('studyScreen');
             updateBottomNav('nav-study');
@@ -2067,6 +2070,7 @@ EXAM_HTML_TEMPLATE = """
 
         function filterStudyQuestions() {
             const input = document.getElementById('studySearch').value.toLowerCase().trim();
+            currentStudyLimit = 50; // Qidirganda limitni yangilash
             renderStudyList(input);
         }
 
@@ -2089,6 +2093,7 @@ EXAM_HTML_TEMPLATE = """
                 return text.replace(regex, '<span style="background-color: yellow; color: black; border-radius: 2px;">$1</span>');
             };
             
+            let matchesList = [];
             dbQuestions.forEach((q, idx) => {
                 const qTextLower = q.text.toLowerCase();
                 const optsLower = q.options.map(o => o.toLowerCase());
@@ -2099,25 +2104,44 @@ EXAM_HTML_TEMPLATE = """
                 }
                 
                 if (matches) {
-                    const card = document.createElement('div');
-                    card.className = 'glass qa-card';
-                    
-                    let optsHTML = q.options.map((opt, i) => {
-                        let isCorrect = (i === q.correct);
-                        let letter = String.fromCharCode(65 + i);
-                        let color = isCorrect ? 'color: var(--green); font-weight: bold;' : 'color: var(--text-color);';
-                        let icon = isCorrect ? '✅' : '⚪️';
-                        let border = (i < q.options.length - 1) ? 'border-bottom: 1px solid var(--border-color);' : '';
-                        return `<div style="padding: 10px 0; ${border} ${color}">${icon} <b>${letter})</b> ${highlight(opt)}</div>`;
-                    }).join('');
-                    
-                    card.innerHTML = `
-                        <div class="q-text">${idx + 1}. ${highlight(q.text)}</div>
-                        <div style="margin-top: 12px;">${optsHTML}</div>
-                    `;
-                    list.appendChild(card);
+                    matchesList.push({q, idx});
                 }
             });
+
+            const itemsToShow = matchesList.slice(0, currentStudyLimit);
+
+            itemsToShow.forEach(item => {
+                const {q, idx} = item;
+                const card = document.createElement('div');
+                card.className = 'glass qa-card';
+                
+                let optsHTML = q.options.map((opt, i) => {
+                    let isCorrect = (i === q.correct);
+                    let letter = String.fromCharCode(65 + i);
+                    let color = isCorrect ? 'color: var(--green); font-weight: bold;' : 'color: var(--text-color);';
+                    let icon = isCorrect ? '✅' : '⚪️';
+                    let border = (i < q.options.length - 1) ? 'border-bottom: 1px solid var(--border-color);' : '';
+                    return `<div style="padding: 10px 0; ${border} ${color}">${icon} <b>${letter})</b> ${highlight(opt)}</div>`;
+                }).join('');
+                
+                card.innerHTML = `
+                    <div class="q-text">${idx + 1}. ${highlight(q.text)}</div>
+                    <div style="margin-top: 12px;">${optsHTML}</div>
+                `;
+                list.appendChild(card);
+            });
+
+            if (matchesList.length > currentStudyLimit) {
+                const loadMoreBtn = document.createElement('button');
+                loadMoreBtn.className = 'btn-large btn-secondary';
+                loadMoreBtn.innerText = 'Yana yuklash';
+                loadMoreBtn.style.marginTop = '16px';
+                loadMoreBtn.onclick = () => {
+                    currentStudyLimit += 50;
+                    renderStudyList(filterText);
+                };
+                list.appendChild(loadMoreBtn);
+            }
         }
 
         function startTestMode() {
