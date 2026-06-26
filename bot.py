@@ -1802,7 +1802,7 @@ EXAM_HTML_TEMPLATE = """
         .nav-dot.yellow { background: var(--yellow); }
         .nav-dot.active-dot { box-shadow: 0 0 0 3px var(--bg-color), 0 0 0 5px var(--button-color); transform: scale(1.1); }
         
-        .option-btn { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 12px 14px; border-radius: 8px; font-size: 14px; text-align: left; transition: all 0.2s; width: 100%; cursor: pointer; margin-bottom: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); line-height: 1.4; }
+        .option-btn { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 12px 14px; border-radius: 8px; font-size: 14px; text-align: left; transition: all 0.2s; width: 100%; cursor: pointer; margin-bottom: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); line-height: 1.4; white-space: normal; word-wrap: break-word; overflow-wrap: break-word; }
         .option-btn:active { transform: scale(0.98); }
         .option-btn.correct { background: var(--green); color: white; border-color: var(--green); }
         .option-btn.wrong { background: var(--red); color: white; border-color: var(--red); }
