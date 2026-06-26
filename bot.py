@@ -1767,7 +1767,7 @@ EXAM_HTML_TEMPLATE = """
             --yellow: #f59e0b;
             --gray: #6b7280;
         }
-        * { box-sizing: border-box; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
+        * { box-sizing: border-box; font-family: 'Inter', sans-serif; margin: 0; padding: 0; word-wrap: break-word; overflow-wrap: break-word; word-break: break-word; }
         body { background-color: var(--bg-color) !important; color: var(--text-color) !important; padding: 16px; overflow-x: hidden; }
         .glass { background: var(--card-bg); backdrop-filter: blur(10px); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         
